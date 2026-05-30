@@ -1,0 +1,40 @@
+{
+	"name": "memoria-astro",
+	"version": "0.0.1",
+	"description": "Astro WordPress theme.",
+	"type": "module",
+	"keywords": [],
+	"author": "displaycoffee",
+	"license": "ISC",
+	"homepage": "https://github.com/displaycoffee/memoria-astro",
+	"engines": {
+		"node": ">=22.12.0"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"devDependencies": {
+		"sass": "^1.100.0"
+	},
+	"dependencies": {
+		"@astrojs/react": "^5.0.6",
+		"@types/react": "^19.2.15",
+		"@types/react-dom": "^19.2.3",
+		"astro": "^6.4.2",
+		"react": "^19.2.6",
+		"react-dom": "^19.2.6"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/displaycoffee/memoria-astro.git"
+	},
+	"bugs": {
+		"url": "https://github.com/displaycoffee/memoria-astro/issues"
+	},
+	"browserslist": [
+		"last 2 versions"
+	]
+}
