@@ -23,7 +23,9 @@
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"astro": "^6.4.2",
+		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-astro": "^1.7.0",
+		"prettier": "^3.8.1",
 		"sass": "1.78.0"
 	},
 	"dependencies": {

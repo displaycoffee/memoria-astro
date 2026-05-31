@@ -23,7 +23,6 @@ export default tseslint.config(
 				...globals.es2022,
 			},
 			parserOptions: {
-				project: './tsconfig.json',
 				ecmaFeatures: { jsx: true },
 				tsconfigRootDir: import.meta.dirname,
 			},
@@ -40,7 +39,16 @@ export default tseslint.config(
 	},
 	js.configs.recommended,
 	tseslint.configs.recommended,
-	tseslint.configs.recommendedTypeChecked,
+	{
+		files: ['**/*.ts', '**/*.tsx'],
+		extends: tseslint.configs.recommendedTypeChecked,
+		languageOptions: {
+			parserOptions: {
+				projectService: true,
+				tsconfigRootDir: import.meta.dirname,
+			},
+		},
+	},
 	react.configs.flat.recommended,
 	reactHooks.configs.flat.recommended,
 	jsxA11y.flatConfigs.recommended,
@@ -49,6 +57,7 @@ export default tseslint.config(
 	eslintConfigPrettier,
 	{
 		rules: {
+			'no-undef': 'off',
 			'prefer-const': 'error',
 			'@typescript-eslint/no-base-to-string': 'off',
 			'@typescript-eslint/no-empty-function': 'off',
@@ -67,9 +76,16 @@ export default tseslint.config(
 			'@typescript-eslint/restrict-template-expressions': 'off',
 			'import/no-unresolved': 'off',
 			'react/no-unescaped-entities': 'off',
+			'react/no-unknown-property': ['error', { ignore: ['set:html', 'set:text', 'is:raw', 'is:global', 'is:inline', 'class:list', 'define:vars'] }],
 			'react/prop-types': 'off',
 			'react/react-in-jsx-scope': 'off',
 			'react-hooks/exhaustive-deps': 'error',
+		},
+	},
+	{
+		files: ['**/*.astro'],
+		rules: {
+			'react/no-unknown-property': 'off',
 		},
 	},
 );
