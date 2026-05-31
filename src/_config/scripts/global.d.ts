@@ -9,14 +9,17 @@ type ObjectPrimitive = {
 	[key: string]: string | number | boolean;
 };
 
+/* Fetch type definitions */
+type GraphQLParams = {
+	url: string;
+	query: string;
+	variables?: object;
+};
+
 /* WordPress type definitions */
 type Post = {
-	title: {
-		rendered: string;
-	};
-	content: {
-		rendered: string;
-	};
+	title: string;
+	content: string;
 };
 
 declare global {
@@ -29,6 +32,9 @@ declare global {
 
 	/* Declare global prop types */
 	type ObjectPrimitiveProps = ObjectPrimitive;
+
+	/* Declare global fetch types */
+	type GraphQLParamsType = GraphQLParams;
 
 	/* Declare global WordPress types */
 	type PostType = Post;

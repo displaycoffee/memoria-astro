@@ -1,4 +1,27 @@
+/* Scripts */
+//import { context } from '../../context/scripts/context';
+
 export const utils = {
+	fetch: async ({ url, query, variables = {} }: GraphQLParamsType) => {
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				query,
+				variables,
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error(`Failed to fetch WordPress data: ${response.statusText}`);
+		}
+
+		const { data } = await response.json();
+
+		return data;
+	},
 	getLast: (value: string | [], delimeter?: string) => {
 		// Get last item in array
 		let valueArray = [] as string[] | number[];

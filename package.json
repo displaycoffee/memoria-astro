@@ -29,6 +29,8 @@
 		"sass": "1.78.0"
 	},
 	"dependencies": {
+		"graphql": "^16.14.0",
+		"graphql-request": "^7.4.0",
 		"react": "^19.2.4",
 		"react-dom": "^19.2.4"
 	},
