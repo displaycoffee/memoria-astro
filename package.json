@@ -11,21 +11,24 @@
 		"node": ">=22.12.0"
 	},
 	"scripts": {
-		"dev": "astro dev",
+		"dev": "set NODE_OPTIONS=--use-system-ca && astro dev",
 		"build": "astro build",
 		"preview": "astro preview",
-		"astro": "astro"
+		"astro": "astro",
+		"format": "prettier --write \"src/**/*.{astro,ts,tsx}\"",
+		"lint": "eslint \"src/**/*.{astro,ts,tsx}\" --quiet"
 	},
 	"devDependencies": {
-		"sass": "^1.100.0"
-	},
-	"dependencies": {
 		"@astrojs/react": "^5.0.6",
-		"@types/react": "^19.2.15",
+		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"astro": "^6.4.2",
-		"react": "^19.2.6",
-		"react-dom": "^19.2.6"
+		"eslint-plugin-astro": "^1.7.0",
+		"sass": "1.78.0"
+	},
+	"dependencies": {
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4"
 	},
 	"repository": {
 		"type": "git",
