@@ -10,6 +10,7 @@ import Head from '../head/Head.astro';
 import Header from '../header/Header.astro';
 import Content from '../content/Content.astro';
 import Sidebar from '../sidebar/Sidebar.astro';
+import IconMap from '../../components/icons/IconMap.astro';
 
 /* Create body class */
 const pathname = Astro.url.pathname;
@@ -47,8 +48,14 @@ const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathna
 			</button>
 		</div>
 
+		<IconMap />
+
 		<script>
+			import { closeFormFields } from './scripts/forms.ts';
 			import { utils } from '../../_config/scripts/utils';
+
+			// Close form fields
+			closeFormFields('.form-field-close', '.input', '.button-close');
 
 			// Set scroll to top functionality
 			const scrollToTopButton = document.querySelector('#scroll-to-top');

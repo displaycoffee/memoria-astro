@@ -1,0 +1,12 @@
+---
+/* Scripts */
+import { variables } from '../../_config/scripts/variables';
+
+/* Components */
+import Container from '../../layout/container/Container.astro';
+import { SearchResults } from '../../components/search/SearchResults';
+---
+
+<Container>
+	<SearchResults graphqlUrl={variables.urls.graphQL} client:load />
+</Container>

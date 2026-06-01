@@ -7,12 +7,10 @@ import { context } from '../../context/scripts/context';
 
 /* Components */
 import Image from '../../components/image/Image.astro';
-//import { Image } from 'astro:assets';
+import SearchForm from '../../components/search/SearchForm.astro';
 
 /* Get site details */
 const site = await context.wp.site();
-console.log(site)
-//const { alt, hasBg, hasLazy, image, imageClass, wrapperClass } = Astro.props;
 ---
 
 <header class="header">
@@ -27,6 +25,16 @@ console.log(site)
 			<h1>
 				<a title={site.title} href={site.url}>{site.title}</a>
 			</h1>
+		</div>
+
+		{site?.description ? (
+			<div class="site-description">
+				<p>{site.description}</p>
+			</div>
+		) : (null)}
+
+		<div class="site-search">
+			<SearchForm action={`${site.url}/search`} id={'header-search-form'} />
 		</div>
 	</div>
 </header>

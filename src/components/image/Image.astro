@@ -5,12 +5,12 @@ import './styles/image.scss';
 /* Scripts */
 import type { ImageProps, ImageAttributesType, WrapperAttributesType } from './scripts/image-types';
 
-/* Define Astro types for props */
+/* Define prop types */
 type Props = ImageProps;
 
 /* Props */
 const { alt, hasBg, hasLazy, image, imageClass, wrapperClass } = Astro.props;
-const hasWrapper = typeof Astro.props?.hasWrapper == 'boolean' ? Astro.props.hasWrapper : true;
+const hasWrapper = Astro.props.hasWrapper ?? true;
 
 /* Set up initial attributes */
 const wrapperAttributes = {} as WrapperAttributesType;
@@ -61,7 +61,7 @@ if (hasWrapper && hasBg) {
 <script>
 	import { image as imageUtils } from './scripts/image';
 
-	document.querySelectorAll<HTMLImageElement>('img[data-image]').forEach((img) => {
+	document.querySelectorAll('img[data-image]').forEach((img) => {
 		// Handles image error events
 		img.addEventListener('error', imageUtils.onError);
 
