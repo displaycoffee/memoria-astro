@@ -1,0 +1,32 @@
+---
+/* Styles */
+import './styles/header.scss';
+
+/* Scripts */
+import { context } from '../../context/scripts/context';
+
+/* Components */
+import Image from '../../components/image/Image.astro';
+//import { Image } from 'astro:assets';
+
+/* Get site details */
+const site = await context.wp.site();
+console.log(site)
+//const { alt, hasBg, hasLazy, image, imageClass, wrapperClass } = Astro.props;
+---
+
+<header class="header">
+	<div class="site-details flex-wrap flex-align-items-center">
+		{site.icon?.url ? (
+			<div class="site-logo">
+				<Image alt={site.icon.alt} hasLazy={true} image={site.icon.url} wrapperClass={'image-wrapper image-wrapper-contain'} />
+			</div>
+		) : (null)}
+
+		<div class="site-name">
+			<h1>
+				<a title={site.title} href={site.url}>{site.title}</a>
+			</h1>
+		</div>
+	</div>
+</header>

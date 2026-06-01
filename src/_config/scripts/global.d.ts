@@ -1,5 +1,5 @@
 /* Type definitions */
-type Events = SyntheticEvent | Event;
+type Events = Event;
 
 type ObjectString = {
 	[key: string]: string;
