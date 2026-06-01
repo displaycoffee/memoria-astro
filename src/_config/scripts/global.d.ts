@@ -20,6 +20,8 @@ type GraphQLParams = {
 type Post = {
 	title: string;
 	content: string;
+	slug: string;
+	date: string;
 };
 
 declare global {

@@ -2,18 +2,59 @@
 /* Styles */
 import './styles/container.scss';
 
+/* Scripts */
+import { context } from '../../context/scripts/context';
+
 /* Components */
 import Head from '../head/Head.astro';
-// import YourHeadComponent from "../components/layout/Head.astro";
-// import YourHeaderComponent from "../components/layout/Header.astro";
-// import YourFooterComponent from "../components/layout/Footer.astro";
+import Content from '../content/Content.astro';
+import Sidebar from '../sidebar/Sidebar.astro';
+
+/* Create body class */
+const pathname = Astro.url.pathname;
+const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathname);
 ---
 
 <!doctype html>
 <html lang="en">
 	<Head />
 	
-	<body>
-		<slot />
+	<body class={`scrollbar page-${bodyClass}`}>
+		<div id="container" class="container">
+			<!-- <SlideoutOverlay options={slideoutOptions} />
+
+			<Header />
+
+			{isDesktop ? <Navigation /> : <Slideout options={slideoutOptions} />} -->
+
+			<main class="main">
+				<div class="main-layout flex-wrap">
+					<Content>
+						<slot />
+					</Content>
+
+					<Sidebar />
+				</div>
+			</main>
+
+			<!-- <Footer /> -->
+
+			<button id="scroll-to-top" class="pointer unstyled a" type="button" aria-label="Scroll to top button">
+				Scroll to top
+			</button>
+		</div>
+
+		<script>
+			import { utils } from '../../_config/scripts/utils';
+
+			// Set scroll to top functionality
+			const scrollToTopButton = document.querySelector('#scroll-to-top');
+
+			if (scrollToTopButton) {
+				scrollToTopButton.addEventListener('click', (e) => {
+					utils.browser.scrollTo(e, '#container', 0);
+				});
+			}
+		</script>
 	</body>
 </html>

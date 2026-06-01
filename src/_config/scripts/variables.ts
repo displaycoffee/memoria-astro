@@ -1,6 +1,9 @@
 /* This config contains variables to use through application */
 export const variables = {
-	apiUrl: import.meta.env.PUBLIC_WP_API_URL,
-	baseUrl: import.meta.env.PUBLIC_WP_BASE_URL,
-	graphQLUrl: import.meta.env.PUBLIC_WP_GRAPHQL_URL,
+	urls: {
+		api: import.meta.env.API_URL,
+		base: import.meta.env.BASE_URL,
+		graphQL: import.meta.env.GRAPHQL_URL,
+		wp: import.meta.env.WP_URL,
+	},
 };

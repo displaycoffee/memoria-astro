@@ -7,20 +7,20 @@ const site = await context.wp.site();
 ---
 
 <head>
-	<title>{site.name}</title>
+	<title>{site.title}</title>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="description" content={site.description} />
 	<meta name="generator" content={Astro.generator} />
-	<meta property="og:title" content={site.name} />
-	<meta property="og:site_name" content={site.name} />
-	<meta property="og:url" content={site.home} />
+	<meta property="og:title" content={site.title} />
+	<meta property="og:site_name" content={site.title} />
+	<meta property="og:url" content={site.url} />
 	<meta property="og:locale" content="en_US" />
 	<meta property="og:description" content={site.description} />
 	<meta property="og:type" content="website" />
-	<meta name="theme-color" content="#fdfdfd" media="(prefers-color-scheme: light)" />
-	<meta name="theme-color" content="#333333" media="(prefers-color-scheme: dark)" />
+	<meta name="theme-color" content={context.theme.colors.color01 as string} media="(prefers-color-scheme: light)" />
+	<meta name="theme-color" content={context.theme.colors.color02 as string} media="(prefers-color-scheme: dark)" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 	<link rel="icon" href="/favicon-92x92.png" type="image/png" sizes="92x92" />

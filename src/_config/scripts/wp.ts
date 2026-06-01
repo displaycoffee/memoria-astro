@@ -4,8 +4,9 @@ import { variables } from './variables';
 
 export const wp = {
 	posts: async () => {
-		const data = await utils.fetch({
-			url: variables.graphQLUrl,
+		// Get posts data
+		const data = await utils.server.fetch({
+			url: variables.urls.graphQL,
 			query: `query Posts {
 				posts(first: 10) {
 					nodes {
@@ -17,12 +18,22 @@ export const wp = {
 				}
 			}`,
 		});
+
 		return data?.posts?.nodes || [];
 	},
 	site: async () => {
 		// Get site details
-		const response = await fetch(`${variables.baseUrl}`);
-		const site = await response.json();
-		return site;
+		const data = await utils.server.fetch({
+			url: variables.urls.graphQL,
+			query: `query Settings {
+				generalSettings {
+					description
+					title
+					url
+				}
+			}`,
+		});
+
+		return data?.generalSettings || {};
 	},
 };

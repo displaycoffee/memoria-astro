@@ -8,6 +8,10 @@ export const theme = {
 		bp03: checkSassVar(themeVars.bp03),
 		bp04: checkSassVar(themeVars.bp04),
 	},
+	colors: {
+		color01: checkSassVar(themeVars.color01),
+		color02: checkSassVar(themeVars.color02),
+	},
 };
 
 /* Ensure an empty or undefined sass value is false */

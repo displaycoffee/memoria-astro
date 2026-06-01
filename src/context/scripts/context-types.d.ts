@@ -5,10 +5,10 @@ type ContextValues = {
 	};
 	utils: {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		[key: string]: (...args: any[]) => any;
+		[key: string]: { [key: string]: (...args: any[]) => any };
 	};
 	variables: {
-		[key: string]: ObjectPrimitiveType;
+		[key: string]: ObjectPrimitive;
 	};
 	wp: {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any

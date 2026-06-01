@@ -10,8 +10,10 @@
 $exported: meta.module-variables(theme);
 
 :export {
-	bp01 : map.get($exported, 'bp-01');
-	bp02 : map.get($exported, 'bp-02');
-	bp03 : map.get($exported, 'bp-03');
-	bp04 : map.get($exported, 'bp-04');
+	bp01    : map.get($exported, 'bp-01');
+	bp02    : map.get($exported, 'bp-02');
+	bp03    : map.get($exported, 'bp-03');
+	bp04    : map.get($exported, 'bp-04');
+	color01 : map.get($exported, 'color-01');
+	color02 : map.get($exported, 'color-02');
 }
