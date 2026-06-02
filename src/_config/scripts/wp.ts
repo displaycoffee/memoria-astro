@@ -12,10 +12,10 @@ export const wp = {
 			query: `query Posts {
 				posts(first: 10) {
 					nodes {
-						title
-						slug
 						content
 						date
+						slug
+						title
 					}
 				}
 			}`,
@@ -36,12 +36,25 @@ export const wp = {
 		const data = await utils.any.fetch({
 			url,
 			query: `query Search($query: String) {
-				posts(first: 10, where: { search: $query }) {
+				posts(first: 12, where: { search: $query }) {
 					nodes {
-						title
-						slug
+						author {
+							node {
+								name
+							}
+						}
 						content
 						date
+						excerpt(format: RENDERED)
+						featuredImage {
+							node {
+								altText
+								sourceUrl(size: LARGE)
+							}
+						}
+						postId
+						slug
+						title
 					}
 				}
 			}`,
@@ -50,7 +63,28 @@ export const wp = {
 
 		// Format and set data
 		if (data?.posts?.nodes) {
-			const search = data.posts.nodes;
+			const search = data.posts.nodes.map((node: ResultCardUnformattedType) => {
+				// Truncate and strip HTML from excerpt
+				const excerpt = utils.any.truncate(utils.any.stripHTML(node.excerpt), 300);
+
+				// Create image properties
+				const image = {
+					alt: node?.featuredImage?.node?.altText ? node.featuredImage.node.altText : `${node.title} - Logo`,
+					url: node?.featuredImage?.node?.sourceUrl ? node.featuredImage.node.sourceUrl : '/assets/images/theme/placeholder.jpg',
+				};
+
+				// Return formatted data
+				return {
+					author: node?.author?.node?.name ? node.author.node.name : 'Unknown',
+					content: node.content,
+					date: utils.any.getDate(node.date),
+					excerpt: excerpt,
+					id: node.postId,
+					image: image,
+					title: node.title,
+					url: `/${node.slug}`,
+				};
+			});
 			searchData = search;
 		}
 

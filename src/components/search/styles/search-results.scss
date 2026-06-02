@@ -1,0 +1,36 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// SEARCH RESULTS
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.search-results {
+		.results {
+			.result {
+				.result-image {
+					position: relative;
+					margin: 0 0 theme.$spacing-x2 0;
+					//height: 0;
+					.image-wrapper {
+						padding-bottom: 50%;
+						img {
+						//max-height: 300px;
+					}
+					}
+				}
+				.result-details {
+					& > * {
+						margin: 0 0 theme.$spacing-x2 0;
+						&:last-child {
+							margin-bottom: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+

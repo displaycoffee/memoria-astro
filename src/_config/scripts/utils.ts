@@ -1,6 +1,7 @@
 export const utils = {
 	any: {
 		fetch: async ({ url, query, variables = {} }: GraphQLParamsType) => {
+			// Fetch data from WordPress
 			const response = await fetch(url, {
 				method: 'POST',
 				headers: {
@@ -24,7 +25,17 @@ export const utils = {
 
 			return json.data;
 		},
+		getDate: (time: string) => {
+			// Get date
+			const date = new Date(time);
+			return date.toLocaleDateString('en-US', {
+				month: 'long',
+				day: '2-digit',
+				year: 'numeric',
+			});
+		},
 		getLast: (value: string | [], delimeter?: string) => {
+			// Get last item in array
 			let valueArray = [] as string[] | number[];
 			if (Array.isArray(value)) {
 				valueArray = value;
@@ -34,6 +45,7 @@ export const utils = {
 			return valueArray[valueArray.length - 1];
 		},
 		handleize: (value: string) => {
+			// Format value for html classes
 			return value
 				.toLowerCase()
 				.trim()
@@ -41,27 +53,48 @@ export const utils = {
 				.replace(/\s/g, '-');
 		},
 		setAttributes: (element: HTMLElement, attributes: ObjectStringType) => {
+			// Set multiple attributes on an element
 			for (const attribute in attributes) {
 				element.setAttribute(attribute, attributes[attribute]);
+			}
+		},
+		stripHTML: (string: string) => {
+			// Remove HTML from string
+			if (!string) return '';
+			return string
+				.replace(/\n/g, ' ')
+				.replace(/<[^>]*>/g, '')
+				.trim();
+		},
+		truncate: (string: string, limit: number) => {
+			// Limit characters in string
+			if (string.length > limit) {
+				return `${string.slice(0, limit - 3)}...`;
+			} else {
+				return string;
 			}
 		},
 	},
 	browser: {
 		getPage: () => {
+			// Get previous / parent page
 			return window.location.pathname.split('/').slice(0, -1).join('/');
 		},
 		isSticky: (element: HTMLElement, stickyClass: string) => {
 			if (element) {
+				// Create options and callback for observer
 				const stickyOptions = { threshold: [1] };
 				const stickyCallback = (e: IntersectionObserverEntry) => {
 					e.target.classList.toggle(stickyClass, e.intersectionRatio < 1);
 				};
 
+				// Observe to toggle sticky class
 				const stickyObserver = new IntersectionObserver(([e]) => stickyCallback(e), stickyOptions);
 				stickyObserver.observe(element);
 			}
 		},
 		scrollTo: (e: EventsType, selector: string | undefined, offset: number) => {
+			// Scroll to element on page
 			if (e) {
 				e.preventDefault();
 			}

@@ -61,11 +61,16 @@ if (hasWrapper && hasBg) {
 <script>
 	import { image as imageUtils } from './scripts/image';
 
-	document.querySelectorAll('img[data-image]').forEach((img) => {
-		// Handles image error events
-		img.addEventListener('error', imageUtils.onError);
-
-		// Adds width and height attributes to images
-		img.addEventListener('load', imageUtils.onLoad);
-	});
+	// Set image events
+	const images = document.querySelectorAll('img[data-image]');
+	
+	if (images && images.length !== 0) {
+		images.forEach((img) => {
+			// Handles image error events
+			img.addEventListener('error', imageUtils.onError);
+	
+			// Adds width and height attributes to images
+			img.addEventListener('load', imageUtils.onLoad);
+		});
+	}
 </script>

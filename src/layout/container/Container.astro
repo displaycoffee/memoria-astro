@@ -43,7 +43,7 @@ const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathna
 
 			<!-- <Footer /> -->
 
-			<button id="scroll-to-top" class="pointer unstyled a" type="button" aria-label="Scroll to top button">
+			<button data-scroll-to="scroll-to-top" class="pointer unstyled a" type="button" aria-label="Scroll to top button">
 				Scroll to top
 			</button>
 		</div>
@@ -58,7 +58,7 @@ const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathna
 			closeFormFields('.form-field-close', '.input', '.button-close');
 
 			// Set scroll to top functionality
-			const scrollToTopButton = document.querySelector('#scroll-to-top');
+			const scrollToTopButton = document.querySelector('[data-scroll-to="scroll-to-top"]');
 
 			if (scrollToTopButton) {
 				scrollToTopButton.addEventListener('click', (e) => {

@@ -10,11 +10,11 @@ const posts = await context.wp.posts();
 ---
 
 <Container>
-	<h1>Astro + WordPress 🚀</h1>
+	<h2>Astro + WordPress 🚀</h2>
 	{
 		posts.map((post: PostType) => (
 			<>
-				<h2>{post.title}</h2>
+				<h3>{post.title}</h3>
 				<div set:html={post.content} />
 			</>
 		))

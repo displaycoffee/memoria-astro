@@ -16,7 +16,7 @@ export const image = {
 		}
 	},
 	onLoad: (e: EventsType) => {
-		// Set natural image widths and height on load
+		// Set natural image width and height on load
 		const target = e.target as HTMLImageElement;
 		target.setAttribute('width', String(target.naturalWidth));
 		target.setAttribute('height', String(target.naturalHeight));

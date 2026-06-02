@@ -24,6 +24,42 @@ type Post = {
 	date: string;
 };
 
+type ResultCardFormatted = {
+	author: string;
+	content: string;
+	date: string;
+	excerpt: string;
+	id: number;
+	image: {
+		alt: string;
+		url: string;
+	};
+	title: string;
+	url: string;
+};
+
+type ResultCardUnformatted = {
+	author?: {
+		node: {
+			name: string;
+		};
+	};
+	content: string;
+	date: string;
+	excerpt: string;
+	featuredImage?: {
+		node: {
+			altText?: string;
+			sourceUrl: string;
+		};
+	};
+	postId: number;
+	slug: string;
+	title: string;
+};
+
+type ResultCards = ResultCardFormatted[];
+
 declare global {
 	/* Declare global types */
 	type EventsType = Events;
@@ -40,6 +76,12 @@ declare global {
 
 	/* Declare global WordPress types */
 	type PostType = Post;
+
+	type ResultCardFormattedType = ResultCardFormatted;
+
+	type ResultCardUnformattedType = ResultCardUnformatted;
+
+	type ResultCardsTypes = ResultCards;
 }
 
 /* Export global types */
