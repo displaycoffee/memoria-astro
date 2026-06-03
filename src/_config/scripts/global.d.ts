@@ -18,13 +18,6 @@ type GraphQLParams = {
 
 /* WordPress type definitions */
 type Post = {
-	title: string;
-	content: string;
-	slug: string;
-	date: string;
-};
-
-type ResultCardFormatted = {
 	author: string;
 	content: string;
 	date: string;
@@ -38,7 +31,7 @@ type ResultCardFormatted = {
 	url: string;
 };
 
-type ResultCardUnformatted = {
+type PostRaw = {
 	author?: {
 		node: {
 			name: string;
@@ -58,7 +51,9 @@ type ResultCardUnformatted = {
 	title: string;
 };
 
-type ResultCards = ResultCardFormatted[];
+type Posts = Post[];
+
+type PostsRaw = PostRaw[];
 
 declare global {
 	/* Declare global types */
@@ -77,11 +72,11 @@ declare global {
 	/* Declare global WordPress types */
 	type PostType = Post;
 
-	type ResultCardFormattedType = ResultCardFormatted;
+	type PostRawType = PostRaw;
 
-	type ResultCardUnformattedType = ResultCardUnformatted;
+	type PostsType = Posts;
 
-	type ResultCardsTypes = ResultCards;
+	type PostsRawType = PostsRaw;
 }
 
 /* Export global types */

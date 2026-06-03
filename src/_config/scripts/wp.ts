@@ -2,60 +2,133 @@
 import { utils } from './utils';
 import { variables } from './variables';
 
+/* Post functions for fetching data */
+const post = {
+	format: (data: PostRawType | PostsRawType) => {
+		// Format post data
+		const formatData = (post: PostRawType) => {
+			// Truncate and strip HTML from excerpt
+			const excerpt = utils.any.truncate(utils.any.stripHTML(post.excerpt), 300);
+
+			// Create image properties
+			const image = {
+				alt: post?.featuredImage?.node?.altText ? post.featuredImage.node.altText : `${post.title} - Logo`,
+				url: post?.featuredImage?.node?.sourceUrl ? post.featuredImage.node.sourceUrl : '/assets/images/theme/placeholder.jpg',
+			};
+
+			// Return formatted data
+			return {
+				author: post?.author?.node?.name ? post.author.node.name : 'Unknown',
+				content: post.content,
+				date: utils.any.getDate(post.date),
+				excerpt: excerpt,
+				id: post.postId,
+				image: image,
+				title: post.title,
+				url: `/${post.slug}`,
+			};
+		};
+
+		// If this is an array of posts, loop through posts
+		if (Array.isArray(data)) {
+			return data.map((post: PostRawType) => {
+				return formatData(post);
+			});
+		} else {
+			return formatData(data);
+		}
+	},
+	query: (hasNodes: boolean, imageSize: string) => {
+		// Shared query function for fetching post data
+		const query = `
+			author {
+				node {
+					name
+				}
+			}
+			content
+			date
+			excerpt(format: RENDERED)
+			featuredImage {
+				node {
+					altText
+					sourceUrl(size: ${imageSize})
+				}
+			}
+			postId
+			slug
+			title
+		`;
+
+		return hasNodes ? `nodes { ${query} }` : query;
+	},
+};
+
+/* Query functions for WordPress data */
 export const wp = {
-	posts: async () => {
-		let postsData = [];
+	menu: async (id: string) => {
+		let menuData = {};
+
+		// Get menu data
+		const data = await utils.any.fetch({
+			url: variables.urls.graphQL,
+			query: `query Menu($id: ID!) {
+				menu(id: $id, idType: NAME) {
+					menuItems(first: 20, where: {parentId: 0}) {
+						nodes {
+							childItems(first: 20) {
+								nodes {
+									label
+									id
+									url
+								}
+							}
+							label
+							id
+							url
+						}
+					}
+				}
+			}`,
+			variables: { id },
+		});
+
+		// Format and set data
+		if (data?.menu?.menuItems?.nodes) {
+			menuData = data.menu.menuItems.nodes;
+		}
+
+		return menuData;
+	},
+	posts: async (amount: number) => {
+		let postsData: PostsType = [];
 
 		// Get posts data
 		const data = await utils.any.fetch({
 			url: variables.urls.graphQL,
 			query: `query Posts {
-				posts(first: 10) {
-					nodes {
-						content
-						date
-						slug
-						title
-					}
+				posts(first: ${amount}) {
+					${post.query(true, 'LARGE')}
 				}
 			}`,
 		});
 
 		// Format and set data
 		if (data?.posts?.nodes) {
-			const posts = data.posts.nodes;
-			postsData = posts;
+			postsData = post.format(data.posts.nodes) as PostsType;
 		}
 
 		return postsData;
 	},
-	search: async (query: string, url = variables.urls.graphQL) => {
-		let searchData = [];
+	search: async (query: string, amount: number, url = variables.urls.graphQL) => {
+		let searchData: PostsType = [];
 
 		// Get posts data
 		const data = await utils.any.fetch({
 			url,
 			query: `query Search($query: String) {
-				posts(first: 12, where: { search: $query }) {
-					nodes {
-						author {
-							node {
-								name
-							}
-						}
-						content
-						date
-						excerpt(format: RENDERED)
-						featuredImage {
-							node {
-								altText
-								sourceUrl(size: LARGE)
-							}
-						}
-						postId
-						slug
-						title
-					}
+				posts(first: ${amount}, where: { search: $query }) {
+					${post.query(true, 'LARGE')}
 				}
 			}`,
 			variables: { query },
@@ -63,29 +136,7 @@ export const wp = {
 
 		// Format and set data
 		if (data?.posts?.nodes) {
-			const search = data.posts.nodes.map((node: ResultCardUnformattedType) => {
-				// Truncate and strip HTML from excerpt
-				const excerpt = utils.any.truncate(utils.any.stripHTML(node.excerpt), 300);
-
-				// Create image properties
-				const image = {
-					alt: node?.featuredImage?.node?.altText ? node.featuredImage.node.altText : `${node.title} - Logo`,
-					url: node?.featuredImage?.node?.sourceUrl ? node.featuredImage.node.sourceUrl : '/assets/images/theme/placeholder.jpg',
-				};
-
-				// Return formatted data
-				return {
-					author: node?.author?.node?.name ? node.author.node.name : 'Unknown',
-					content: node.content,
-					date: utils.any.getDate(node.date),
-					excerpt: excerpt,
-					id: node.postId,
-					image: image,
-					title: node.title,
-					url: `/${node.slug}`,
-				};
-			});
-			searchData = search;
+			searchData = post.format(data.posts.nodes) as PostsType;
 		}
 
 		return searchData;

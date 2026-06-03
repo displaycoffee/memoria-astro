@@ -8,6 +8,7 @@ import { context } from '../../context/scripts/context';
 /* Components */
 import Head from '../head/Head.astro';
 import Header from '../header/Header.astro';
+import Navigation from '../../components/navigation/Navigation.astro';
 import Content from '../content/Content.astro';
 import Sidebar from '../sidebar/Sidebar.astro';
 import IconMap from '../../components/icons/IconMap.astro';
@@ -28,6 +29,8 @@ const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathna
 			<Header />
 
 			{isDesktop ? <Navigation /> : <Slideout options={slideoutOptions} />} -->
+
+			<Navigation id={'primary'} />
 
 			<Header />
 

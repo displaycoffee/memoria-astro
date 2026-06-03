@@ -1,0 +1,29 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// POST LIST
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.posts {
+		.post {
+			.post-image {
+				position: relative;
+				margin: 0 0 theme.$spacing-x2 0;
+				.image-wrapper {
+					padding-bottom: 50%;
+				}
+			}
+			.post-details {
+				& > * {
+					margin: 0 0 theme.$spacing-x2 0;
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+			}
+		}
+	}

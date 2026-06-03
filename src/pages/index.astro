@@ -4,19 +4,14 @@ import { context } from '../context/scripts/context.ts';
 
 /* Components */
 import Container from '../layout/container/Container.astro';
+import PostList from '../components/post/PostList.astro';
 
 /* Get posts */
-const posts = await context.wp.posts();
+const posts = await context.wp.posts(12);
 ---
 
 <Container>
 	<h2>Astro + WordPress 🚀</h2>
-	{
-		posts.map((post: PostType) => (
-			<>
-				<h3>{post.title}</h3>
-				<div set:html={post.content} />
-			</>
-		))
-	}
+
+	<PostList posts={posts} />
 </Container>

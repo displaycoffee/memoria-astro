@@ -1,0 +1,19 @@
+---
+/* Styles */
+import './styles/navigation.scss';
+
+/* Scripts */
+import { context } from '../../context/scripts/context';
+
+// import type { ImageProps, ImageAttributesType, WrapperAttributesType } from './scripts/image-types';
+
+// /* Define prop types */
+// type Props = ImageProps;
+
+/* Props */
+const { id } = Astro.props;
+
+/* Get menu */
+const menu = await context.wp.menu(id);
+console.log('hello', menu)
+---

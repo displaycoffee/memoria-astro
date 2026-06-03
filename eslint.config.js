@@ -86,6 +86,7 @@ export default tseslint.config(
 		files: ['**/*.astro'],
 		rules: {
 			'jsx-a11y/label-has-associated-control': 'off',
+			'react/jsx-key': 'off',
 			'react/no-unknown-property': 'off',
 		},
 	},
