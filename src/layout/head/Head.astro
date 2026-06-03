@@ -1,6 +1,9 @@
 ---
 /* Scripts */
-import { context } from "../../context/scripts/context";
+import { context } from '../../context/scripts/context';
+
+/* Components */
+import { ClientRouter } from 'astro:transitions';
 
 /* Get site details */
 const site = await context.wp.site();
@@ -110,4 +113,5 @@ const site = await context.wp.site();
 			overflow: hidden;
 		}
 	</style>
+	<ClientRouter />
 </head>

@@ -3,6 +3,7 @@
 import './styles/container.scss';
 
 /* Scripts */
+import { slide } from 'astro:transitions';
 import { context } from '../../context/scripts/context';
 
 /* Components */
@@ -34,7 +35,9 @@ const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathna
 
 			<Header />
 
-			<main class="main">
+			<a href="/search?q=lorem">test link</a>
+
+			<main class="main" transition:animate={slide({ duration: '0.5s' })}>
 				<div class="main-layout flex-wrap">
 					<Content>
 						<slot />

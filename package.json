@@ -12,7 +12,8 @@
 	},
 	"scripts": {
 		"dev": "set NODE_OPTIONS=--use-system-ca && astro dev",
-		"build": "astro build",
+		"build": "set NODE_OPTIONS=--use-system-ca && astro build && npx prettier --write \"dist/**/*.html\" --ignore-path NUL",
+		"build:preview": "set NODE_OPTIONS=--use-system-ca && astro build --mode preview && npx prettier --write \"dist/**/*.html\" --ignore-path NUL && astro preview --mode preview",
 		"preview": "astro preview",
 		"astro": "astro",
 		"format": "prettier --write \"src/**/*.{astro,ts,tsx}\"",
