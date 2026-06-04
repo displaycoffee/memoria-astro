@@ -12,13 +12,13 @@ const post = {
 
 			// Create image properties
 			const image = {
-				alt: post?.featuredImage?.node?.altText ? post.featuredImage.node.altText : `${post.title} - Logo`,
-				url: post?.featuredImage?.node?.sourceUrl ? post.featuredImage.node.sourceUrl : '/assets/images/theme/placeholder.jpg',
+				alt: post?.featuredImage?.node?.altText ?? `${post.title} - Logo`,
+				url: post?.featuredImage?.node?.sourceUrl ?? '/assets/images/theme/placeholder.jpg',
 			};
 
 			// Return formatted data
 			return {
-				author: post?.author?.node?.name ? post.author.node.name : 'Unknown',
+				author: post?.author?.node?.name ?? 'Unknown',
 				content: post.content,
 				date: utils.any.getDate(post.date),
 				excerpt: excerpt,
@@ -165,6 +165,43 @@ export const wp = {
 
 		return searchData;
 	},
+	themeOptions: async () => {
+		let themeOptionsData = {};
+
+		// Get theme options
+		const data = await utils.any.fetch({
+			url: variables.urls.graphQL,
+			query: `query ThemeOptions {
+				themeOptions {
+					socialFacebook
+					socialInstagram
+					socialTwitter
+					socialGithub
+					footerCopyright
+					footerInformation
+				}
+			}`,
+		});
+
+		// Format and set data
+		if (data?.themeOptions) {
+			const themeOptions = data.themeOptions;
+			themeOptionsData = {
+				social: {
+					facebook: themeOptions?.socialFacebook || '',
+					instagram: themeOptions?.socialInstagram || '',
+					twitter: themeOptions?.socialTwitter || '',
+					github: themeOptions?.socialGithub || '',
+				},
+				footer: {
+					copyright: themeOptions?.footerCopyright || '',
+					information: themeOptions?.footerInformation || '',
+				},
+			};
+		}
+
+		return themeOptionsData;
+	},
 	site: async () => {
 		let siteData = {};
 
@@ -190,10 +227,10 @@ export const wp = {
 		if (data?.generalSettings) {
 			const generalSettings = data.generalSettings;
 			siteData = {
-				description: generalSettings?.description ? generalSettings.description : '',
+				description: generalSettings?.description ?? '',
 				icon: {
-					alt: generalSettings?.siteIcon?.node?.altText ? generalSettings.siteIcon.node.altText : `${generalSettings.title} - Logo`,
-					url: generalSettings?.siteIcon?.node?.sourceUrl ? generalSettings.siteIcon.node.sourceUrl : '',
+					alt: generalSettings?.siteIcon?.node?.altText ?? `${generalSettings.title} - Logo`,
+					url: generalSettings?.siteIcon?.node?.sourceUrl ?? '',
 				},
 				title: generalSettings.title,
 				url: variables.urls.site,

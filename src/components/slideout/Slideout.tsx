@@ -18,8 +18,8 @@ export const Slideout = (props: SlideoutProps) => {
 	const slideoutId = `slideout-${options.id}`;
 
 	// Get default attributes for slideout
-	const width = options?.width ? options.width : config.values.width;
-	const direction = options?.direction ? options.direction : config.values.direction;
+	const width = options?.width ?? config.values.width;
+	const direction = options?.direction ?? config.values.direction;
 	const orientation = get.orientation(direction);
 	const styles = {
 		width: width,
@@ -81,7 +81,7 @@ export const Slideout = (props: SlideoutProps) => {
 						}}
 						role="presentation"
 					>
-						{children ? children : null}
+						{children}
 					</div>
 				</div>
 			</div>

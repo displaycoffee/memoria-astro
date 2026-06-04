@@ -30,7 +30,7 @@ export const Image = (props: ImageProps) => {
 	}
 
 	// Create alt text
-	const altText = alt ? alt : '';
+	const altText = alt ?? '';
 
 	// Adjust image attributes
 	if (hasLazy) {

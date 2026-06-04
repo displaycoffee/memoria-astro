@@ -58,6 +58,13 @@ export const utils = {
 				element.setAttribute(attribute, attributes[attribute]);
 			}
 		},
+		sanitize: (string: string, maxLength = 200) => {
+			// Strip HTML, collapse whitespace, and enforce a max length
+			return utils.any
+				.stripHTML(string)
+				.replace(/\s+/g, ' ')
+				.slice(0, maxLength);
+		},
 		stripHTML: (string: string) => {
 			// Remove HTML from string
 			if (!string) return '';
@@ -100,7 +107,7 @@ export const utils = {
 			}
 			const anchor = {
 				selector: selector,
-				offset: offset ? offset : 0,
+				offset: offset ?? 0,
 				position: () => {
 					const anchorElement =
 						anchor.selector && document.querySelector(anchor.selector) ? document.querySelector(anchor.selector) : false;

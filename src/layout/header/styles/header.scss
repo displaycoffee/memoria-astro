@@ -9,7 +9,7 @@
 	// Style block
 
 	.header {
-		margin: 0 0 theme.$spacing-x8 0;
+		margin: 0 0 theme.$spacing-x4 0;
 		& > * {
 			margin: 0 0 theme.$spacing-x4 0;
 			&:last-child {
@@ -30,6 +30,9 @@
 			}
 			.site-name {
 				@include mixins.flex;
+				h1 {
+					line-height: 1.5;
+				}
 			}
 			.site-description, .site-search {
 				@include mixins.flex(1 1 100%);
@@ -38,15 +41,29 @@
 	}
 	@include mixins.respond-min(theme.$bp-02) {
 		.header {
+			margin: 0 0 theme.$spacing-x8 0;
 			.site-details {
 				.site-logo {
-					width: 75px;
+					width: 50px;
 				}
-				.site-name, .site-description, .site-search {
+				.site-description {
+					order: 20;
+				}
+				.site-name, .site-search {
 					@include mixins.flex(0 1 auto);
 				}
 				.site-search {
 					margin-left: auto;
+				}
+			}
+		}
+	}
+	@include mixins.respond-min(theme.$bp-03) {
+		.header {
+			.site-details {
+				.site-description {
+					order: 0;
+					@include mixins.flex(0 1 auto);
 				}
 			}
 		}

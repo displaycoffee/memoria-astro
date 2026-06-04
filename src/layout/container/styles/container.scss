@@ -34,7 +34,7 @@
 	}
 	.main {
 		min-height: 50vh;
-		margin: 0 0 theme.$spacing-x8 0;
+		margin: theme.$spacing-x8 0;
 		.main-layout {
 			@include mixins.gap($container-main-spacing);
 			.content, .sidebar {

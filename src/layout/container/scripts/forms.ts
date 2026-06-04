@@ -16,7 +16,7 @@ export const closeFormFields = (formFieldSelector: string, inputSelector: string
 			const button = formField.querySelector(buttonSelector) as HTMLButtonElement;
 
 			if (input && button) {
-				const value: string = input?.value ? input.value : '';
+				const value: string = input?.value ?? '';
 
 				// Toggle classes initially
 				toggleButtonClass(value, button);

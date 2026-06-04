@@ -21,7 +21,7 @@ export const SearchResults = (props: SearchResultsProps) => {
 		const fetchResults = async () => {
 			// Get search params and fetch query
 			const params = new URLSearchParams(window.location.search);
-			const q = params.get('q') || '';
+			const q = context.utils.any.sanitize(params.get('q') || '');
 			setQuery(q);
 
 			// If no query, don't search

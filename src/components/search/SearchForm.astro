@@ -19,7 +19,7 @@ const searchInputId = `${id}-input`;
 ---
 
 <form id={id} class="search-form flex-nowrap flex-align-items-center" role="search" method="get" action={action}>
-	<div class="form-field form-field-close">
+	<div class="search-form-field form-field form-field-close">
 		<label class="label" for={searchInputId}>
 			Search
 		</label>
@@ -31,7 +31,7 @@ const searchInputId = `${id}-input`;
 		</button>
 	</div>
 
-	<button class="button" type="submit">
+	<button class="search-form-button button" type="submit">
 		<Icons id={'search'} />
 		<span class="button-label">Submit</span>
 	</button>
