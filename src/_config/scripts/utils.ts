@@ -93,7 +93,7 @@ export const utils = {
 				stickyObserver.observe(element);
 			}
 		},
-		scrollTo: (e: EventsType, selector: string | undefined, offset: number) => {
+		scrollTo: (e: EventsType, selector: string | undefined, offset: number | undefined) => {
 			// Scroll to element on page
 			if (e) {
 				e.preventDefault();

@@ -1,5 +1,5 @@
 /* Styles */
-import './styles/post-list.scss';
+import './styles/post.scss';
 
 /* Scripts */
 import type { PostListProps } from './scripts/post-types';

@@ -13,10 +13,22 @@ import Navigation from '../../components/navigation/Navigation.astro';
 import Content from '../content/Content.astro';
 import Sidebar from '../sidebar/Sidebar.astro';
 import IconMap from '../../components/icons/IconMap.astro';
+import { SlideoutOverlay, Slideout } from '../../components/slideout/Slideout';
 
 /* Create body class */
 const pathname = Astro.url.pathname;
 const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathname);
+
+/* Slideout options */
+const slideoutOptions = {
+	id: 'menu',
+	label: 'Menu',
+	closeOnClick: true,
+	button: {
+		outside: false,
+		show: true,
+	},
+};
 ---
 
 <!doctype html>
@@ -24,18 +36,20 @@ const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathna
 	<Head />
 	
 	<body class={`scrollbar page-${bodyClass}`}>
-		<div id="container" class="container">
-			<!-- <SlideoutOverlay options={slideoutOptions} />
-
+		<div id="container" class="container">			
 			<Header />
+			
+			<div class="hide-mobile">
+				<Navigation name={'primary'} />
+			</div>
 
-			{isDesktop ? <Navigation /> : <Slideout options={slideoutOptions} />} -->
+			<div class="hide-desktop">
+				<SlideoutOverlay client:load />
 
-			<Navigation id={'primary'} />
-
-			<Header />
-
-			<a href="/search?q=lorem">test link</a>
+				<Slideout options={slideoutOptions} client:visible>
+					<Navigation name={'primary'} />
+				</Slideout>
+			</div>
 
 			<main class="main" transition:animate={slide({ duration: '0.5s' })}>
 				<div class="main-layout flex-wrap">
@@ -58,7 +72,7 @@ const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathna
 
 		<script>
 			import { closeFormFields } from './scripts/forms.ts';
-			import { utils } from '../../_config/scripts/utils';
+			import { context } from '../../context/scripts/context';
 
 			// Close form fields
 			closeFormFields('.form-field-close', '.input', '.button-close');
@@ -68,7 +82,7 @@ const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathna
 
 			if (scrollToTopButton) {
 				scrollToTopButton.addEventListener('click', (e) => {
-					utils.browser.scrollTo(e, '#container', 0);
+					context.utils.browser.scrollTo(e, 'body');
 				});
 			}
 		</script>

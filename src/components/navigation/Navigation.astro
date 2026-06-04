@@ -3,17 +3,41 @@
 import './styles/navigation.scss';
 
 /* Scripts */
+import type { NavigationProps } from './scripts/navigation-types';
 import { context } from '../../context/scripts/context';
 
-// import type { ImageProps, ImageAttributesType, WrapperAttributesType } from './scripts/image-types';
+/* Components */
+import NavigationListItem from './NavigationListItem.astro';
+import { Dropdown } from '../dropdown/Dropdown';
 
-// /* Define prop types */
-// type Props = ImageProps;
+/* Define prop types */
+type Props = NavigationProps;
 
 /* Props */
-const { id } = Astro.props;
+const { name } = Astro.props;
 
 /* Get menu */
-const menu = await context.wp.menu(id);
-//console.log('hello', menu)
+const navigationList = await context.wp.menu(name);
 ---
+
+<nav class="navigation">
+	<ul class="navigation-list unstyled">
+		{navigationList.map((nav: MenuType) => {
+			return (
+				<NavigationListItem item={nav}>
+					{nav.children.length !== 0 ? (
+						<Dropdown closeOnClick={true} id={nav.id} client:visible>
+							<ul class="navigation-list-submenu unstyled">
+								{nav.children.map((child: MenuItemType) => {
+									return (
+										<NavigationListItem item={child} />
+									);
+								})}
+							</ul>
+						</Dropdown>
+					) : (null)}
+				</NavigationListItem>
+			)
+		})}
+	</ul>
+</nav>

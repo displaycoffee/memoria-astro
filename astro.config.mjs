@@ -1,10 +1,8 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
-import { viteUtils } from './vite.utils';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+import { viteUtils } from './vite.utils';
 
-// https://astro.build/config
 export default defineConfig({
 	site: 'https://memoria.display.coffee',
 	integrations: [react(), sitemap()],

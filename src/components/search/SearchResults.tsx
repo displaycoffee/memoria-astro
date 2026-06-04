@@ -16,6 +16,8 @@ export const SearchResults = (props: SearchResultsProps) => {
 	const [error, setError] = useState('');
 
 	useEffect(() => {
+		let cancelled = false;
+
 		const fetchResults = async () => {
 			// Get search params and fetch query
 			const params = new URLSearchParams(window.location.search);
@@ -29,15 +31,25 @@ export const SearchResults = (props: SearchResultsProps) => {
 			try {
 				setLoading(true);
 				const data = await context.wp.search(q, 12, graphqlUrl);
-				setResults(data);
+				if (!cancelled) {
+					setResults(data);
+				}
 			} catch {
-				setError('Something went wrong. Please try again.');
+				if (!cancelled) {
+					setError('Something went wrong. Please try again.');
+				}
 			} finally {
-				setLoading(false);
+				if (!cancelled) {
+					setLoading(false);
+				}
 			}
 		};
 
 		void fetchResults();
+
+		return () => {
+			cancelled = true;
+		};
 	}, [graphqlUrl]);
 
 	return (

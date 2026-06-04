@@ -17,6 +17,22 @@ type GraphQLParams = {
 };
 
 /* WordPress type definitions */
+type MenuItem = {
+	label: string;
+	id: string;
+	url: string;
+};
+
+type Menu = MenuItem & {
+	children: MenuItem[];
+};
+
+type MenuRaw = MenuItem & {
+	childItems?: {
+		nodes: MenuItem[];
+	};
+};
+
 type Post = {
 	author: string;
 	content: string;
@@ -70,6 +86,12 @@ declare global {
 	type GraphQLParamsType = GraphQLParams;
 
 	/* Declare global WordPress types */
+	type MenuItemType = MenuItem;
+
+	type MenuType = Menu;
+
+	type MenuRawType = MenuRaw;
+
 	type PostType = Post;
 
 	type PostRawType = PostRaw;

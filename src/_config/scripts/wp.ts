@@ -93,9 +93,33 @@ export const wp = {
 			variables: { id },
 		});
 
+		// Function to format menu items
+		const formatMenu = (node: MenuRawType) => {
+			return {
+				id: node.id,
+				label: node.label,
+				url: node.url.replace(variables.urls.wp, ''),
+			};
+		};
+
 		// Format and set data
 		if (data?.menu?.menuItems?.nodes) {
-			menuData = data.menu.menuItems.nodes;
+			menuData = data.menu.menuItems.nodes.map((node: MenuRawType) => {
+				// Format main menu item
+				const menu: MenuType = {
+					children: [],
+					...formatMenu(node),
+				};
+
+				// Then format children
+				if (node?.childItems?.nodes && node.childItems.nodes.length !== 0) {
+					menu.children = node.childItems.nodes.map((child) => {
+						return formatMenu(child);
+					});
+				}
+
+				return menu;
+			});
 		}
 
 		return menuData;

@@ -1,0 +1,18 @@
+---
+/* Styles */
+import './styles/navigation.scss';
+
+/* Scripts */
+import type { NavigationListItemProps } from './scripts/navigation-types';
+
+/* Define prop types */
+type Props = NavigationListItemProps;
+
+/* Props */
+const { item } = Astro.props;
+---
+
+<li class="navigation-list-item">
+	<a title={item.label} class="navigation-link" href={item.url}>{item.label}</a>
+	<slot />
+</li>
