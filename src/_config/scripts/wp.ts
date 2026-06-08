@@ -2,7 +2,7 @@
 import { utils } from './utils';
 import { variables } from './variables';
 
-/* Post functions for fetching data */
+/* Post functions for fetching and formatting data */
 const post = {
 	format: (data: PostRawType | PostsRawType) => {
 		// Format post data
@@ -177,8 +177,17 @@ export const wp = {
 					socialInstagram
 					socialTwitter
 					socialGithub
-					footerCopyright
-					footerInformation
+					sidebarSlug
+					headerLogo {
+						altText
+						sourceUrl(size: MEDIUM)
+					}
+					footerBlock01Order
+					footerBlock01Content
+					footerBlock02Order
+					footerBlock02Content
+					footerBlock03Order
+					footerBlock03Content
 				}
 			}`,
 		});
@@ -186,6 +195,7 @@ export const wp = {
 		// Format and set data
 		if (data?.themeOptions) {
 			const themeOptions = data.themeOptions;
+			console.log(themeOptions);
 			themeOptionsData = {
 				social: {
 					facebook: themeOptions?.socialFacebook || '',

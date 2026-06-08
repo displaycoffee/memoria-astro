@@ -71,6 +71,24 @@ type Posts = Post[];
 
 type PostsRaw = PostRaw[];
 
+type ThemeOptionsRaw = {
+	socialFacebook: string;
+	socialInstagram: string;
+	socialTwitter: string;
+	socialGithub: string;
+	sidebarSlug: string;
+	headerLogo: {
+		altText?: string;
+		sourceUrl: string;
+	};
+	footerBlock01Order: string;
+	footerBlock01Content: string;
+	footerBlock02Order: string;
+	footerBlock02Content: string;
+	footerBlock03Order: string;
+	footerBlock03Content: string;
+};
+
 declare global {
 	/* Declare global types */
 	type EventsType = Events;
@@ -99,6 +117,8 @@ declare global {
 	type PostsType = Posts;
 
 	type PostsRawType = PostsRaw;
+
+	type ThemeOptionsRawType = ThemeOptionsRaw;
 }
 
 /* Export global types */
