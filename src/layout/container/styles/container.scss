@@ -31,10 +31,15 @@
 		max-width: theme.$container-base;
 		margin: 0 auto;
 		padding: 0 theme.$spacing-x4;
+		& > * {			
+			margin: 0 0 theme.$spacing-x8 0;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
 	}
 	.main {
 		min-height: 50vh;
-		margin: theme.$spacing-x8 0;
 		.main-layout {
 			@include mixins.gap($container-main-spacing);
 			.content, .sidebar {

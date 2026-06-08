@@ -1,0 +1,29 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// FOOTER
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.footer {
+		.footer-blocks {
+			margin: 0 0 theme.$spacing-x4 0;
+		}
+		.footer-copyright {
+			p {
+				margin: 0;
+			}
+		}
+	}
+	@include mixins.respond(theme.$bp-02 - 1px) {
+		.footer {
+			.footer-blocks {
+				.footer-block {
+					@include mixins.flex(1 1 100%);
+				}
+			}
+		}
+	}

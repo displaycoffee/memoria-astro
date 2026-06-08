@@ -2,6 +2,18 @@
 import { utils } from './utils';
 import { variables } from './variables';
 
+/* Function to format image */
+const formatImage = (alt: string, placeholder: boolean, image?: { altText?: string; sourceUrl?: string }) => {
+	const altData = image?.altText ? `${image.altText} - ${alt}` : alt;
+	const imageData = image?.sourceUrl ? image.sourceUrl : placeholder ? '/assets/images/theme/placeholder.jpg' : '';
+
+	// Return image data with formatted alt text and url
+	return {
+		alt: altData,
+		url: imageData,
+	};
+};
+
 /* Post functions for fetching and formatting data */
 const post = {
 	format: (data: PostRawType | PostsRawType) => {
@@ -11,10 +23,7 @@ const post = {
 			const excerpt = utils.any.truncate(utils.any.stripHTML(post.excerpt), 300);
 
 			// Create image properties
-			const image = {
-				alt: post?.featuredImage?.node?.altText ?? `${post.title} - Logo`,
-				url: post?.featuredImage?.node?.sourceUrl ?? '/assets/images/theme/placeholder.jpg',
-			};
+			const image = formatImage(`${post.title} - Featured Image`, true, post?.featuredImage?.node);
 
 			// Return formatted data
 			return {
@@ -119,7 +128,7 @@ export const wp = {
 				}
 
 				return menu;
-			});
+			}) as MenuType;
 		}
 
 		return menuData;
@@ -195,19 +204,72 @@ export const wp = {
 		// Format and set data
 		if (data?.themeOptions) {
 			const themeOptions = data.themeOptions;
-			console.log(themeOptions);
+
+			// Build social links
+			const links = [];
+
+			if (themeOptions?.socialFacebook) {
+				links.push({
+					label: 'Facebook',
+					url: themeOptions.socialFacebook,
+				});
+			}
+			if (themeOptions?.socialInstagram) {
+				links.push({
+					label: 'Instagram',
+					url: themeOptions.socialInstagram,
+				});
+			}
+			if (themeOptions?.socialTwitter) {
+				links.push({
+					label: 'Twitter / X',
+					url: themeOptions.socialTwitter,
+				});
+			}
+			if (themeOptions?.socialGithub) {
+				links.push({
+					label: 'GitHub',
+					url: themeOptions.socialGithub,
+				});
+			}
+
+			// Build footer blocks
+			const blocks = [];
+
+			if (themeOptions?.footerBlock01Order && themeOptions?.footerBlock01Content) {
+				blocks.push({
+					order: parseInt(themeOptions.footerBlock01Order),
+					content: themeOptions.footerBlock01Content,
+				});
+			}
+			if (themeOptions?.footerBlock02Order && themeOptions?.footerBlock02Content) {
+				blocks.push({
+					order: parseInt(themeOptions.footerBlock02Order),
+					content: themeOptions.footerBlock02Content,
+				});
+			}
+			if (themeOptions?.footerBlock03Order && themeOptions?.footerBlock03Content) {
+				blocks.push({
+					order: parseInt(themeOptions.footerBlock03Order),
+					content: themeOptions.footerBlock03Content,
+				});
+			}
+
+			// Re-sort footer blocks
+			blocks.sort((a, b) => a.order - b.order);
+
 			themeOptionsData = {
-				social: {
-					facebook: themeOptions?.socialFacebook || '',
-					instagram: themeOptions?.socialInstagram || '',
-					twitter: themeOptions?.socialTwitter || '',
-					github: themeOptions?.socialGithub || '',
+				social: links,
+				sidebar: {
+					slug: themeOptions?.sidebarSlug || '',
+				},
+				header: {
+					logo: formatImage(`Header Logo`, false, themeOptions?.headerLogo),
 				},
 				footer: {
-					copyright: themeOptions?.footerCopyright || '',
-					information: themeOptions?.footerInformation || '',
+					blocks: blocks,
 				},
-			};
+			} as ThemeOptionsType;
 		}
 
 		return themeOptionsData;
@@ -221,12 +283,6 @@ export const wp = {
 			query: `query Settings {
 				generalSettings {
 					description
-					siteIcon {
-						node {
-							altText
-							sourceUrl(size: MEDIUM)
-						}
-					}
 					title
 					url
 				}
@@ -238,13 +294,9 @@ export const wp = {
 			const generalSettings = data.generalSettings;
 			siteData = {
 				description: generalSettings?.description ?? '',
-				icon: {
-					alt: generalSettings?.siteIcon?.node?.altText ?? `${generalSettings.title} - Logo`,
-					url: generalSettings?.siteIcon?.node?.sourceUrl ?? '',
-				},
 				title: generalSettings.title,
 				url: variables.urls.site,
-			};
+			} as SiteType;
 		}
 
 		return siteData;

@@ -9,7 +9,6 @@
 	// Style block
 
 	.header {
-		margin: 0 0 theme.$spacing-x4 0;
 		& > * {
 			margin: 0 0 theme.$spacing-x4 0;
 			&:last-child {
@@ -41,7 +40,6 @@
 	}
 	@include mixins.respond-min(theme.$bp-02) {
 		.header {
-			margin: 0 0 theme.$spacing-x8 0;
 			.site-details {
 				.site-logo {
 					width: 50px;

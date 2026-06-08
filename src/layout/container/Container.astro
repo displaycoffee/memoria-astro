@@ -12,8 +12,12 @@ import Header from '../header/Header.astro';
 import Navigation from '../../components/navigation/Navigation.astro';
 import Content from '../content/Content.astro';
 import Sidebar from '../sidebar/Sidebar.astro';
+import Footer from '../footer/Footer.astro';
 import IconMap from '../../components/icons/IconMap.astro';
 import { SlideoutOverlay, Slideout } from '../../components/slideout/Slideout';
+
+/* Get theme options */
+const options = await context.wp.themeOptions();
 
 /* Create body class */
 const pathname = Astro.url.pathname;
@@ -21,7 +25,7 @@ const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathna
 
 /* Slideout options */
 const slideoutOptions = {
-	id: 'menu',
+	id: 'navigation-menu',
 	label: 'Menu',
 	closeOnClick: true,
 	button: {
@@ -37,7 +41,7 @@ const slideoutOptions = {
 	
 	<body class={`scrollbar page-${bodyClass}`}>
 		<div id="container" class="container">			
-			<Header />
+			<Header options={options} />
 			
 			<div class="hide-mobile">
 				<Navigation name={'primary'} />
@@ -61,7 +65,7 @@ const slideoutOptions = {
 				</div>
 			</main>
 
-			<!-- <Footer /> -->
+			<Footer options={options} />
 
 			<button data-scroll-to="scroll-to-top" class="pointer unstyled a" type="button" aria-label="Scroll to top button">
 				Scroll to top

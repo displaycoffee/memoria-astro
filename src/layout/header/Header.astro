@@ -3,11 +3,18 @@
 import './styles/header.scss';
 
 /* Scripts */
+import type { HeaderProps } from './scripts/header-types';
 import { context } from '../../context/scripts/context';
 
 /* Components */
 import Image from '../../components/image/Image.astro';
 import SearchForm from '../../components/search/SearchForm.astro';
+
+/* Define prop types */
+type Props = HeaderProps;
+
+/* Props */
+const { options } = Astro.props;
 
 /* Get site details */
 const site = await context.wp.site();
@@ -15,9 +22,9 @@ const site = await context.wp.site();
 
 <header class="header">
 	<div class="site-details flex-wrap flex-align-items-center">
-		{site.icon?.url ? (
+		{options.header.logo?.url ? (
 			<div class="site-logo">
-				<Image alt={site.icon.alt} hasLazy={true} image={site.icon.url} wrapperClass={'image-wrapper image-wrapper-contain'} />
+				<Image alt={options.header.logo.alt} hasLazy={true} image={options.header.logo.url} wrapperClass={'image-wrapper image-wrapper-contain'} />
 			</div>
 		) : (null)}
 

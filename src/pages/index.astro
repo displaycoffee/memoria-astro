@@ -8,8 +8,6 @@ import PostList from '../components/post/PostList.astro';
 
 /* Get posts */
 const posts = await context.wp.posts(12);
-const options = await context.wp.themeOptions();
-console.log('testing', options)
 ---
 
 <Container>

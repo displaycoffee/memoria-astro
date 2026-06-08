@@ -71,6 +71,40 @@ type Posts = Post[];
 
 type PostsRaw = PostRaw[];
 
+type Site = {
+	description: string;
+	title: string;
+	url: string;
+};
+
+type SiteRaw = {
+	description: string;
+	title: string;
+	url: string;
+};
+
+type ThemeOptions = {
+	social: {
+		label: string;
+		url: string;
+	}[];
+	sidebar: {
+		slug: string;
+	};
+	header: {
+		logo: {
+			alt: string;
+			url: string;
+		};
+	};
+	footer: {
+		blocks: {
+			order: number;
+			content: string;
+		}[];
+	};
+};
+
 type ThemeOptionsRaw = {
 	socialFacebook: string;
 	socialInstagram: string;
@@ -117,6 +151,12 @@ declare global {
 	type PostsType = Posts;
 
 	type PostsRawType = PostsRaw;
+
+	type SiteType = Site;
+
+	type SiteRawType = SiteRaw;
+
+	type ThemeOptionsType = ThemeOptions;
 
 	type ThemeOptionsRawType = ThemeOptionsRaw;
 }

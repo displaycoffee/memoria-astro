@@ -1,0 +1,35 @@
+---
+/* Styles */
+import './styles/footer.scss';
+
+/* Scripts */
+import type { FooterProps } from './scripts/footer-types';
+//import { context } from '../../context/scripts/context';
+
+/* Components */
+// import Image from '../../components/image/Image.astro';
+// import SearchForm from '../../components/search/SearchForm.astro';
+
+/* Define prop types */
+type Props = FooterProps;
+
+/* Props */
+const { options } = Astro.props;
+
+/* Get year */
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+	{options.footer.blocks.length !== 0 ? (
+		<div class="footer-blocks row row-wrap row-fit row-spacing-20">
+			{options.footer.blocks.map((block) => (
+				<div class="footer-block column" set:html={block.content}></div>
+			))}
+		</div>
+	) : (null)}
+
+	<div class="footer-copyright">
+		<p>&copy; {year} <a href="//display.coffee" target="_blank" rel="noreferrer">displaycoffee</a></p>
+	</div>
+</footer>
