@@ -9,6 +9,55 @@ type ObjectPrimitive = {
 	[key: string]: string | number | boolean;
 };
 
+type Theme = {
+	bps: {
+		bp01: string | number | boolean;
+		bp02: string | number | boolean;
+		bp03: string | number | boolean;
+		bp04: string | number | boolean;
+	};
+	colors: {
+		color01: string | number | boolean;
+		color02: string | number | boolean;
+	};
+};
+
+type Utils = {
+	any: {
+		fetch: ({ url, query, variables = {} }: GraphQLParams) => Promise<T>;
+		getDate: (time: string) => string;
+		getLast: (value: string | string[], delimeter?: string) => string | number;
+		handleize: (value: string) => string;
+		sanitize: (string: string, maxLength = 200) => string;
+		setAttributes: (element: HTMLElement, attributes: ObjectString) => void;
+		stripHTML: (string: string) => string;
+		truncate: (string: string, limit: number) => string;
+	};
+	browser: {
+		getPage: () => string;
+		isSticky: (element: HTMLElement, stickyClass: string) => void;
+		scrollTo: (e?: EventsType, selector?: string, offset?: number) => void;
+	};
+};
+
+type Variables = {
+	urls: {
+		api: string;
+		base: string;
+		graphQL: string;
+		site: string;
+		wp: string;
+	};
+};
+
+type WP = {
+	menu: (id: string) => Promise<Menu[]>;
+	posts: (amount: number) => Promise<Posts>;
+	search: (query: string, amount: number, url?: string) => Promise<Posts>;
+	site: () => Promise<Site>;
+	themeOptions: () => Promise<ThemeOptions>;
+};
+
 /* Fetch type definitions */
 type GraphQLParams = {
 	url: string;
@@ -130,6 +179,14 @@ declare global {
 	type ObjectStringType = ObjectString;
 
 	type ObjectPrimitiveType = ObjectPrimitive;
+
+	type UtilsType = Utils;
+
+	type ThemeType = Theme;
+
+	type VariablesType = Variables;
+
+	type WPType = WP;
 
 	/* Declare global prop types */
 	type ObjectPrimitiveProps = ObjectPrimitive;

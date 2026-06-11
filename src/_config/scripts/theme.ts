@@ -1,7 +1,7 @@
 /* Import variables from sass */
 import themeVars from '../styles/theme/_theme.module.scss';
 
-export const theme = {
+export const theme: ThemeType = {
 	bps: {
 		bp01: checkSassVar(themeVars.bp01),
 		bp02: checkSassVar(themeVars.bp02),

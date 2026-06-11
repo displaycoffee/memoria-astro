@@ -74,9 +74,9 @@ const post = {
 };
 
 /* Query functions for WordPress data */
-export const wp = {
+export const wp: WPType = {
 	menu: async (id: string) => {
-		let menuData = {};
+		let menuData: MenuType[] = [];
 
 		// Get menu data
 		const data = await utils.any.fetch({
@@ -128,7 +128,7 @@ export const wp = {
 				}
 
 				return menu;
-			}) as MenuType;
+			});
 		}
 
 		return menuData;
@@ -174,8 +174,35 @@ export const wp = {
 
 		return searchData;
 	},
+	site: async () => {
+		let siteData: SiteType = { description: '', title: '', url: '' };
+
+		// Get site details
+		const data = await utils.any.fetch({
+			url: variables.urls.graphQL,
+			query: `query Settings {
+				generalSettings {
+					description
+					title
+					url
+				}
+			}`,
+		});
+
+		// Format and set data
+		if (data?.generalSettings) {
+			const generalSettings = data.generalSettings;
+			siteData = {
+				description: generalSettings?.description ?? '',
+				title: generalSettings.title,
+				url: variables.urls.site,
+			};
+		}
+
+		return siteData;
+	},
 	themeOptions: async () => {
-		let themeOptionsData = {};
+		let themeOptionsData: ThemeOptionsType = { social: [], sidebar: { slug: '' }, header: { logo: { alt: '', url: '' } }, footer: { blocks: [] } };
 
 		// Get theme options
 		const data = await utils.any.fetch({
@@ -269,36 +296,9 @@ export const wp = {
 				footer: {
 					blocks: blocks,
 				},
-			} as ThemeOptionsType;
+			};
 		}
 
 		return themeOptionsData;
-	},
-	site: async () => {
-		let siteData = {};
-
-		// Get site details
-		const data = await utils.any.fetch({
-			url: variables.urls.graphQL,
-			query: `query Settings {
-				generalSettings {
-					description
-					title
-					url
-				}
-			}`,
-		});
-
-		// Format and set data
-		if (data?.generalSettings) {
-			const generalSettings = data.generalSettings;
-			siteData = {
-				description: generalSettings?.description ?? '',
-				title: generalSettings.title,
-				url: variables.urls.site,
-			} as SiteType;
-		}
-
-		return siteData;
 	},
 };

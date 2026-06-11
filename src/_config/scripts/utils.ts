@@ -1,4 +1,4 @@
-export const utils = {
+export const utils: UtilsType = {
 	any: {
 		fetch: async ({ url, query, variables = {} }: GraphQLParamsType) => {
 			// Fetch data from WordPress
@@ -34,7 +34,7 @@ export const utils = {
 				year: 'numeric',
 			});
 		},
-		getLast: (value: string | [], delimeter?: string) => {
+		getLast: (value: string | string[], delimeter?: string) => {
 			// Get last item in array
 			let valueArray = [] as string[] | number[];
 			if (Array.isArray(value)) {
@@ -42,7 +42,7 @@ export const utils = {
 			} else if (delimeter) {
 				valueArray = value.split(delimeter);
 			}
-			return valueArray[valueArray.length - 1];
+			return valueArray[valueArray.length - 1] ?? '';
 		},
 		handleize: (value: string) => {
 			// Format value for html classes
@@ -52,18 +52,15 @@ export const utils = {
 				.replace(/[^\w\s]/g, '')
 				.replace(/\s/g, '-');
 		},
+		sanitize: (string: string, maxLength = 200) => {
+			// Strip HTML, collapse whitespace, and enforce a max length
+			return utils.any.stripHTML(string).replace(/\s+/g, ' ').slice(0, maxLength);
+		},
 		setAttributes: (element: HTMLElement, attributes: ObjectStringType) => {
 			// Set multiple attributes on an element
 			for (const attribute in attributes) {
 				element.setAttribute(attribute, attributes[attribute]);
 			}
-		},
-		sanitize: (string: string, maxLength = 200) => {
-			// Strip HTML, collapse whitespace, and enforce a max length
-			return utils.any
-				.stripHTML(string)
-				.replace(/\s+/g, ' ')
-				.slice(0, maxLength);
 		},
 		stripHTML: (string: string) => {
 			// Remove HTML from string
@@ -100,7 +97,7 @@ export const utils = {
 				stickyObserver.observe(element);
 			}
 		},
-		scrollTo: (e: EventsType, selector: string | undefined, offset: number | undefined) => {
+		scrollTo: (e?: EventsType, selector?: string, offset?: number) => {
 			// Scroll to element on page
 			if (e) {
 				e.preventDefault();

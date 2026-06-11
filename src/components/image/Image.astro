@@ -14,10 +14,10 @@ const hasWrapper = Astro.props.hasWrapper ?? true;
 
 /* Set up initial attributes */
 const wrapperAttributes = {} as WrapperAttributesType;
-const imageAttributes = {
+const imageAttributes: ImageAttributesType = {
 	'data-image': '',
 	src: image,
-} as ImageAttributesType;
+};
 
 /* Adjust wrapper attributes */
 if (hasWrapper) {

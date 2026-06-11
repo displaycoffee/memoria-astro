@@ -11,11 +11,11 @@ export const Image = (props: ImageProps) => {
 
 	// Set up initial attributes
 	const wrapperAttributes = {} as WrapperAttributesType;
-	const imageAttributes = {
+	const imageAttributes: ImageAttributesType = {
 		onError: (e: EventsType) => imageUtils.onError(e),
 		onLoad: (e: EventsType) => imageUtils.onLoad(e),
 		src: image,
-	} as ImageAttributesType;
+	};
 
 	// Adjust wrapper attributes
 	if (hasWrapper) {

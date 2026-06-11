@@ -47,12 +47,12 @@ export const DropdownButton = (props: DropdownButtonProps) => {
 	const icon = <Icon id={'angle-down'} />;
 
 	// Set button attributes
-	const buttonAttributes = {
+	const buttonAttributes: DropdownButtonAttributesType = {
 		className: 'dropdown-button-toggle unstyled',
 		type: 'button',
 		['aria-label']: 'Dropdown button',
 		onClick: toggleDropdown,
-	} as DropdownButtonAttributesType;
+	};
 
 	return (
 		<div className="dropdown-button">
