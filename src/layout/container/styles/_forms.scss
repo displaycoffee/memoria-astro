@@ -11,9 +11,9 @@
 	input[type='search'], input[type='text'], .input, button:not(.unstyled), .button:not(.unstyled) {
 		padding: 0 theme.$spacing-x2;
 		margin: 0;
-		background-color: theme.$color-01;
-		border: 1px solid theme.$color-04;
-		color: theme.$color-02;
+		background-color: theme.$color-03;
+		border: 1px solid theme.$color-06;
+		color: theme.$color-04;
 		height: 35px;
 		line-height: 33px;
 	}

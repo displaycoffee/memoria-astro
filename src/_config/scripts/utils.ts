@@ -103,12 +103,11 @@ export const utils: UtilsType = {
 				e.preventDefault();
 			}
 			const anchor = {
-				selector: selector,
+				selector: selector ?? '',
 				offset: offset ?? 0,
 				position: () => {
-					const anchorElement =
-						anchor.selector && document.querySelector(anchor.selector) ? document.querySelector(anchor.selector) : false;
-					return anchorElement ? anchorElement.getBoundingClientRect().top + window.scrollY - anchor.offset : 0 - anchor.offset;
+					const anchorElement = anchor.selector ? document.querySelector(anchor.selector) : false;
+					return anchorElement ? anchorElement.getBoundingClientRect().top + window.scrollY - anchor.offset : -anchor.offset;
 				},
 			};
 			window.scroll({ top: anchor.position(), left: 0, behavior: 'smooth' });

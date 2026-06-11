@@ -7,7 +7,7 @@ type Image = {
 	image: string;
 	imageClass?: string;
 	title?: string;
-	wrapperClass?: string;
+	wrapperClasses?: string[];
 };
 
 type ImageAttributes = ImgHTMLAttributes<HTMLImageElement>;

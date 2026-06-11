@@ -6,11 +6,14 @@ import type { ImageProps, ImageAttributesType, WrapperAttributesType } from './s
 import { image as imageUtils } from './scripts/image';
 
 export const Image = (props: ImageProps) => {
-	const { alt, hasBg, hasLazy, image, imageClass, wrapperClass } = props;
+	const { alt, hasBg, hasLazy, image, imageClass, wrapperClasses } = props;
 	const hasWrapper = props?.hasWrapper ?? true;
+	const wrapperPrefix = 'image-wrapper';
 
 	// Set up initial attributes
-	const wrapperAttributes = {} as WrapperAttributesType;
+	const wrapperAttributes: WrapperAttributesType = {
+		className: wrapperPrefix,
+	};
 	const imageAttributes: ImageAttributesType = {
 		onError: (e: EventsType) => imageUtils.onError(e),
 		onLoad: (e: EventsType) => imageUtils.onLoad(e),
@@ -19,8 +22,14 @@ export const Image = (props: ImageProps) => {
 
 	// Adjust wrapper attributes
 	if (hasWrapper) {
-		if (wrapperClass) {
-			wrapperAttributes.className = wrapperClass;
+		if (wrapperClasses && wrapperClasses.length !== 0) {
+			// Add prefix to each class
+			const prefixedClasses = wrapperClasses.map((className) => {
+				return `${wrapperPrefix}-${className}`;
+			});
+
+			// Set new class
+			wrapperAttributes.className = `${wrapperPrefix} ${prefixedClasses.join(' ')}`;
 		}
 		if (hasBg) {
 			wrapperAttributes.style = {
@@ -30,7 +39,7 @@ export const Image = (props: ImageProps) => {
 	}
 
 	// Create alt text
-	const altText = alt ?? '';
+	const altText = alt || '';
 
 	// Adjust image attributes
 	if (hasLazy) {

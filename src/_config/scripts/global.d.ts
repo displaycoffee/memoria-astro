@@ -6,19 +6,31 @@ type ObjectString = {
 };
 
 type ObjectPrimitive = {
-	[key: string]: string | number | boolean;
+	[key: string]: Primitive;
 };
+
+type Primitive = string | number | boolean;
 
 type Theme = {
 	bps: {
-		bp01: string | number | boolean;
-		bp02: string | number | boolean;
-		bp03: string | number | boolean;
-		bp04: string | number | boolean;
+		bp01: Primitive;
+		bp02: Primitive;
+		bp03: Primitive;
+		bp04: Primitive;
 	};
 	colors: {
-		color01: string | number | boolean;
-		color02: string | number | boolean;
+		color01: Primitive;
+		color02: Primitive;
+		color03: Primitive;
+		color04: Primitive;
+		color05: Primitive;
+		color06: Primitive;
+		color07: Primitive;
+		color08: Primitive;
+		color09: Primitive;
+		color10: Primitive;
+		color11: Primitive;
+		color12: Primitive;
 	};
 };
 
@@ -180,9 +192,9 @@ declare global {
 
 	type ObjectPrimitiveType = ObjectPrimitive;
 
-	type UtilsType = Utils;
-
 	type ThemeType = Theme;
+
+	type UtilsType = Utils;
 
 	type VariablesType = Variables;
 

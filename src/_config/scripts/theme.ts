@@ -11,6 +11,16 @@ export const theme: ThemeType = {
 	colors: {
 		color01: checkSassVar(themeVars.color01),
 		color02: checkSassVar(themeVars.color02),
+		color03: checkSassVar(themeVars.color03),
+		color04: checkSassVar(themeVars.color04),
+		color05: checkSassVar(themeVars.color05),
+		color06: checkSassVar(themeVars.color06),
+		color07: checkSassVar(themeVars.color07),
+		color08: checkSassVar(themeVars.color08),
+		color09: checkSassVar(themeVars.color09),
+		color10: checkSassVar(themeVars.color10),
+		color11: checkSassVar(themeVars.color11),
+		color12: checkSassVar(themeVars.color12),
 	},
 };
 

@@ -17,12 +17,7 @@ export const PostList = (props: PostListProps) => {
 					<div id={`post-${post.id}`} className="post column column-width-33" key={post.id}>
 						<div className="post-image">
 							<a href={post.url}>
-								<Image
-									alt={post.image.alt}
-									hasLazy={true}
-									image={post.image.url}
-									wrapperClass={'image-wrapper image-wrapper-fluid image-wrapper-fit'}
-								/>
+								<Image alt={post.image.alt} hasLazy={true} image={post.image.url} wrapperClasses={['fluid', 'fit']} />
 							</a>
 						</div>
 

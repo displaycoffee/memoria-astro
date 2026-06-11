@@ -62,13 +62,13 @@
 		float: left;
 		clear: left;
 	}
-	.image-wrapper-float-left, .spacing-reset > .image-wrapper-float-left {
+	.image-wrapper-float-left, .margin-trim > .image-wrapper-float-left {
 		margin-right: theme.$spacing-x4;
 	}
 	.image-wrapper-float-right {
 		float: right;
 		clear: right;
 	}
-	.image-wrapper-float-right, .spacing-reset > .image-wrapper-float-right {
+	.image-wrapper-float-right, .margin-trim > .image-wrapper-float-right {
 		margin-left: theme.$spacing-x4;
 	}

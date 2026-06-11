@@ -24,7 +24,7 @@ const site = await context.wp.site();
 	<div class="site-details flex-wrap flex-align-items-center">
 		{options.header.logo?.url ? (
 			<div class="site-logo">
-				<Image alt={options.header.logo.alt} hasLazy={true} image={options.header.logo.url} wrapperClass={'image-wrapper image-wrapper-contain'} />
+				<Image alt={options.header.logo.alt} hasLazy={true} image={options.header.logo.url} wrapperClasses={['contain']} />
 			</div>
 		) : (null)}
 

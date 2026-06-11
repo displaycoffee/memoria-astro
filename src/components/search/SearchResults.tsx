@@ -53,7 +53,7 @@ export const SearchResults = (props: SearchResultsProps) => {
 	}, [graphqlUrl]);
 
 	return (
-		<div className="search-results spacing-reset">
+		<div className="search-results margin-trim">
 			<h2>Search results for "{query}"</h2>
 
 			{error ? <p>{error}</p> : loading ? <p>Loading...</p> : results.length !== 0 ? <PostList posts={results} /> : <p>No results found.</p>}

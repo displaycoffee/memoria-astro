@@ -34,7 +34,7 @@ export const Dropdown = (props: DropdownProps) => {
 
 	return (
 		<div id={dropdownId} className={`dropdown dropdown-${dropdown === dropdownId ? 'expanded' : 'collapsed'}`} ref={dropdownRef}>
-			<DropdownButton buttonLabel={buttonLabel ?? ''} closeContent={closeContent} toggleDropdown={toggleDropdown} />
+			<DropdownButton buttonLabel={buttonLabel || ''} closeContent={closeContent} toggleDropdown={toggleDropdown} />
 			<DropdownContent closeContent={closeContent}>{children}</DropdownContent>
 		</div>
 	);
@@ -57,7 +57,7 @@ export const DropdownButton = (props: DropdownButtonProps) => {
 	return (
 		<div className="dropdown-button">
 			<button {...buttonAttributes}>
-				{buttonLabel || null}
+				{buttonLabel}
 				{icon}
 			</button>
 		</div>
@@ -68,7 +68,7 @@ export const DropdownContent = (props: DropdownContentProps) => {
 	const { children, closeContent } = props;
 
 	return (
-		<div className="dropdown-content spacing-reset" onClick={closeContent} role="presentation">
+		<div className="dropdown-content margin-trim" onClick={closeContent} role="presentation">
 			{children}
 		</div>
 	);

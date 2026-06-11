@@ -30,8 +30,8 @@ export const GET: APIRoute = async () => {
 		],
 		start_url: '.',
 		display: 'standalone',
-		theme_color: context.theme.colors.color01,
-		background_color: context.theme.colors.color01,
+		theme_color: context.theme.colors.color03,
+		background_color: context.theme.colors.color03,
 	};
 
 	return new Response(JSON.stringify(manifest), {
