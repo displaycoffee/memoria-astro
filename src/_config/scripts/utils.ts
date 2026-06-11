@@ -84,7 +84,7 @@ export const utils: UtilsType = {
 			// Get previous / parent page
 			return window.location.pathname.split('/').slice(0, -1).join('/');
 		},
-		isSticky: (element: HTMLElement, stickyClass: string) => {
+		isSticky: (element: HTMLElement | null, stickyClass: string) => {
 			if (element) {
 				// Create options and callback for observer
 				const stickyOptions = { threshold: [1] };
