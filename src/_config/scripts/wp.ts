@@ -202,7 +202,12 @@ export const wp: WPType = {
 		return siteData;
 	},
 	themeOptions: async () => {
-		let themeOptionsData: ThemeOptionsType = { social: [], sidebar: { slug: '' }, header: { logo: { alt: '', url: '' } }, footer: { blocks: [] } };
+		let themeOptionsData: ThemeOptionsType = {
+			social: [],
+			sidebar: { slug: '' },
+			header: { logo: { alt: '', url: '' } },
+			footer: { blocks: [] },
+		};
 
 		// Get theme options
 		const data = await utils.any.fetch({
