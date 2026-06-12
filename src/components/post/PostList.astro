@@ -17,6 +17,7 @@ const { posts } = Astro.props;
 
 <div class="posts row row-wrap row-spacing-20">
 	{posts.map((post: PostType) =>  {
+		console.log(post)
 		return (
 			<div id={`post-${post.id}`} class="post column column-width-33">
 				<div class="post-image">
@@ -36,7 +37,8 @@ const { posts } = Astro.props;
 					</h3>
 
 					<p>
-						By {post.author} on {post.date}
+						{post?.author?.name ? `By ${post.author.name} on ` : ``}
+						{post.date}
 					</p>
 
 					<p>{post.excerpt}</p>

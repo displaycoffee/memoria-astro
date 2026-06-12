@@ -27,7 +27,8 @@ export const PostList = (props: PostListProps) => {
 							</h3>
 
 							<p>
-								By {post.author} on {post.date}
+								{post?.author?.name ? `By ${post.author.name} on ` : ``}
+								{post.date}
 							</p>
 
 							<p>{post.excerpt}</p>

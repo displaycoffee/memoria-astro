@@ -2,16 +2,66 @@
 import { utils } from './utils';
 import { variables } from './variables';
 
-/* Function to format image */
-const formatImage = (alt: string, placeholder: boolean, image?: { altText?: string; sourceUrl?: string }) => {
-	const altData = image?.altText ? `${image.altText} - ${alt}` : alt;
-	const imageData = image?.sourceUrl ? image.sourceUrl : placeholder ? '/assets/images/theme/placeholder.jpg' : '';
+/* Image functions for fetching and formatting data */
+const image = {
+	format: (alt: string, placeholder: boolean, data?: ImageRawAttributesType | ImageRawType) => {
+		const attrs = data && 'node' in data ? data.node : data;
+		const placeholderUrl = placeholder ? '/assets/images/theme/placeholder.jpg' : '';
 
-	// Return image data with formatted alt text and url
-	return {
-		alt: altData,
-		url: imageData,
-	};
+		// Format image data
+		const imageData: ImageType = {
+			alt: attrs?.altText ? `${attrs.altText} - ${alt}` : alt,
+			url: attrs?.sourceUrl ?? placeholderUrl,
+		};
+
+		return imageData;
+	},
+	query: (imageSize: string) => {
+		// Shared query function for fetching image data
+		const query = `
+			node {
+				altText
+				sourceUrl(size: ${imageSize})
+			}
+		`;
+
+		return query;
+	},
+};
+
+/* Author functions for fetching and formatting data */
+const author = {
+	format: (data?: AuthorRawType) => {
+		const attrs = data?.node;
+		const altText = attrs?.name ? `${attrs.name} - Avatar` : `Avatar`;
+
+		// Format author data
+		const authorData: AuthorType = {
+			id: attrs?.id ?? '',
+			name: attrs?.name ?? '',
+			description: attrs?.description ?? '',
+			url: attrs?.slug ? `/${attrs.slug}` : ``,
+			avatar: image.format(altText, false, { sourceUrl: attrs?.avatar?.url }),
+		};
+
+		return authorData;
+	},
+	query: () => {
+		// Shared query function for fetching author data
+		const query = `
+			node {
+				id
+				name
+				description
+				slug
+				avatar {
+					url
+				}
+			}
+		`;
+
+		return query;
+	},
 };
 
 /* Post functions for fetching and formatting data */
@@ -19,20 +69,14 @@ const post = {
 	format: (data: PostRawType | PostsRawType) => {
 		// Format post data
 		const formatData = (post: PostRawType) => {
-			// Truncate and strip HTML from excerpt
-			const excerpt = utils.any.truncate(utils.any.stripHTML(post.excerpt), 300);
-
-			// Create image properties
-			const image = formatImage(`${post.title} - Featured Image`, true, post?.featuredImage?.node);
-
 			// Return formatted data
 			return {
-				author: post?.author?.node?.name ?? 'Unknown',
+				author: author.format(post.author),
 				content: post.content,
 				date: utils.any.getDate(post.date),
-				excerpt: excerpt,
+				excerpt: utils.any.truncate(utils.any.stripHTML(post.excerpt), 300),
 				id: post.postId,
-				image: image,
+				image: image.format(`${post.title} - Featured Image`, true, post?.featuredImage),
 				title: post.title,
 				url: `/${post.slug}`,
 			};
@@ -51,18 +95,13 @@ const post = {
 		// Shared query function for fetching post data
 		const query = `
 			author {
-				node {
-					name
-				}
+				${author.query()}
 			}
 			content
 			date
 			excerpt(format: RENDERED)
 			featuredImage {
-				node {
-					altText
-					sourceUrl(size: ${imageSize})
-				}
+				${image.query(imageSize)}
 			}
 			postId
 			slug
@@ -77,6 +116,11 @@ const post = {
 export const wp: WPType = {
 	menu: async (id: string) => {
 		let menuData: MenuType[] = [];
+		const urlAttrs = `
+			label
+			id
+			url
+		`;
 
 		// Get menu data
 		const data = await utils.any.fetch({
@@ -85,16 +129,12 @@ export const wp: WPType = {
 				menu(id: $id, idType: NAME) {
 					menuItems(first: 20, where: {parentId: 0}) {
 						nodes {
+							${urlAttrs}
 							childItems(first: 20) {
 								nodes {
-									label
-									id
-									url
+									${urlAttrs}
 								}
 							}
-							label
-							id
-							url
 						}
 					}
 				}
@@ -175,7 +215,11 @@ export const wp: WPType = {
 		return searchData;
 	},
 	site: async () => {
-		let siteData: SiteType = { description: '', title: '', url: '' };
+		let siteData: SiteType = {
+			description: '',
+			title: '',
+			url: '',
+		};
 
 		// Get site details
 		const data = await utils.any.fetch({
@@ -191,7 +235,8 @@ export const wp: WPType = {
 
 		// Format and set data
 		if (data?.generalSettings) {
-			const generalSettings = data.generalSettings;
+			const generalSettings: SiteRawType = data.generalSettings;
+
 			siteData = {
 				description: generalSettings?.description ?? '',
 				title: generalSettings.title,
@@ -202,11 +247,17 @@ export const wp: WPType = {
 		return siteData;
 	},
 	themeOptions: async () => {
-		let themeOptionsData: ThemeOptionsType = {
+		const themeOptionsData: ThemeOptionsType = {
 			social: [],
-			sidebar: { slug: '' },
-			header: { logo: { alt: '', url: '' } },
-			footer: { blocks: [] },
+			sidebar: {
+				slug: '',
+			},
+			header: {
+				logo: { alt: '', url: '' },
+			},
+			footer: {
+				blocks: [],
+			},
 		};
 
 		// Get theme options
@@ -235,73 +286,66 @@ export const wp: WPType = {
 
 		// Format and set data
 		if (data?.themeOptions) {
-			const themeOptions = data.themeOptions;
+			const themeOptions: ThemeOptionsRawType = data.themeOptions;
 
 			// Build social links
-			const links = [];
-
 			if (themeOptions?.socialFacebook) {
-				links.push({
+				themeOptionsData.social.push({
 					label: 'Facebook',
 					url: themeOptions.socialFacebook,
 				});
 			}
 			if (themeOptions?.socialInstagram) {
-				links.push({
+				themeOptionsData.social.push({
 					label: 'Instagram',
 					url: themeOptions.socialInstagram,
 				});
 			}
 			if (themeOptions?.socialTwitter) {
-				links.push({
+				themeOptionsData.social.push({
 					label: 'Twitter / X',
 					url: themeOptions.socialTwitter,
 				});
 			}
 			if (themeOptions?.socialGithub) {
-				links.push({
+				themeOptionsData.social.push({
 					label: 'GitHub',
 					url: themeOptions.socialGithub,
 				});
 			}
 
-			// Build footer blocks
-			const blocks = [];
+			// Add sidebar slug
+			if (themeOptions?.sidebarSlug) {
+				themeOptionsData.sidebar.slug = themeOptions.sidebarSlug;
+			}
 
+			// Add header logo
+			if (themeOptions?.headerLogo) {
+				themeOptionsData.header.logo = image.format(`Header Logo`, false, themeOptions.headerLogo);
+			}
+
+			// Build footer blocks
 			if (themeOptions?.footerBlock01Order && themeOptions?.footerBlock01Content) {
-				blocks.push({
+				themeOptionsData.footer.blocks.push({
 					order: parseInt(themeOptions.footerBlock01Order),
 					content: themeOptions.footerBlock01Content,
 				});
 			}
 			if (themeOptions?.footerBlock02Order && themeOptions?.footerBlock02Content) {
-				blocks.push({
+				themeOptionsData.footer.blocks.push({
 					order: parseInt(themeOptions.footerBlock02Order),
 					content: themeOptions.footerBlock02Content,
 				});
 			}
 			if (themeOptions?.footerBlock03Order && themeOptions?.footerBlock03Content) {
-				blocks.push({
+				themeOptionsData.footer.blocks.push({
 					order: parseInt(themeOptions.footerBlock03Order),
 					content: themeOptions.footerBlock03Content,
 				});
 			}
 
 			// Re-sort footer blocks
-			blocks.sort((a, b) => a.order - b.order);
-
-			themeOptionsData = {
-				social: links,
-				sidebar: {
-					slug: themeOptions?.sidebarSlug || '',
-				},
-				header: {
-					logo: formatImage(`Header Logo`, false, themeOptions?.headerLogo),
-				},
-				footer: {
-					blocks: blocks,
-				},
-			};
+			themeOptionsData.footer.blocks.sort((a, b) => a.order - b.order);
 		}
 
 		return themeOptionsData;

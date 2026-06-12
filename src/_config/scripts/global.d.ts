@@ -78,6 +78,40 @@ type GraphQLParams = {
 };
 
 /* WordPress type definitions */
+type Author = {
+	id: string;
+	name: string;
+	description: string;
+	url: string;
+	avatar: Image;
+};
+
+type AuthorRaw = {
+	node: {
+		id: string;
+		name: string;
+		description?: string;
+		slug: string;
+		avatar?: {
+			url: string;
+		};
+	};
+};
+
+type Image = {
+	alt: string;
+	url: string;
+};
+
+type ImageRawAttributes = {
+	altText?: string;
+	sourceUrl?: string;
+};
+
+type ImageRaw = {
+	node: ImageRawAttributes;
+};
+
 type MenuItem = {
 	label: string;
 	id: string;
@@ -95,34 +129,22 @@ type MenuRaw = MenuItem & {
 };
 
 type Post = {
-	author: string;
+	author: Author;
 	content: string;
 	date: string;
 	excerpt: string;
 	id: number;
-	image: {
-		alt: string;
-		url: string;
-	};
+	image: Image;
 	title: string;
 	url: string;
 };
 
 type PostRaw = {
-	author?: {
-		node: {
-			name: string;
-		};
-	};
+	author?: AuthorRaw;
 	content: string;
 	date: string;
 	excerpt: string;
-	featuredImage?: {
-		node: {
-			altText?: string;
-			sourceUrl: string;
-		};
-	};
+	featuredImage?: ImageRaw;
 	postId: number;
 	slug: string;
 	title: string;
@@ -153,10 +175,7 @@ type ThemeOptions = {
 		slug: string;
 	};
 	header: {
-		logo: {
-			alt: string;
-			url: string;
-		};
+		logo: Image;
 	};
 	footer: {
 		blocks: {
@@ -172,7 +191,7 @@ type ThemeOptionsRaw = {
 	socialTwitter: string;
 	socialGithub: string;
 	sidebarSlug: string;
-	headerLogo: {
+	headerLogo?: {
 		altText?: string;
 		sourceUrl: string;
 	};
@@ -207,6 +226,16 @@ declare global {
 	type GraphQLParamsType = GraphQLParams;
 
 	/* Declare global WordPress types */
+	type AuthorType = Author;
+
+	type AuthorRawType = AuthorRaw;
+
+	type ImageType = Image;
+
+	type ImageRawAttributesType = ImageRawAttributes;
+
+	type ImageRawType = ImageRaw;
+
 	type MenuItemType = MenuItem;
 
 	type MenuType = Menu;
