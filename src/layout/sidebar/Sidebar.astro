@@ -1,10 +1,31 @@
 ---
 /* Styles */
 import './styles/sidebar.scss';
+
+/* Scripts */
+import type { SidebarProps } from './scripts/sidebar-types';
+import { context } from '../../context/scripts/context';
+
+/* Define prop types */
+type Props = SidebarProps;
+
+/* Props */
+const { slug } = Astro.props;
+
+/* Get sidebar data */
+let sidebar: PageType | null = null;
+if (slug) {
+	sidebar = await context.wp.page(slug);
+}
+
 ---
 
-<aside class="sidebar margin-trim">
-	<h3>Sidebar</h3>
-
-	<p>this is sidebar content.</p>
-</aside>
+{sidebar?.content ? (
+	<aside class="sidebar margin-trim">
+		{sidebar?.title ? (
+			<h3 class="sidebar-title">{sidebar.title}</h3>
+		) : null}		
+	
+		<div class="sidebar-content" set:html={sidebar.content}></div>
+	</aside>
+) : null}

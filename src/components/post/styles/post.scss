@@ -3,6 +3,32 @@
 @use '../../../_config/styles/utils/_mixins';
 @use '../../../_config/styles/theme/_theme';
 
+//// POST
+//// --------------------------------------------------------------------------
+
+	.post {
+		.post-image {
+			position: relative;
+			margin: 0 0 theme.$spacing-x4 0;
+			.image-wrapper {
+				padding-bottom: 50%;
+			}
+		}
+		.post-details {
+			& > * {
+				margin: 0 0 theme.$spacing-x4 0;
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+			.post-meta {
+				span ~ span {
+					padding: 0 0 0 theme.$spacing-x1;
+				}
+			}
+		}
+	}
+
 //// POST LIST
 //// --------------------------------------------------------------------------
 
@@ -11,23 +37,11 @@
 	.posts {
 		.post {
 			.post-image {
-				position: relative;
 				margin: 0 0 theme.$spacing-x2 0;
-				.image-wrapper {
-					padding-bottom: 50%;
-				}
 			}
 			.post-details {
 				& > * {
 					margin: 0 0 theme.$spacing-x2 0;
-					&:last-child {
-						margin-bottom: 0;
-					}
-				}
-				.post-meta {
-					span ~ span {
-						padding: 0 0 0 theme.$spacing-x1;
-					}
 				}
 			}
 		}

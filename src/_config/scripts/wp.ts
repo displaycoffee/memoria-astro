@@ -40,6 +40,7 @@ const author = {
 			id: attrs?.id ?? '',
 			name: attrs?.name ?? '',
 			description: attrs?.description ?? '',
+			slug: attrs?.slug ?? '',
 			url: attrs?.slug ? `/${attrs.slug}` : ``,
 			avatar: image.format(altText, false, { sourceUrl: attrs?.avatar?.url }),
 		};
@@ -64,6 +65,55 @@ const author = {
 	},
 };
 
+/* Page functions for fetching and formatting data */
+const page = {
+	format: (data: PageRawType | PagesRawType) => {
+		// Format page data
+		const formatData = (page: PageRawType) => {
+			// Return formatted data
+			return {
+				author: author.format(page.author),
+				content: page.content,
+				date: utils.any.getDate(page.date),
+				excerpt: utils.any.truncate(utils.any.stripHTML(page.content), 300),
+				id: page.pageId,
+				image: image.format(`${page.title} - Featured Image`, true, page?.featuredImage),
+				title: page.title,
+				slug: page.slug,
+				url: page.uri,
+			};
+		};
+
+		// If this is an array of pages, loop through pages
+		if (Array.isArray(data)) {
+			return data.map((page: PageRawType) => {
+				return formatData(page);
+			});
+		} else {
+			return formatData(data);
+		}
+	},
+	query: (hasNodes: boolean, imageSize: string) => {
+		// Shared query function for fetching page data
+		const query = `
+			author {
+				${author.query()}
+			}
+			content
+			date
+			featuredImage {
+				${image.query(imageSize)}
+			}
+			pageId
+			slug
+			uri
+			title
+		`;
+
+		return hasNodes ? `nodes { ${query} }` : query;
+	},
+};
+
 /* Post functions for fetching and formatting data */
 const post = {
 	format: (data: PostRawType | PostsRawType) => {
@@ -78,7 +128,8 @@ const post = {
 				id: post.postId,
 				image: image.format(`${post.title} - Featured Image`, true, post?.featuredImage),
 				title: post.title,
-				url: `/${post.slug}`,
+				slug: post.slug,
+				url: post.uri,
 			};
 		};
 
@@ -105,6 +156,7 @@ const post = {
 			}
 			postId
 			slug
+			uri
 			title
 		`;
 
@@ -173,6 +225,52 @@ export const wp: WPType = {
 
 		return menuData;
 	},
+	page: async (uri: string) => {
+		let pageData: PageType | null = null;
+
+		// Get page data
+		const data = await utils.any.fetch({
+			url: variables.urls.graphQL,
+			query: `query Page($uri: String!) {
+				nodeByUri(uri: $uri) {
+					...on Page {
+						${page.query(false, 'LARGE')}
+					}
+				}
+			}`,
+			variables: { uri },
+		});
+
+		// Format and set data
+		if (data?.nodeByUri) {
+			pageData = page.format(data.nodeByUri) as PageType;
+		}
+
+		return pageData;
+	},
+	post: async (uri: string) => {
+		let postData: PostType | null = null;
+
+		// Get post data
+		const data = await utils.any.fetch({
+			url: variables.urls.graphQL,
+			query: `query Post($uri: String!) {
+				nodeByUri(uri: $uri) {
+					...on Post {
+						${post.query(false, 'LARGE')}
+					}
+				}
+			}`,
+			variables: { uri },
+		});
+
+		// Format and set data
+		if (data?.nodeByUri) {
+			postData = post.format(data.nodeByUri) as PostType;
+		}
+
+		return postData;
+	},
 	posts: async (amount: number) => {
 		let postsData: PostsType = [];
 
@@ -228,7 +326,6 @@ export const wp: WPType = {
 				generalSettings {
 					description
 					title
-					url
 				}
 			}`,
 		});
@@ -290,11 +387,7 @@ export const wp: WPType = {
 
 			// Build social links
 			const buildLink = (id: string, label: string, url: string) => {
-				themeOptionsData.social.push({
-					id: id,
-					label: label,
-					url: url,
-				});
+				themeOptionsData.social.push({ id, label, url });
 			};
 			if (themeOptions?.socialFacebook) {
 				buildLink('facebook', 'Facebook', themeOptions.socialFacebook);
@@ -324,7 +417,7 @@ export const wp: WPType = {
 				themeOptionsData.footer.blocks.push({
 					id: `footer-block-${id}`,
 					order: parseInt(order),
-					content: content,
+					content,
 				});
 			};
 			if (themeOptions?.footerBlock01Order && themeOptions?.footerBlock01Content) {

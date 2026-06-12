@@ -1,0 +1,28 @@
+---
+/* Scripts */
+import { context } from '../../context/scripts/context.ts';
+
+/* Components */
+import Container from '../../layout/container/Container.astro';
+import Post from '../../components/post/Post.astro';
+
+/* Get posts */
+export async function getStaticPaths() {
+	const posts = await context.wp.posts(100);
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
+};
+
+/* Define prop types */
+import type { InferGetStaticPropsType } from 'astro';
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+/* Props */
+const { post } = Astro.props;
+---
+
+<Container>
+	<Post post={post} />
+</Container>

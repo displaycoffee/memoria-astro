@@ -64,6 +64,8 @@ type Variables = {
 
 type WP = {
 	menu: (id: string) => Promise<Menu[]>;
+	page: (uri: string) => Promise<Page | null>;
+	post: (uri: string) => Promise<Post | null>;
 	posts: (amount: number) => Promise<Posts>;
 	search: (query: string, amount: number, url?: string) => Promise<Posts>;
 	site: () => Promise<Site>;
@@ -83,6 +85,7 @@ type Author = {
 	name: string;
 	description: string;
 	url: string;
+	slug: string;
 	avatar: Image;
 };
 
@@ -128,6 +131,33 @@ type MenuRaw = MenuItem & {
 	};
 };
 
+type Page = {
+	author: Author;
+	content: string;
+	date: string;
+	excerpt: string;
+	id: number;
+	image: Image;
+	title: string;
+	slug: string;
+	url: string;
+};
+
+type PageRaw = {
+	author?: AuthorRaw;
+	content: string;
+	date: string;
+	featuredImage?: ImageRaw;
+	pageId: number;
+	slug: string;
+	uri: string;
+	title: string;
+};
+
+type Pages = Page[];
+
+type PagesRaw = PageRaw[];
+
 type Post = {
 	author: Author;
 	content: string;
@@ -136,6 +166,7 @@ type Post = {
 	id: number;
 	image: Image;
 	title: string;
+	slug: string;
 	url: string;
 };
 
@@ -147,6 +178,7 @@ type PostRaw = {
 	featuredImage?: ImageRaw;
 	postId: number;
 	slug: string;
+	uri: string;
 	title: string;
 };
 
@@ -163,7 +195,6 @@ type Site = {
 type SiteRaw = {
 	description: string;
 	title: string;
-	url: string;
 };
 
 type ThemeOptions = {
@@ -243,6 +274,14 @@ declare global {
 	type MenuType = Menu;
 
 	type MenuRawType = MenuRaw;
+
+	type PageType = Page;
+
+	type PageRawType = PageRaw;
+
+	type PagesType = Pages;
+
+	type PagesRawType = PagesRaw;
 
 	type PostType = Post;
 

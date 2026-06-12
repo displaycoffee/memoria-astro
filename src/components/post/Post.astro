@@ -1,0 +1,38 @@
+---
+/* Styles */
+import './styles/post.scss';
+
+/* Scripts */
+import type { PostProps } from './scripts/post-types';
+
+/* Components */
+import Image from '../image/Image.astro';
+
+/* Define prop types */
+type Props = PostProps;
+
+/* Props */
+const { post } = Astro.props;
+---
+
+<div id={`post-${post.id}`} class="post">
+	<div class="post-image">
+		<a href={post.url}>
+			<Image alt={post.image.alt} hasLazy={true} image={post.image.url} wrapperClasses={['fluid', 'fit']} />
+		</a>
+	</div>
+
+	<div class="post-details">
+		<h2 class="post-title">
+			<a href={post.url}>{post.title}</a>
+		</h2>
+
+		<div class="post-meta">
+			{post?.author?.name ? <span class="post-author">By {post.author.name} on</span> : null}
+
+			<span class="post-date">{post.date}</span>
+		</div>
+
+		<div class="post-content" set:html={post.content}></div>
+	</div>
+</div>

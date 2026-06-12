@@ -22,14 +22,14 @@ const year = new Date().getFullYear();
 	{options.footer.blocks.length !== 0 ? (
 		<div class="footer-blocks row row-wrap row-fit row-spacing-20">
 			{options.footer.blocks.map((block) => (
-				<div class="footer-block column" set:html={block.content}></div>
+				<div id={block.id} class="footer-block column" set:html={block.content}></div>
 			))}
 		</div>
 	) : (null)}
 
 	<div class="footer-blocks row row-wrap row-fit row-spacing-20">
 		{options.social.length !== 0 ? (
-			<div class="footer-social footer-block column">
+			<div id="footer-social" class="footer-social footer-block column">
 				<nav class="footer-social-links">
 					{options.social.map((social) => (
 						<a title={social.label} class="footer-social-link" href={social.url} target="_blank" rel="noreferrer">
@@ -40,7 +40,7 @@ const year = new Date().getFullYear();
 			</div>
 		) : (null)}
 		
-		<div class="footer-copyright footer-block column">
+		<div id="footer-copyright" class="footer-copyright footer-block column">
 			<p>&copy; {year} <a href="//display.coffee" target="_blank" rel="noreferrer">displaycoffee</a></p>
 		</div>
 	</div>
