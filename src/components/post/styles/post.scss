@@ -24,6 +24,43 @@
 						margin-bottom: 0;
 					}
 				}
+				.post-meta {
+					span ~ span {
+						padding: 0 0 0 theme.$spacing-x1;
+					}
+				}
+			}
+		}
+	}
+	@include mixins.respond-min(theme.$bp-02) {
+		.posts {
+			.post {
+				&, & .post-details {
+					@include mixins.flex-layout((flex-flow: column nowrap));
+				}
+				.post-image {
+					@include mixins.flex(0 1 auto);
+				}
+				.post-details {
+					@include mixins.flex;
+					.post-title {
+						min-height: 62px;
+						@include mixins.line-clamp(2);
+					}
+					.post-read-more {
+						margin-top: auto;
+						a {
+							margin-top: -#{theme.$spacing-x2};
+						}					
+					}
+				}
+			}
+		}		
+	}
+	@include mixins.respond-min(theme.$bp-04) {
+		.posts {
+			.post {
+				@include mixins.gap-width(theme.$spacing-x4, 3);
 			}
 		}
 	}

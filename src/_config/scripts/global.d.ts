@@ -168,6 +168,7 @@ type SiteRaw = {
 
 type ThemeOptions = {
 	social: {
+		id: string;
 		label: string;
 		url: string;
 	}[];
@@ -179,6 +180,7 @@ type ThemeOptions = {
 	};
 	footer: {
 		blocks: {
+			id: string;
 			order: number;
 			content: string;
 		}[];

@@ -4,11 +4,9 @@ import './styles/footer.scss';
 
 /* Scripts */
 import type { FooterProps } from './scripts/footer-types';
-//import { context } from '../../context/scripts/context';
 
 /* Components */
-// import Image from '../../components/image/Image.astro';
-// import SearchForm from '../../components/search/SearchForm.astro';
+import Icons from '../../components/icons/Icons.astro';
 
 /* Define prop types */
 type Props = FooterProps;
@@ -29,7 +27,21 @@ const year = new Date().getFullYear();
 		</div>
 	) : (null)}
 
-	<div class="footer-copyright">
-		<p>&copy; {year} <a href="//display.coffee" target="_blank" rel="noreferrer">displaycoffee</a></p>
+	<div class="footer-blocks row row-wrap row-fit row-spacing-20">
+		{options.social.length !== 0 ? (
+			<div class="footer-social footer-block column">
+				<nav class="footer-social-links">
+					{options.social.map((social) => (
+						<a title={social.label} class="footer-social-link" href={social.url} target="_blank" rel="noreferrer">
+							<Icons id={social.id} size={'x-large'} />
+						</a>
+					))}
+				</nav>
+			</div>
+		) : (null)}
+		
+		<div class="footer-copyright footer-block column">
+			<p>&copy; {year} <a href="//display.coffee" target="_blank" rel="noreferrer">displaycoffee</a></p>
+		</div>
 	</div>
 </footer>

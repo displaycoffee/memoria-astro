@@ -1,28 +1,12 @@
 ---
-/* Note: IconMap is in Container and needs to be there or somewhere globally for this to work. */
-
-/* Styles */
-import './styles/icons.scss';
-
 /* Scripts */
 import type { IconsProps } from './scripts/icons-types';
 
+/* Components */
+import { Icon as IconsReact } from './Icons';
+
 /* Define prop types */
 type Props = IconsProps;
-
-/* Props */
-const { id, size } = Astro.props;
-
-/* Create icon classes */
-const iconClass = 'icon-wrapper';
-const iconClasses = [iconClass];
-if (size) {
-	iconClasses.push(`${iconClass}-${size}`);
-}
 ---
 
-<div class={iconClasses.join(' ')}>
-	<svg class={`icon icon-${id}`}>
-		<use xlink:href={`#icon-${id}`} />
-	</svg>
-</div>
+<IconsReact {...Astro.props} />

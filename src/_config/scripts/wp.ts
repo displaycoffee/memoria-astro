@@ -289,29 +289,24 @@ export const wp: WPType = {
 			const themeOptions: ThemeOptionsRawType = data.themeOptions;
 
 			// Build social links
-			if (themeOptions?.socialFacebook) {
+			const buildLink = (id: string, label: string, url: string) => {
 				themeOptionsData.social.push({
-					label: 'Facebook',
-					url: themeOptions.socialFacebook,
+					id: id,
+					label: label,
+					url: url,
 				});
+			};
+			if (themeOptions?.socialFacebook) {
+				buildLink('facebook', 'Facebook', themeOptions.socialFacebook);
 			}
 			if (themeOptions?.socialInstagram) {
-				themeOptionsData.social.push({
-					label: 'Instagram',
-					url: themeOptions.socialInstagram,
-				});
+				buildLink('instagram', 'Instagram', themeOptions.socialInstagram);
 			}
 			if (themeOptions?.socialTwitter) {
-				themeOptionsData.social.push({
-					label: 'Twitter / X',
-					url: themeOptions.socialTwitter,
-				});
+				buildLink('twitter', 'Twitter / X', themeOptions.socialTwitter);
 			}
 			if (themeOptions?.socialGithub) {
-				themeOptionsData.social.push({
-					label: 'GitHub',
-					url: themeOptions.socialGithub,
-				});
+				buildLink('github', 'GitHub', themeOptions.socialGithub);
 			}
 
 			// Add sidebar slug
@@ -325,23 +320,21 @@ export const wp: WPType = {
 			}
 
 			// Build footer blocks
-			if (themeOptions?.footerBlock01Order && themeOptions?.footerBlock01Content) {
+			const buildBlock = (id: string, order: string, content: string) => {
 				themeOptionsData.footer.blocks.push({
-					order: parseInt(themeOptions.footerBlock01Order),
-					content: themeOptions.footerBlock01Content,
+					id: `footer-block-${id}`,
+					order: parseInt(order),
+					content: content,
 				});
+			};
+			if (themeOptions?.footerBlock01Order && themeOptions?.footerBlock01Content) {
+				buildBlock('01', themeOptions.footerBlock01Order, themeOptions.footerBlock01Content);
 			}
 			if (themeOptions?.footerBlock02Order && themeOptions?.footerBlock02Content) {
-				themeOptionsData.footer.blocks.push({
-					order: parseInt(themeOptions.footerBlock02Order),
-					content: themeOptions.footerBlock02Content,
-				});
+				buildBlock('02', themeOptions.footerBlock02Order, themeOptions.footerBlock02Content);
 			}
 			if (themeOptions?.footerBlock03Order && themeOptions?.footerBlock03Content) {
-				themeOptionsData.footer.blocks.push({
-					order: parseInt(themeOptions.footerBlock03Order),
-					content: themeOptions.footerBlock03Content,
-				});
+				buildBlock('03', themeOptions.footerBlock03Order, themeOptions.footerBlock03Content);
 			}
 
 			// Re-sort footer blocks

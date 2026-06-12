@@ -34,14 +34,14 @@ const site = await context.wp.site();
 			</h1>
 		</div>
 
+		<div class="site-search">
+			<SearchForm action={`${site.url}/search`} id={'header-search-form'} />
+		</div>
+
 		{site?.description ? (
 			<div class="site-description">
 				<p>{site.description}</p>
 			</div>
 		) : (null)}
-
-		<div class="site-search">
-			<SearchForm action={`${site.url}/search`} id={'header-search-form'} />
-		</div>
 	</div>
 </header>

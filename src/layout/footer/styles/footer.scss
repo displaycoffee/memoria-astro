@@ -9,12 +9,38 @@
 	// Style block
 
 	.footer {
-		.footer-blocks {
+		& > * {
 			margin: 0 0 theme.$spacing-x4 0;
+			&:last-child {
+				margin-bottom: 0;
+			}
 		}
-		.footer-copyright {
-			p {
-				margin: 0;
+		.footer-blocks {
+			.footer-copyright {
+				p {
+					margin: 0;
+				}
+			}
+			.footer-social {
+				.footer-social-links {
+					@include mixins.flex-layout((align-items: center));
+					@include mixins.gap(theme.$spacing-x4);
+					.footer-social-link {
+						line-height: 0;
+					}
+				}
+			}
+		}
+	}
+	@include mixins.respond-min(theme.$bp-02) {
+		.footer {
+			.footer-blocks {
+				.footer-social {
+					order: 99;
+					.footer-social-links {
+						@include mixins.flex-parent(justify-content, flex-end);
+					}
+				}
 			}
 		}
 	}

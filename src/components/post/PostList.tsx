@@ -14,7 +14,7 @@ export const PostList = (props: PostListProps) => {
 		<div className="posts row row-wrap row-spacing-20">
 			{posts.map((post: PostType) => {
 				return (
-					<div id={`post-${post.id}`} className="post column column-width-33" key={post.id}>
+					<div id={`post-${post.id}`} className="post column column-width-50" key={post.id}>
 						<div className="post-image">
 							<a href={post.url}>
 								<Image alt={post.image.alt} hasLazy={true} image={post.image.url} wrapperClasses={['fluid', 'fit']} />
@@ -22,20 +22,25 @@ export const PostList = (props: PostListProps) => {
 						</div>
 
 						<div className="post-details">
-							<h3 className="h5">
+							<h3 className="post-title h5">
 								<a href={post.url}>{post.title}</a>
 							</h3>
 
-							<p>
-								{post?.author?.name ? `By ${post.author.name} on ` : ``}
-								{post.date}
-							</p>
+							<div className="post-meta">
+								{post?.author?.name ? <span className="post-author">By {post.author.name} on</span> : null}
 
-							<p>{post.excerpt}</p>
+								<span className="post-date">{post.date}</span>
+							</div>
 
-							<a className="button" href={post.url}>
-								Read More
-							</a>
+							<div className="post-content">
+								<p>{post.excerpt}</p>
+							</div>
+
+							<div className="post-read-more">
+								<a className="button" href={post.url}>
+									Read More
+								</a>
+							</div>
 						</div>
 					</div>
 				);

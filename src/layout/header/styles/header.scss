@@ -16,9 +16,12 @@
 			}
 		}
 		.site-details {
-			@include mixins.gap(20px);
+			@include mixins.gap(theme.$spacing-x2 theme.$spacing-x4);
 			h1, p {
 				margin: 0;
+			}
+			.site-description, .site-search {
+				@include mixins.flex(1 1 100%);
 			}
 			.site-logo {
 				@include mixins.flex(0 1 auto);
@@ -33,8 +36,8 @@
 					line-height: 1.5;
 				}
 			}
-			.site-description, .site-search {
-				@include mixins.flex(1 1 100%);
+			.site-search {
+				order: 99;
 			}
 		}
 	}
@@ -44,24 +47,10 @@
 				.site-logo {
 					width: 50px;
 				}
-				.site-description {
-					order: 20;
-				}
-				.site-name, .site-search {
-					@include mixins.flex(0 1 auto);
-				}
 				.site-search {
-					margin-left: auto;
-				}
-			}
-		}
-	}
-	@include mixins.respond-min(theme.$bp-03) {
-		.header {
-			.site-details {
-				.site-description {
 					order: 0;
 					@include mixins.flex(0 1 auto);
+					margin-left: auto;
 				}
 			}
 		}

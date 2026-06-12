@@ -1,85 +1,12 @@
 ---
-/* Styles */
-import './styles/image.scss';
-
 /* Scripts */
-import type { ImageProps, ImageAttributesType, WrapperAttributesType } from './scripts/image-types';
+import type { ImageProps } from './scripts/image-types';
+
+/* Components */
+import { Image as ImageReact } from './Image';
 
 /* Define prop types */
 type Props = ImageProps;
-
-/* Props */
-const { alt, hasBg, hasLazy, image, imageClass, wrapperClasses } = Astro.props;
-const hasWrapper = Astro.props.hasWrapper ?? true;
-const wrapperPrefix = 'image-wrapper';
-
-/* Set up initial attributes */
-const wrapperAttributes: WrapperAttributesType = {
-	className: wrapperPrefix,
-};
-const imageAttributes: ImageAttributesType = {
-	'data-image': '',
-	src: image,
-};
-
-/* Adjust wrapper attributes */
-if (hasWrapper) {
-	if (wrapperClasses && wrapperClasses.length !== 0) {
-		// Add prefix to each class
-		const prefixedClasses = wrapperClasses.map((className) => {
-			return `${wrapperPrefix}-${className}`;
-		});
-
-		// Set new class
-		wrapperAttributes.className = `${wrapperPrefix} ${prefixedClasses.join(' ')}`;
-	}
-	if (hasBg) {
-		wrapperAttributes.style = {
-			backgroundImage: `url(${image})`,
-		};
-	}
-}
-
-/* Create alt text */
-const altText = alt || '';
-
-/* Adjust image attributes */
-if (hasLazy) {
-	imageAttributes.loading = 'lazy';
-}
-if (imageClass) {
-	imageAttributes.className = imageClass;
-}
-if (hasWrapper && hasBg) {
-	if (!imageAttributes.className) {
-		imageAttributes.className = 'image-hidden';
-	} else {
-		imageAttributes.className = imageAttributes.className + ' image-hidden';
-	}
-}
 ---
 
-{hasWrapper ? (
-	<div {...wrapperAttributes}>
-		<img {...imageAttributes} alt={altText} title={altText} />
-	</div>
-) : (
-	<img {...imageAttributes} alt={altText} title={altText} />
-)}
-
-<script>
-	import { image as imageUtils } from './scripts/image';
-
-	// Set image events
-	const images = document.querySelectorAll('img[data-image]');
-	
-	if (images && images.length !== 0) {
-		images.forEach((img) => {
-			// Handles image error events
-			img.addEventListener('error', imageUtils.onError);
-	
-			// Adds width and height attributes to images
-			img.addEventListener('load', imageUtils.onLoad);
-		});
-	}
-</script>
+<ImageReact {...Astro.props} client:load />
