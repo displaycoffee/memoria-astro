@@ -4,7 +4,7 @@ import { variables } from '../variables';
 
 /* Image functions for fetching and formatting data */
 const image = {
-	format: (alt: string, placeholder: boolean, data?: ImageRawAttributesType | ImageRawType) => {
+	format: (alt: string, placeholder: boolean, data?: ImageRawType | ImageRawNodeType) => {
 		const attrs = data && 'node' in data ? data.node : data;
 		const placeholderUrl = placeholder ? '/assets/images/theme/placeholder.jpg' : '';
 
@@ -31,7 +31,7 @@ const image = {
 
 /* Author functions for fetching and formatting data */
 const author = {
-	format: (data?: AuthorRawType) => {
+	format: (data?: AuthorRawNodeType) => {
 		const attrs = data?.node;
 		const altText = attrs?.name ? `${attrs.name} - Avatar` : `Avatar`;
 
@@ -235,7 +235,7 @@ export const wp: WPType = {
 		});
 
 		// Function to format menu items
-		const formatMenu = (node: MenuRawType) => {
+		const formatMenu = (node: MenuRawNodesType) => {
 			return {
 				label: node.label,
 				id: node.id,
@@ -245,7 +245,7 @@ export const wp: WPType = {
 
 		// Format and set data
 		if (data?.menu?.menuItems?.nodes) {
-			menuData = data.menu.menuItems.nodes.map((node: MenuRawType) => {
+			menuData = data.menu.menuItems.nodes.map((node: MenuRawNodesType) => {
 				// Format main menu item
 				const menu: MenuType = {
 					children: [],

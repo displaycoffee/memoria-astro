@@ -2,7 +2,7 @@
 import { image } from './wp-image';
 
 export const author = {
-	format: (data?: AuthorRawType) => {
+	format: (data?: AuthorRawNodeType) => {
 		const attrs = data?.node;
 		const altText = attrs?.name ? `${attrs.name} - Avatar` : `Avatar`;
 

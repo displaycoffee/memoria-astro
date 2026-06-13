@@ -1,14 +1,4 @@
 /* Type definitions */
-type WP = {
-	menu: (id: string) => Promise<Menu[]>;
-	page: (uri: string) => Promise<Page | null>;
-	post: (uri: string) => Promise<Post | null>;
-	posts: (amount: number) => Promise<Posts>;
-	search: (query: string, amount: number, url?: string) => Promise<Posts>;
-	site: () => Promise<Site>;
-	themeOptions: () => Promise<ThemeOptions>;
-};
-
 type Author = {
 	avatar: Image;
 	description: string;
@@ -18,17 +8,25 @@ type Author = {
 	url: string;
 };
 
+type Authors = Author[];
+
 type AuthorRaw = {
-	node: {
-		avatar?: {
-			url: string;
-		};
-		description?: string;
-		id: string;
-		name: string;
-		slug: string;
-		uri: string;
+	avatar?: {
+		url: string;
 	};
+	description?: string;
+	id: string;
+	name: string;
+	slug: string;
+	uri: string;
+};
+
+type AuthorRawNode = {
+	node: AuthorRaw;
+};
+
+type AuthorRawNodes = {
+	nodes: AuthorRaw[];
 };
 
 type Category = {
@@ -38,6 +36,8 @@ type Category = {
 	url: string;
 };
 
+type Categories = Category[];
+
 type CategoryRaw = {
 	categoryId: number;
 	name: string;
@@ -45,22 +45,32 @@ type CategoryRaw = {
 	uri: string;
 };
 
-type Categories = Category[];
+type CategoryRawNode = {
+	node: CategoryRaw;
+};
 
-type CategoriesRaw = CategoryRaw[];
+type CategoryRawNodes = {
+	nodes: CategoryRaw[];
+};
 
 type Image = {
 	alt: string;
 	url: string;
 };
 
-type ImageRawAttributes = {
+type Images = Image[];
+
+type ImageRaw = {
 	altText?: string;
 	sourceUrl?: string;
 };
 
-type ImageRaw = {
-	node: ImageRawAttributes;
+type ImageRawNode = {
+	node: ImageRaw;
+};
+
+type ImageRawNodes = {
+	nodes: ImageRaw[];
 };
 
 type MenuItem = {
@@ -73,7 +83,7 @@ type Menu = MenuItem & {
 	children: MenuItem[];
 };
 
-type MenuRaw = MenuItem & {
+type MenuRawNodes = MenuItem & {
 	childItems?: {
 		nodes: MenuItem[];
 	};
@@ -91,19 +101,18 @@ type Page = {
 	url: string;
 };
 
+type Pages = Page[];
+
 type PageRaw = {
-	author?: AuthorRaw;
+	author?: AuthorRawNode;
 	content: string;
 	date: string;
-	featuredImage?: ImageRaw;
+	featuredImage?: ImageRawNode;
 	pageId: number;
 	slug: string;
 	title: string;
 	uri: string;
 };
-
-type Pages = Page[];
-
 type PagesRaw = PageRaw[];
 
 type Post = {
@@ -118,8 +127,10 @@ type Post = {
 	url: string;
 };
 
+type Posts = Post[];
+
 type PostRaw = {
-	author?: AuthorRaw;
+	author?: AuthorRawNode;
 	categories: {
 		nodes: {
 			categoryId: number;
@@ -131,7 +142,7 @@ type PostRaw = {
 	content: string;
 	date: string;
 	excerpt: string;
-	featuredImage?: ImageRaw;
+	featuredImage?: ImageRawNode;
 	postId: number;
 	slug: string;
 	tags: {
@@ -145,8 +156,6 @@ type PostRaw = {
 	title: string;
 	uri: string;
 };
-
-type Posts = Post[];
 
 type PostsRaw = PostRaw[];
 
@@ -168,16 +177,22 @@ type Tag = {
 	url: string;
 };
 
+type Tags = Tag[];
+
 type TagRaw = {
-	categoryId: number;
+	tagId: number;
 	name: string;
 	slug: string;
 	uri: string;
 };
 
-type Tags = Tag[];
+type TagRawNode = {
+	node: TagRaw;
+};
 
-type TagsRaw = TagRaw[];
+type TagRawNodes = {
+	nodes: TagRaw[];
+};
 
 type ThemeOptions = {
 	footer: {
@@ -218,47 +233,67 @@ type ThemeOptionsRaw = {
 	socialGithub: string;
 };
 
+type WP = {
+	menu: (id: string) => Promise<Menu[]>;
+	page: (uri: string) => Promise<Page | null>;
+	post: (uri: string) => Promise<Post | null>;
+	posts: (amount: number) => Promise<Posts>;
+	search: (query: string, amount: number, url?: string) => Promise<Posts>;
+	site: () => Promise<Site>;
+	themeOptions: () => Promise<ThemeOptions>;
+};
+
 declare global {
 	/* Declare global types */
-	type WPType = WP;
-
 	type AuthorType = Author;
+
+	type AuthorsType = Authors;
 
 	type AuthorRawType = AuthorRaw;
 
-	type CategoryType = Category;
+	type AuthorRawNodeType = AuthorRawNode;
 
-	type CategoryRawType = CategoryRaw;
+	type AuthorRawNodesType = AuthorRawNodes;
+
+	type CategoryType = Category;
 
 	type CategoriesType = Categories;
 
-	type CategoriesRawType = CategoriesRaw;
+	type CategoryRawType = CategoryRaw;
+
+	type CategoryRawNodeType = CategoryRawNode;
+
+	type CategoryRawNodesType = CategoryRawNodes;
 
 	type ImageType = Image;
 
-	type ImageRawAttributesType = ImageRawAttributes;
+	type ImagesTypes = Images;
 
 	type ImageRawType = ImageRaw;
+
+	type ImageRawNodeType = ImageRawNode;
+
+	type ImageRawNodesType = ImageRawNodes;
 
 	type MenuItemType = MenuItem;
 
 	type MenuType = Menu;
 
-	type MenuRawType = MenuRaw;
+	type MenuRawNodesType = MenuRawNodes;
 
 	type PageType = Page;
 
-	type PageRawType = PageRaw;
-
 	type PagesType = Pages;
+
+	type PageRawType = PageRaw;
 
 	type PagesRawType = PagesRaw;
 
 	type PostType = Post;
 
-	type PostRawType = PostRaw;
-
 	type PostsType = Posts;
+
+	type PostRawType = PostRaw;
 
 	type PostsRawType = PostsRaw;
 
@@ -268,15 +303,19 @@ declare global {
 
 	type TagType = Tag;
 
-	type TagRawType = TagRaw;
-
 	type TagsType = Tags;
 
-	type TagsRawType = TagsRaw;
+	type TagRawType = TagRaw;
+
+	type TagRawNodeType = TagRawNode;
+
+	type TagRawNodesType = TagRawNodes;
 
 	type ThemeOptionsType = ThemeOptions;
 
 	type ThemeOptionsRawType = ThemeOptionsRaw;
+
+	type WPType = WP;
 }
 
 /* Export global types */
