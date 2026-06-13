@@ -5,7 +5,7 @@ import './styles/post.scss';
 import type { PostListProps } from './scripts/post-types';
 
 /* Components */
-import { Image } from '../image/Image';
+import { PostImage, PostMeta } from './PostBlocks';
 
 export const PostList = (props: PostListProps) => {
 	const posts = props.posts;
@@ -15,22 +15,14 @@ export const PostList = (props: PostListProps) => {
 			{posts.map((post: PostType) => {
 				return (
 					<div id={`post-${post.id}`} className="post column column-width-50" key={post.id}>
-						<div className="post-image">
-							<a href={post.url}>
-								<Image alt={post.image.alt} hasLazy={true} image={post.image.url} wrapperClasses={['fluid', 'fit']} />
-							</a>
-						</div>
+						<PostImage post={post} />
 
 						<div className="post-details">
 							<h3 className="post-title h5">
 								<a href={post.url}>{post.title}</a>
 							</h3>
 
-							<div className="post-meta">
-								{post?.author?.name ? <span className="post-author">By {post.author.name} on</span> : null}
-
-								<span className="post-date">{post.date}</span>
-							</div>
+							<PostMeta post={post} />
 
 							<div className="post-content">
 								<p>{post.excerpt}</p>

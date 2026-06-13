@@ -11,7 +11,7 @@
 			position: relative;
 			margin: 0 0 theme.$spacing-x4 0;
 			.image-wrapper {
-				padding-bottom: 50%;
+				padding-bottom: 35%;
 			}
 		}
 		.post-details {
@@ -38,6 +38,9 @@
 		.post {
 			.post-image {
 				margin: 0 0 theme.$spacing-x2 0;
+				.image-wrapper {
+					padding-bottom: 50%;
+				}
 			}
 			.post-details {
 				& > * {

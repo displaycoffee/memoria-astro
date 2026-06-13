@@ -1,6 +1,6 @@
 /* Scripts */
 import type { APIRoute } from 'astro';
-import { wp } from '../_config/scripts/wp';
+import { wp } from '../_config/scripts/wp/wp';
 import { context } from '../context/scripts/context';
 
 export const GET: APIRoute = async () => {

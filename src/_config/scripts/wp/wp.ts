@@ -1,6 +1,6 @@
 /* Scripts */
-import { utils } from './utils';
-import { variables } from './variables';
+import { utils } from '../utils';
+import { variables } from '../variables';
 
 /* Image functions for fetching and formatting data */
 const image = {
@@ -37,12 +37,12 @@ const author = {
 
 		// Format author data
 		const authorData: AuthorType = {
+			avatar: image.format(altText, false, { sourceUrl: attrs?.avatar?.url }),
+			description: attrs?.description ?? '',
 			id: attrs?.id ?? '',
 			name: attrs?.name ?? '',
-			description: attrs?.description ?? '',
 			slug: attrs?.slug ?? '',
-			url: attrs?.slug ? `/${attrs.slug}` : ``,
-			avatar: image.format(altText, false, { sourceUrl: attrs?.avatar?.url }),
+			url: attrs?.uri ? attrs.uri : ``,
 		};
 
 		return authorData;
@@ -51,13 +51,14 @@ const author = {
 		// Shared query function for fetching author data
 		const query = `
 			node {
-				id
-				name
-				description
-				slug
 				avatar {
 					url
 				}
+				description
+				id
+				name
+				slug
+				uri
 			}
 		`;
 
@@ -78,8 +79,8 @@ const page = {
 				excerpt: utils.any.truncate(utils.any.stripHTML(page.content), 300),
 				id: page.pageId,
 				image: image.format(`${page.title} - Featured Image`, true, page?.featuredImage),
-				title: page.title,
 				slug: page.slug,
+				title: page.title,
 				url: page.uri,
 			};
 		};
@@ -106,8 +107,8 @@ const page = {
 			}
 			pageId
 			slug
-			uri
 			title
+			uri
 		`;
 
 		return hasNodes ? `nodes { ${query} }` : query;
@@ -119,6 +120,29 @@ const post = {
 	format: (data: PostRawType | PostsRawType) => {
 		// Format post data
 		const formatData = (post: PostRawType) => {
+			// Format categories and tags
+			const formatList = (values: ObjectPrimitiveType[], list: ObjectPrimitiveType[]) => {
+				values.forEach((value: ObjectPrimitiveType) => {
+					list.push({
+						id: value.categoryId || value.tagId,
+						name: value.name,
+						slug: value.slug,
+						url: value.uri,
+					});
+				});
+			};
+
+			// Create categories and tags
+			const categories: ObjectPrimitiveType[] = [];
+			const tags: ObjectPrimitiveType[] = [];
+
+			if (post?.categories?.nodes && post.categories.nodes.length !== 0) {
+				formatList(post.categories.nodes, categories);
+			}
+			if (post?.tags?.nodes && post.tags.nodes.length !== 0) {
+				formatList(post.tags.nodes, tags);
+			}
+
 			// Return formatted data
 			return {
 				author: author.format(post.author),
@@ -127,8 +151,8 @@ const post = {
 				excerpt: utils.any.truncate(utils.any.stripHTML(post.excerpt), 300),
 				id: post.postId,
 				image: image.format(`${post.title} - Featured Image`, true, post?.featuredImage),
-				title: post.title,
 				slug: post.slug,
+				title: post.title,
 				url: post.uri,
 			};
 		};
@@ -148,6 +172,14 @@ const post = {
 			author {
 				${author.query()}
 			}
+			categories {
+				nodes {
+					categoryId
+					name
+					slug
+					uri
+				}
+			}
 			content
 			date
 			excerpt(format: RENDERED)
@@ -156,8 +188,16 @@ const post = {
 			}
 			postId
 			slug
-			uri
+			tags {
+				nodes {
+					name
+					slug
+					tagId
+					uri
+				}
+			}
 			title
+			uri
 		`;
 
 		return hasNodes ? `nodes { ${query} }` : query;
@@ -169,8 +209,8 @@ export const wp: WPType = {
 	menu: async (id: string) => {
 		let menuData: MenuType[] = [];
 		const urlAttrs = `
-			label
 			id
+			label
 			url
 		`;
 
@@ -197,8 +237,8 @@ export const wp: WPType = {
 		// Function to format menu items
 		const formatMenu = (node: MenuRawType) => {
 			return {
-				id: node.id,
 				label: node.label,
+				id: node.id,
 				url: node.url.replace(variables.urls.wp, ''),
 			};
 		};
@@ -230,7 +270,6 @@ export const wp: WPType = {
 
 		// Get page data
 		const data = await utils.any.fetch({
-			url: variables.urls.graphQL,
 			query: `query Page($uri: String!) {
 				nodeByUri(uri: $uri) {
 					...on Page {
@@ -238,6 +277,7 @@ export const wp: WPType = {
 					}
 				}
 			}`,
+			url: variables.urls.graphQL,
 			variables: { uri },
 		});
 
@@ -253,7 +293,6 @@ export const wp: WPType = {
 
 		// Get post data
 		const data = await utils.any.fetch({
-			url: variables.urls.graphQL,
 			query: `query Post($uri: String!) {
 				nodeByUri(uri: $uri) {
 					...on Post {
@@ -261,6 +300,7 @@ export const wp: WPType = {
 					}
 				}
 			}`,
+			url: variables.urls.graphQL,
 			variables: { uri },
 		});
 
@@ -276,12 +316,12 @@ export const wp: WPType = {
 
 		// Get posts data
 		const data = await utils.any.fetch({
-			url: variables.urls.graphQL,
 			query: `query Posts {
 				posts(first: ${amount}) {
 					${post.query(true, 'LARGE')}
 				}
 			}`,
+			url: variables.urls.graphQL,
 		});
 
 		// Format and set data
@@ -296,12 +336,12 @@ export const wp: WPType = {
 
 		// Get posts data
 		const data = await utils.any.fetch({
-			url,
 			query: `query Search($query: String) {
 				posts(first: ${amount}, where: { search: $query }) {
 					${post.query(true, 'LARGE')}
 				}
 			}`,
+			url,
 			variables: { query },
 		});
 
@@ -321,13 +361,13 @@ export const wp: WPType = {
 
 		// Get site details
 		const data = await utils.any.fetch({
-			url: variables.urls.graphQL,
 			query: `query Settings {
 				generalSettings {
 					description
 					title
 				}
 			}`,
+			url: variables.urls.graphQL,
 		});
 
 		// Format and set data
@@ -345,72 +385,45 @@ export const wp: WPType = {
 	},
 	themeOptions: async () => {
 		const themeOptionsData: ThemeOptionsType = {
-			social: [],
-			sidebar: {
-				slug: '',
+			footer: {
+				blocks: [],
 			},
 			header: {
 				logo: { alt: '', url: '' },
 			},
-			footer: {
-				blocks: [],
+			sidebar: {
+				slug: '',
 			},
+			social: [],
 		};
 
 		// Get theme options
 		const data = await utils.any.fetch({
-			url: variables.urls.graphQL,
 			query: `query ThemeOptions {
 				themeOptions {
-					socialFacebook
-					socialInstagram
-					socialTwitter
-					socialGithub
-					sidebarSlug
-					headerLogo {
-						altText
-						sourceUrl(size: MEDIUM)
-					}
 					footerBlock01Order
 					footerBlock01Content
 					footerBlock02Order
 					footerBlock02Content
 					footerBlock03Order
 					footerBlock03Content
+					headerLogo {
+						altText
+						sourceUrl(size: MEDIUM)
+					}
+					sidebarSlug
+					socialFacebook
+					socialInstagram
+					socialTwitter
+					socialGithub
 				}
 			}`,
+			url: variables.urls.graphQL,
 		});
 
 		// Format and set data
 		if (data?.themeOptions) {
 			const themeOptions: ThemeOptionsRawType = data.themeOptions;
-
-			// Build social links
-			const buildLink = (id: string, label: string, url: string) => {
-				themeOptionsData.social.push({ id, label, url });
-			};
-			if (themeOptions?.socialFacebook) {
-				buildLink('facebook', 'Facebook', themeOptions.socialFacebook);
-			}
-			if (themeOptions?.socialInstagram) {
-				buildLink('instagram', 'Instagram', themeOptions.socialInstagram);
-			}
-			if (themeOptions?.socialTwitter) {
-				buildLink('twitter', 'Twitter / X', themeOptions.socialTwitter);
-			}
-			if (themeOptions?.socialGithub) {
-				buildLink('github', 'GitHub', themeOptions.socialGithub);
-			}
-
-			// Add sidebar slug
-			if (themeOptions?.sidebarSlug) {
-				themeOptionsData.sidebar.slug = themeOptions.sidebarSlug;
-			}
-
-			// Add header logo
-			if (themeOptions?.headerLogo) {
-				themeOptionsData.header.logo = image.format(`Header Logo`, false, themeOptions.headerLogo);
-			}
 
 			// Build footer blocks
 			const buildBlock = (id: string, order: string, content: string) => {
@@ -432,6 +445,33 @@ export const wp: WPType = {
 
 			// Re-sort footer blocks
 			themeOptionsData.footer.blocks.sort((a, b) => a.order - b.order);
+
+			// Add header logo
+			if (themeOptions?.headerLogo) {
+				themeOptionsData.header.logo = image.format(`Header Logo`, false, themeOptions.headerLogo);
+			}
+
+			// Add sidebar slug
+			if (themeOptions?.sidebarSlug) {
+				themeOptionsData.sidebar.slug = themeOptions.sidebarSlug;
+			}
+
+			// Build social links
+			const buildLink = (id: string, label: string, url: string) => {
+				themeOptionsData.social.push({ id, label, url });
+			};
+			if (themeOptions?.socialFacebook) {
+				buildLink('facebook', 'Facebook', themeOptions.socialFacebook);
+			}
+			if (themeOptions?.socialInstagram) {
+				buildLink('instagram', 'Instagram', themeOptions.socialInstagram);
+			}
+			if (themeOptions?.socialTwitter) {
+				buildLink('twitter', 'Twitter / X', themeOptions.socialTwitter);
+			}
+			if (themeOptions?.socialGithub) {
+				buildLink('github', 'GitHub', themeOptions.socialGithub);
+			}
 		}
 
 		return themeOptionsData;
