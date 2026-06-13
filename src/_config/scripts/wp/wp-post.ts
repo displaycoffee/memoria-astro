@@ -3,6 +3,12 @@ import { utils } from '../utils';
 import { author } from './wp-author';
 import { image } from './wp-image';
 
+/* Post settings */
+const settings = {
+	imageSize: 'LARGE',
+};
+
+/* Main post functions */
 export const post = {
 	format: (data: PostRawType | PostsRawType) => {
 		// Format post data
@@ -53,7 +59,7 @@ export const post = {
 			return formatData(data);
 		}
 	},
-	query: (format: GraphQLQueryFormatType, imageSize: string) => {
+	query: (format: GraphQLQueryFormatType) => {
 		// Shared query function for fetching post data
 		const query = `
 			author {
@@ -71,7 +77,7 @@ export const post = {
 			date
 			excerpt(format: RENDERED)
 			featuredImage {
-				${image.query(imageSize)}
+				${image.query('node', settings.imageSize)}
 			}
 			postId
 			slug

@@ -11,15 +11,21 @@ export const image = {
 
 		return imageData;
 	},
-	query: (imageSize: string) => {
+	query: (format: GraphQLQueryFormatType, imageSize: string) => {
 		// Shared query function for fetching image data
 		const query = `
-			node {
-				altText
-				sourceUrl(size: ${imageSize})
-			}
+			altText
+			sourceUrl(size: ${imageSize})
 		`;
 
-		return query;
+		// Return different query depending on format
+		switch (format) {
+			case 'node':
+				return `node { ${query} }`;
+			case 'nodes':
+				return `nodes { ${query} }`;
+			default:
+				return query;
+		}
 	},
 };
