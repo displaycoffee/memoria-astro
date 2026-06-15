@@ -1,11 +1,13 @@
 /* Scripts */
 import { utils } from '../utils';
+import { variables } from '../variables';
 import { wpAuthor } from './wp-author';
 import { wpImage } from './wp-image';
 
 /* Page settings */
 const settings = {
 	imageSize: 'LARGE',
+	pageSize: 12,
 };
 
 /* Main page functions */
@@ -36,7 +38,42 @@ export const wpPage = {
 			return formatData(data);
 		}
 	},
-	query: (format: GraphQLQueryFormatType) => {
+	fetch: {
+		page: async (uri: string) => {
+			let pageData: PageType | null = null;
+
+			// Fetch page data
+			const data = await utils.any.fetch({
+				query: wpPage.query('query'),
+				url: variables.urls.graphQL,
+				variables: { uri },
+			});
+
+			// Format and set data
+			if (data?.nodeByUri) {
+				pageData = wpPage.format(data.nodeByUri) as PageType;
+			}
+
+			return pageData;
+		},
+		pages: async (pageSize: number) => {
+			let pagesData: PagesType = [];
+
+			// Get pages data
+			const data = await utils.any.fetch({
+				query: wpPage.query('query-nodes', pageSize),
+				url: variables.urls.graphQL,
+			});
+
+			// Format and set data
+			if (data?.pages?.nodes) {
+				pagesData = wpPage.format(data.pages.nodes) as PagesType;
+			}
+
+			return pagesData;
+		},
+	},
+	query: (format: GraphQLQueryFormatType, pageSize?: number) => {
 		// Shared query function for fetching page data
 		const query = `
 			author {
@@ -59,6 +96,22 @@ export const wpPage = {
 				return `node { ${query} }`;
 			case 'nodes':
 				return `nodes { ${query} }`;
+			case 'query':
+				return `query Page($uri: String!) {
+					nodeByUri(uri: $uri) {
+						...on Page {
+							${query}
+						}
+					}
+				}`;
+			case 'query-nodes':
+				return `query Pages {
+					pages(first: ${pageSize ?? settings.pageSize}) {
+						nodes { 
+							${query}
+						}
+					}
+				}`;
 			default:
 				return query;
 		}

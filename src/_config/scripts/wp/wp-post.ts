@@ -65,7 +65,7 @@ export const wpPost = {
 		post: async (uri: string) => {
 			let postData: PostType | null = null;
 
-			// Get post data
+			// Fetch post data
 			const data = await utils.any.fetch({
 				query: wpPost.query('query'),
 				url: variables.urls.graphQL,
@@ -94,6 +94,23 @@ export const wpPost = {
 			}
 
 			return postsData;
+		},
+		search: async (query: string, pageSize: number, url = variables.urls.graphQL) => {
+			let searchData: PostsType = [];
+
+			// Get posts data
+			const data = await utils.any.fetch({
+				query: wpPost.query('query-search', pageSize),
+				url,
+				variables: { query },
+			});
+
+			// Format and set data
+			if (data?.posts?.nodes) {
+				searchData = wpPost.format(data.posts.nodes) as PostsType;
+			}
+
+			return searchData;
 		},
 	},
 	query: (format: GraphQLQueryFormatType, pageSize?: number) => {
@@ -147,6 +164,14 @@ export const wpPost = {
 			case 'query-nodes':
 				return `query Posts {
 					posts(first: ${pageSize ?? settings.pageSize}) {
+						nodes { 
+							${query}
+						}
+					}
+				}`;
+			case 'query-search':
+				return `query Search($query: String) {
+					posts(first: ${pageSize}, where: { search: $query }) {
 						nodes { 
 							${query}
 						}

@@ -1,7 +1,7 @@
 /* Type definitions */
 type Events = Event;
 
-type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-node' | 'query-nodes' | 'none';
+type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-node' | 'query-nodes' | 'query-search' | 'none';
 
 type GraphQLParams = {
 	query: string;

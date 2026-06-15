@@ -161,12 +161,14 @@ type PostsRaw = PostRaw[];
 
 type Site = {
 	description: string;
+	pageSize: number;
 	title: string;
 	url: string;
 };
 
 type SiteRaw = {
 	description: string;
+	postsPerPage: number;
 	title: string;
 };
 
@@ -236,6 +238,7 @@ type ThemeOptionsRaw = {
 type WP = {
 	menu: (id: string) => Promise<Menu[]>;
 	page: (uri: string) => Promise<Page | null>;
+	pages: (pageSize: number) => Promise<Pages>;
 	post: (uri: string) => Promise<Post | null>;
 	posts: (pageSize: number) => Promise<Posts>;
 	search: (query: string, pageSize: number, url?: string) => Promise<Posts>;

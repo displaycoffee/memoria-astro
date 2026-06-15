@@ -4,19 +4,19 @@ import { variables } from '../variables';
 
 /* Main menu functions */
 export const wpMenu = {
-	format: (node: MenuRawNodesType) => {
+	format: (data: MenuRawNodesType) => {
 		// Format menu data
 		return {
-			label: node.label,
-			id: node.id,
-			url: node.url.replace(variables.urls.wp, ''),
+			label: data.label,
+			id: data.id,
+			url: data.url.replace(variables.urls.wp, ''),
 		};
 	},
 	fetch: {
 		menu: async (id: string) => {
 			let menuData: MenuType[] = [];
 
-			// Get menu data
+			// Fetch menu data
 			const data = await utils.any.fetch({
 				url: variables.urls.graphQL,
 				query: wpMenu.query(),
