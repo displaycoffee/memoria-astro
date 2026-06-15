@@ -21,7 +21,7 @@ export const wpPage = {
 				content: page.content,
 				date: utils.any.getDate(page.date),
 				excerpt: utils.any.truncate(utils.any.stripHTML(page.content), 300),
-				id: page.pageId,
+				id: `page-${page.pageId}`,
 				image: wpImage.format(`${page.title} - Featured Image`, true, page?.featuredImage),
 				slug: page.slug,
 				title: page.title,

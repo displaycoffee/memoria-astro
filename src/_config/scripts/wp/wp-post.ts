@@ -2,7 +2,9 @@
 import { utils } from '../utils';
 import { variables } from '../variables';
 import { wpAuthor } from './wp-author';
+import { wpCategory } from './wp-category';
 import { wpImage } from './wp-image';
+import { wpTag } from './wp-tag';
 
 /* Post settings */
 const settings = {
@@ -15,38 +17,32 @@ export const wpPost = {
 	format: (data: PostRawType | PostsRawType) => {
 		// Format post data
 		const formatData = (post: PostRawType) => {
-			// // Format categories and tags
-			// const formatList = (values: ObjectPrimitiveType[], list: ObjectPrimitiveType[]) => {
-			// 	values.forEach((value: ObjectPrimitiveType) => {
-			// 		list.push({
-			// 			id: value.categoryId || value.tagId,
-			// 			name: value.name,
-			// 			slug: value.slug,
-			// 			url: value.uri,
-			// 		});
-			// 	});
-			// };
+			// Create categories and tags
+			const categories: CategoriesType = [];
+			const tags: TagsType = [];
 
-			// // Create categories and tags
-			// const categories: ObjectPrimitiveType[] = [];
-			// const tags: ObjectPrimitiveType[] = [];
-
-			// if (post?.categories?.nodes && post.categories.nodes.length !== 0) {
-			// 	formatList(post.categories.nodes, categories);
-			// }
-			// if (post?.tags?.nodes && post.tags.nodes.length !== 0) {
-			// 	formatList(post.tags.nodes, tags);
-			// }
+			if (post?.categories?.nodes && post.categories.nodes.length !== 0) {
+				post.categories.nodes.forEach((node: CategoryRawType) => {
+					categories.push(wpCategory.format(node));
+				});
+			}
+			if (post?.tags?.nodes && post.tags.nodes.length !== 0) {
+				post.tags.nodes.forEach((node: TagRawType) => {
+					tags.push(wpTag.format(node));
+				});
+			}
 
 			// Return formatted data
 			return {
 				author: wpAuthor.format(post.author),
+				categories: categories,
 				content: post.content,
 				date: utils.any.getDate(post.date),
 				excerpt: utils.any.truncate(utils.any.stripHTML(post.excerpt), 300),
-				id: post.postId,
+				id: `post-${post.postId}`,
 				image: wpImage.format(`${post.title} - Featured Image`, true, post?.featuredImage),
 				slug: post.slug,
+				tags: tags,
 				title: post.title,
 				url: post.uri,
 			};
@@ -120,12 +116,7 @@ export const wpPost = {
 				${wpAuthor.query('node')}
 			}
 			categories {
-				nodes {
-					categoryId
-					name
-					slug
-					uri
-				}
+				${wpCategory.query('nodes')}
 			}
 			content
 			date

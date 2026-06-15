@@ -10,7 +10,7 @@ export const wpAuthor = {
 		const authorData: AuthorType = {
 			avatar: wpImage.format(altText, false, { sourceUrl: attrs?.avatar?.url }),
 			description: attrs?.description ?? '',
-			id: attrs?.id ?? '',
+			id: `author-${attrs?.userId ?? 0}`,
 			name: attrs?.name ?? '',
 			slug: attrs?.slug ?? '',
 			url: attrs?.uri ?? '',
@@ -25,10 +25,10 @@ export const wpAuthor = {
 				url
 			}
 			description
-			id
 			name
 			slug
 			uri
+			userId
 		`;
 
 		// Return different query depending on format

@@ -4,11 +4,13 @@ import { variables } from '../variables';
 
 /* Main menu functions */
 export const wpMenu = {
-	format: (data: MenuRawNodesType) => {
+	format: (data: MenuRawNodesType, isChild: boolean) => {
+		const menuItemPrefix = isChild ? 'menu-item-child' : 'menu-item';
+
 		// Format menu data
 		return {
 			label: data.label,
-			id: data.id,
+			id: `${menuItemPrefix}-${data.menuItemId}`,
 			url: data.url.replace(variables.urls.wp, ''),
 		};
 	},
@@ -29,13 +31,13 @@ export const wpMenu = {
 					// Format main menu item
 					const menu: MenuType = {
 						children: [],
-						...wpMenu.format(node),
+						...wpMenu.format(node, false),
 					};
 
 					// Then format children
 					if (node?.childItems?.nodes && node.childItems.nodes.length !== 0) {
 						menu.children = node.childItems.nodes.map((child) => {
-							return wpMenu.format(child);
+							return wpMenu.format(child, true);
 						});
 					}
 
@@ -49,8 +51,8 @@ export const wpMenu = {
 	query: () => {
 		// Shared query function for fetching menu data
 		const urlAttrs = `
-			id
 			label
+			menuItemId
 			url
 		`;
 

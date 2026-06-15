@@ -15,10 +15,10 @@ type AuthorRaw = {
 		url: string;
 	};
 	description?: string;
-	id: string;
 	name: string;
 	slug: string;
 	uri: string;
+	userId: number;
 };
 
 type AuthorRawNode = {
@@ -30,7 +30,7 @@ type AuthorRawNodes = {
 };
 
 type Category = {
-	id: number;
+	id: string;
 	name: string;
 	slug: string;
 	url: string;
@@ -91,9 +91,15 @@ type Menu = MenuItem & {
 	children: MenuItem[];
 };
 
-type MenuRawNodes = MenuItem & {
+type MenuItemRaw = {
+	menuItemId: string;
+	label: string;
+	url: string;
+};
+
+type MenuRawNodes = MenuItemRaw & {
 	childItems?: {
-		nodes: MenuItem[];
+		nodes: MenuItemRaw[];
 	};
 };
 
@@ -102,7 +108,7 @@ type Page = {
 	content: string;
 	date: string;
 	excerpt: string;
-	id: number;
+	id: string;
 	image: Image;
 	slug: string;
 	title: string;
@@ -121,16 +127,19 @@ type PageRaw = {
 	title: string;
 	uri: string;
 };
+
 type PagesRaw = PageRaw[];
 
 type Post = {
 	author: Author;
+	categories: Categories;
 	content: string;
 	date: string;
 	excerpt: string;
-	id: number;
+	id: string;
 	image: Image;
 	slug: string;
+	tags: Tags;
 	title: string;
 	url: string;
 };
@@ -139,28 +148,14 @@ type Posts = Post[];
 
 type PostRaw = {
 	author?: AuthorRawNode;
-	categories: {
-		nodes: {
-			categoryId: number;
-			name: string;
-			slug: string;
-			uri: string;
-		}[];
-	};
+	categories: CategoryRawNodes;
 	content: string;
 	date: string;
 	excerpt: string;
 	featuredImage?: ImageRawNode;
 	postId: number;
 	slug: string;
-	tags: {
-		nodes: {
-			name: string;
-			slug: string;
-			tagId: number;
-			uri: string;
-		}[];
-	};
+	tags: TagRawNodes;
 	title: string;
 	uri: string;
 };
@@ -181,7 +176,7 @@ type SiteRaw = {
 };
 
 type Tag = {
-	id: number;
+	id: string;
 	name: string;
 	slug: string;
 	url: string;
@@ -293,6 +288,8 @@ declare global {
 	type MenuItemType = MenuItem;
 
 	type MenuType = Menu;
+
+	type MenuItemRawType = MenuItemRaw;
 
 	type MenuRawNodesType = MenuRawNodes;
 

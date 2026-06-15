@@ -26,6 +26,13 @@
 					padding: 0 0 0 theme.$spacing-x1;
 				}
 			}
+			.post-taxonomies {
+				.row .column {
+					strong {
+						padding: 0 theme.$spacing-x1 0 0;
+					}
+				}
+			}
 		}
 	}
 

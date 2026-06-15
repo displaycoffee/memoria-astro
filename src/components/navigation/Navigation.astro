@@ -26,7 +26,7 @@ const navigationList = await context.wp.menu(name);
 			return (
 				<NavigationListItem item={nav}>
 					{nav.children.length !== 0 ? (
-						<Dropdown closeOnClick={true} id={nav.id} client:visible>
+						<Dropdown closeOnClick={true} id={nav.id.replace(/-/g, ' ')} client:visible>
 							<ul class="navigation-list-submenu unstyled">
 								{nav.children.map((child: MenuItemType) => {
 									return (

@@ -6,7 +6,7 @@ import './styles/post.scss';
 import type { PostProps } from './scripts/post-types';
 
 /* Components */
-import { PostImage, PostMeta } from './PostBlocks';
+import { PostImage, PostMeta, PostTaxonomies } from './PostBlocks';
 
 /* Define prop types */
 type Props = PostProps;
@@ -15,7 +15,7 @@ type Props = PostProps;
 const { post } = Astro.props;
 ---
 
-<div id={`post-${post.id}`} class="post">
+<div id={post.id} class="post">
 	{!post.image.url.includes('placeholder') ? (
 		<PostImage post={post} />
 	) : null}
@@ -28,5 +28,7 @@ const { post } = Astro.props;
 		<PostMeta post={post} />
 
 		<div class="post-content" set:html={post.content}></div>
+
+		<PostTaxonomies post={post} />
 	</div>
 </div>

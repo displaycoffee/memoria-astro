@@ -14,7 +14,7 @@ export const PostList = (props: PostListProps) => {
 		<div className="posts row row-wrap row-spacing-20">
 			{posts.map((post: PostType) => {
 				return (
-					<div id={`post-${post.id}`} className="post column column-width-50" key={post.id}>
+					<div id={post.id} className="post column column-width-50" key={post.id}>
 						<PostImage post={post} />
 
 						<div className="post-details">

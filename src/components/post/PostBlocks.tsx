@@ -34,3 +34,50 @@ export const PostMeta = (props: PostBlocksProps) => {
 		</div>
 	);
 };
+
+export const PostTaxonomies = (props: PostBlocksProps) => {
+	const post = props.post;
+	const hasTaxonomies = post.categories.length !== 0 || post.tags.length !== 0;
+
+	return hasTaxonomies ? (
+		<div className="post-taxonomies">
+			<div className="row row-wrap row-fit row-spacing-20">
+				{post.categories.length !== 0 ? (
+					<div className="column-categories column">
+						<strong>Categories:</strong>
+
+						{post.categories.map((category, index) => {
+							const isLast = index == post.categories.length - 1;
+							return (
+								<>
+									<a href={category.url} key={category.id}>
+										{category.name}
+									</a>
+									{isLast ? '' : ', '}
+								</>
+							);
+						})}
+					</div>
+				) : null}
+
+				{post.tags.length !== 0 ? (
+					<div className="column-tags column">
+						<strong>Tags:</strong>
+
+						{post.tags.map((tag, index) => {
+							const isLast = index == post.tags.length - 1;
+							return (
+								<>
+									<a href={tag.url} key={tag.id}>
+										{tag.name}
+									</a>
+									{isLast ? '' : ', '}
+								</>
+							);
+						})}
+					</div>
+				) : null}
+			</div>
+		</div>
+	) : null;
+};
