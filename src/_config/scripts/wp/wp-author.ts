@@ -13,7 +13,7 @@ export const wpAuthor = {
 			id: attrs?.id ?? '',
 			name: attrs?.name ?? '',
 			slug: attrs?.slug ?? '',
-			url: attrs?.uri ? attrs.uri : ``,
+			url: attrs?.uri ?? '',
 		};
 
 		return authorData;

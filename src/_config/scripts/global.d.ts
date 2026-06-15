@@ -1,14 +1,6 @@
 /* Type definitions */
 type Events = Event;
 
-type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-node' | 'query-nodes' | 'query-search' | 'none';
-
-type GraphQLParams = {
-	query: string;
-	url: string;
-	variables?: object;
-};
-
 type ObjectString = {
 	[key: string]: string;
 };
@@ -73,10 +65,6 @@ type Variables = {
 declare global {
 	/* Declare global types */
 	type EventsType = Events;
-
-	type GraphQLParamsType = GraphQLParams;
-
-	type GraphQLQueryFormatType = GraphQLQueryFormat;
 
 	type ObjectStringType = ObjectString;
 

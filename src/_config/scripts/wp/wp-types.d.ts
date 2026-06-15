@@ -30,7 +30,7 @@ type AuthorRawNodes = {
 };
 
 type Category = {
-	category: number;
+	id: number;
 	name: string;
 	slug: string;
 	url: string;
@@ -51,6 +51,14 @@ type CategoryRawNode = {
 
 type CategoryRawNodes = {
 	nodes: CategoryRaw[];
+};
+
+type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-node' | 'query-nodes' | 'query-search' | 'none';
+
+type GraphQLParams = {
+	query: string;
+	url: string;
+	variables?: object;
 };
 
 type Image = {
@@ -173,7 +181,7 @@ type SiteRaw = {
 };
 
 type Tag = {
-	category: number;
+	id: number;
 	name: string;
 	slug: string;
 	url: string;
@@ -267,6 +275,10 @@ declare global {
 	type CategoryRawNodeType = CategoryRawNode;
 
 	type CategoryRawNodesType = CategoryRawNodes;
+
+	type GraphQLParamsType = GraphQLParams;
+
+	type GraphQLQueryFormatType = GraphQLQueryFormat;
 
 	type ImageType = Image;
 

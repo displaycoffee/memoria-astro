@@ -4,9 +4,8 @@ import { variables } from '../variables';
 import { wpImage } from './wp-image';
 
 export const wpThemeOptions = {
-	format: (placeholder: ThemeOptionsType, data: ThemeOptionsRawType) => {
+	format: (themeOptionsData: ThemeOptionsType, data: ThemeOptionsRawType) => {
 		// Format theme options data
-		const themeOptionsData = placeholder;
 
 		// Build footer blocks
 		const buildBlock = (id: string, order: string, content: string) => {
