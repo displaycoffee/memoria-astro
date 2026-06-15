@@ -1,6 +1,9 @@
 /* Styles */
 import './styles/post.scss';
 
+/* Packages */
+import { Fragment } from 'react';
+
 /* Scripts */
 import type { PostBlocksProps } from './scripts/post-types';
 
@@ -49,12 +52,10 @@ export const PostTaxonomies = (props: PostBlocksProps) => {
 						{post.categories.map((category, index) => {
 							const isLast = index == post.categories.length - 1;
 							return (
-								<>
-									<a href={category.url} key={category.id}>
-										{category.name}
-									</a>
+								<Fragment key={category.id}>
+									<a href={category.url}>{category.name}</a>
 									{isLast ? '' : ', '}
-								</>
+								</Fragment>
 							);
 						})}
 					</div>
@@ -67,12 +68,10 @@ export const PostTaxonomies = (props: PostBlocksProps) => {
 						{post.tags.map((tag, index) => {
 							const isLast = index == post.tags.length - 1;
 							return (
-								<>
-									<a href={tag.url} key={tag.id}>
-										{tag.name}
-									</a>
+								<Fragment key={tag.id}>
+									<a href={tag.url}>{tag.name}</a>
 									{isLast ? '' : ', '}
-								</>
+								</Fragment>
 							);
 						})}
 					</div>
