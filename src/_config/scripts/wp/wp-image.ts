@@ -1,4 +1,4 @@
-export const image = {
+export const wpImage = {
 	format: (alt: string, placeholder: boolean, data?: ImageRawType | ImageRawNodeType) => {
 		const attrs = data && 'node' in data ? data.node : data;
 		const placeholderUrl = placeholder ? '/assets/images/theme/placeholder.jpg' : '';

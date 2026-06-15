@@ -1,6 +1,8 @@
 /* Scripts */
 import { utils } from '../utils';
 import { variables } from '../variables';
+import { wpMenu } from './wp-menu';
+import { wpPost } from './wp-post';
 
 /* Image functions for fetching and formatting data */
 const image = {
@@ -206,65 +208,7 @@ const post = {
 
 /* Query functions for WordPress data */
 export const wp: WPType = {
-	menu: async (id: string) => {
-		let menuData: MenuType[] = [];
-		const urlAttrs = `
-			id
-			label
-			url
-		`;
-
-		// Get menu data
-		const data = await utils.any.fetch({
-			url: variables.urls.graphQL,
-			query: `query Menu($id: ID!) {
-				menu(id: $id, idType: NAME) {
-					menuItems(first: 20, where: {parentId: 0}) {
-						nodes {
-							${urlAttrs}
-							childItems(first: 20) {
-								nodes {
-									${urlAttrs}
-								}
-							}
-						}
-					}
-				}
-			}`,
-			variables: { id },
-		});
-
-		// Function to format menu items
-		const formatMenu = (node: MenuRawNodesType) => {
-			return {
-				label: node.label,
-				id: node.id,
-				url: node.url.replace(variables.urls.wp, ''),
-			};
-		};
-
-		// Format and set data
-		if (data?.menu?.menuItems?.nodes) {
-			menuData = data.menu.menuItems.nodes.map((node: MenuRawNodesType) => {
-				// Format main menu item
-				const menu: MenuType = {
-					children: [],
-					...formatMenu(node),
-				};
-
-				// Then format children
-				if (node?.childItems?.nodes && node.childItems.nodes.length !== 0) {
-					menu.children = node.childItems.nodes.map((child) => {
-						return formatMenu(child);
-					});
-				}
-
-				return menu;
-			});
-		}
-
-		return menuData;
-	},
+	menu: wpMenu.fetch.menu,
 	page: async (uri: string) => {
 		let pageData: PageType | null = null;
 
@@ -288,56 +232,15 @@ export const wp: WPType = {
 
 		return pageData;
 	},
-	post: async (uri: string) => {
-		let postData: PostType | null = null;
-
-		// Get post data
-		const data = await utils.any.fetch({
-			query: `query Post($uri: String!) {
-				nodeByUri(uri: $uri) {
-					...on Post {
-						${post.query(false, 'LARGE')}
-					}
-				}
-			}`,
-			url: variables.urls.graphQL,
-			variables: { uri },
-		});
-
-		// Format and set data
-		if (data?.nodeByUri) {
-			postData = post.format(data.nodeByUri) as PostType;
-		}
-
-		return postData;
-	},
-	posts: async (amount: number) => {
-		let postsData: PostsType = [];
-
-		// Get posts data
-		const data = await utils.any.fetch({
-			query: `query Posts {
-				posts(first: ${amount}) {
-					${post.query(true, 'LARGE')}
-				}
-			}`,
-			url: variables.urls.graphQL,
-		});
-
-		// Format and set data
-		if (data?.posts?.nodes) {
-			postsData = post.format(data.posts.nodes) as PostsType;
-		}
-
-		return postsData;
-	},
-	search: async (query: string, amount: number, url = variables.urls.graphQL) => {
+	post: wpPost.fetch.post,
+	posts: wpPost.fetch.posts,
+	search: async (query: string, pageSize: number, url = variables.urls.graphQL) => {
 		let searchData: PostsType = [];
 
 		// Get posts data
 		const data = await utils.any.fetch({
 			query: `query Search($query: String) {
-				posts(first: ${amount}, where: { search: $query }) {
+				posts(first: ${pageSize}, where: { search: $query }) {
 					${post.query(true, 'LARGE')}
 				}
 			}`,

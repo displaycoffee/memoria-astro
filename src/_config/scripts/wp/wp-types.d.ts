@@ -237,8 +237,8 @@ type WP = {
 	menu: (id: string) => Promise<Menu[]>;
 	page: (uri: string) => Promise<Page | null>;
 	post: (uri: string) => Promise<Post | null>;
-	posts: (amount: number) => Promise<Posts>;
-	search: (query: string, amount: number, url?: string) => Promise<Posts>;
+	posts: (pageSize: number) => Promise<Posts>;
+	search: (query: string, pageSize: number, url?: string) => Promise<Posts>;
 	site: () => Promise<Site>;
 	themeOptions: () => Promise<ThemeOptions>;
 };

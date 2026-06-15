@@ -1,15 +1,17 @@
 /* Scripts */
 import { utils } from '../utils';
-import { author } from './wp-author';
-import { image } from './wp-image';
+import { variables } from '../variables';
+import { wpAuthor } from './wp-author';
+import { wpImage } from './wp-image';
 
 /* Post settings */
 const settings = {
 	imageSize: 'LARGE',
+	pageSize: 12,
 };
 
 /* Main post functions */
-export const post = {
+export const wpPost = {
 	format: (data: PostRawType | PostsRawType) => {
 		// Format post data
 		const formatData = (post: PostRawType) => {
@@ -38,12 +40,12 @@ export const post = {
 
 			// Return formatted data
 			return {
-				author: author.format(post.author),
+				author: wpAuthor.format(post.author),
 				content: post.content,
 				date: utils.any.getDate(post.date),
 				excerpt: utils.any.truncate(utils.any.stripHTML(post.excerpt), 300),
 				id: post.postId,
-				image: image.format(`${post.title} - Featured Image`, true, post?.featuredImage),
+				image: wpImage.format(`${post.title} - Featured Image`, true, post?.featuredImage),
 				slug: post.slug,
 				title: post.title,
 				url: post.uri,
@@ -59,11 +61,46 @@ export const post = {
 			return formatData(data);
 		}
 	},
-	query: (format: GraphQLQueryFormatType) => {
+	fetch: {
+		post: async (uri: string) => {
+			let postData: PostType | null = null;
+
+			// Get post data
+			const data = await utils.any.fetch({
+				query: wpPost.query('query'),
+				url: variables.urls.graphQL,
+				variables: { uri },
+			});
+
+			// Format and set data
+			if (data?.nodeByUri) {
+				postData = wpPost.format(data.nodeByUri) as PostType;
+			}
+
+			return postData;
+		},
+		posts: async (pageSize: number) => {
+			let postsData: PostsType = [];
+
+			// Get posts data
+			const data = await utils.any.fetch({
+				query: wpPost.query('query-nodes', pageSize),
+				url: variables.urls.graphQL,
+			});
+
+			// Format and set data
+			if (data?.posts?.nodes) {
+				postsData = wpPost.format(data.posts.nodes) as PostsType;
+			}
+
+			return postsData;
+		},
+	},
+	query: (format: GraphQLQueryFormatType, pageSize?: number) => {
 		// Shared query function for fetching post data
 		const query = `
 			author {
-				${author.query('node')}
+				${wpAuthor.query('node')}
 			}
 			categories {
 				nodes {
@@ -77,7 +114,7 @@ export const post = {
 			date
 			excerpt(format: RENDERED)
 			featuredImage {
-				${image.query('node', settings.imageSize)}
+				${wpImage.query('node', settings.imageSize)}
 			}
 			postId
 			slug
@@ -99,6 +136,22 @@ export const post = {
 				return `node { ${query} }`;
 			case 'nodes':
 				return `nodes { ${query} }`;
+			case 'query':
+				return `query Post($uri: String!) {
+					nodeByUri(uri: $uri) {
+						...on Post {
+							${query}
+						}
+					}
+				}`;
+			case 'query-nodes':
+				return `query Posts {
+					posts(first: ${pageSize ?? settings.pageSize}) {
+						nodes { 
+							${query}
+						}
+					}
+				}`;
 			default:
 				return query;
 		}

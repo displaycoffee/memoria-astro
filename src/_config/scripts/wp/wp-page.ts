@@ -1,7 +1,7 @@
 /* Scripts */
 import { utils } from '../utils';
-import { author } from './wp-author';
-import { image } from './wp-image';
+import { wpAuthor } from './wp-author';
+import { wpImage } from './wp-image';
 
 /* Page settings */
 const settings = {
@@ -9,18 +9,18 @@ const settings = {
 };
 
 /* Main page functions */
-export const page = {
+export const wpPage = {
 	format: (data: PageRawType | PagesRawType) => {
 		// Format page data
 		const formatData = (page: PageRawType) => {
 			// Return formatted data
 			return {
-				author: author.format(page.author),
+				author: wpAuthor.format(page.author),
 				content: page.content,
 				date: utils.any.getDate(page.date),
 				excerpt: utils.any.truncate(utils.any.stripHTML(page.content), 300),
 				id: page.pageId,
-				image: image.format(`${page.title} - Featured Image`, true, page?.featuredImage),
+				image: wpImage.format(`${page.title} - Featured Image`, true, page?.featuredImage),
 				slug: page.slug,
 				title: page.title,
 				url: page.uri,
@@ -40,12 +40,12 @@ export const page = {
 		// Shared query function for fetching page data
 		const query = `
 			author {
-				${author.query('node')}
+				${wpAuthor.query('node')}
 			}
 			content
 			date
 			featuredImage {
-				${image.query('node', settings.imageSize)}
+				${wpImage.query('node', settings.imageSize)}
 			}
 			pageId
 			slug

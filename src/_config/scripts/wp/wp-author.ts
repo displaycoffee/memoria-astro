@@ -1,14 +1,14 @@
 /* Scripts */
-import { image } from './wp-image';
+import { wpImage } from './wp-image';
 
-export const author = {
+export const wpAuthor = {
 	format: (data?: AuthorRawNodeType) => {
 		const attrs = data?.node;
 		const altText = attrs?.name ? `${attrs.name} - Avatar` : `Avatar`;
 
 		// Format author data
 		const authorData: AuthorType = {
-			avatar: image.format(altText, false, { sourceUrl: attrs?.avatar?.url }),
+			avatar: wpImage.format(altText, false, { sourceUrl: attrs?.avatar?.url }),
 			description: attrs?.description ?? '',
 			id: attrs?.id ?? '',
 			name: attrs?.name ?? '',
