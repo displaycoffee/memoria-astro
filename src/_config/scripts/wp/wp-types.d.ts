@@ -84,6 +84,7 @@ type ImageRawNodes = {
 type MenuItem = {
 	id: string;
 	label: string;
+	type: string;
 	url: string;
 };
 
@@ -92,8 +93,11 @@ type Menu = MenuItem & {
 };
 
 type MenuItemRaw = {
-	menuItemId: string;
+	connectedObject?: {
+		__typename: string;
+	};
 	label: string;
+	menuItemId: string;
 	url: string;
 };
 
@@ -227,15 +231,20 @@ type ThemeOptionsRaw = {
 	footerBlock02Content: string;
 	footerBlock03Order: string;
 	footerBlock03Content: string;
+	footerBlock04Order: string;
 	headerLogo?: {
 		altText?: string;
 		sourceUrl: string;
 	};
 	sidebarSlug: string;
 	socialFacebook: string;
-	socialInstagram: string;
-	socialTwitter: string;
 	socialGithub: string;
+	socialInstagram: string;
+	socialLinkedIn: string;
+	socialTwitch: string;
+	socialTwitter: string;
+	socialX: string;
+	socialYouTube: string;
 };
 
 type WP = {

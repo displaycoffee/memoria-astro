@@ -14,30 +14,34 @@ import { Dropdown } from '../dropdown/Dropdown';
 type Props = NavigationProps;
 
 /* Props */
-const { name } = Astro.props;
+const { direction, id, menu, showChildren } = Astro.props;
+const showNavChildren = showChildren ?? true;
+const navDirection = direction == 'horizontal' || direction == 'vertical' ? direction : 'horizontal';
 
 /* Get menu */
-const navigationList = await context.wp.menu(name);
+const navigationList = menu ?? await context.wp.menu(id);
 ---
 
-<nav class="navigation">
-	<ul class="navigation-list unstyled">
-		{navigationList.map((nav: MenuType) => {
-			return (
-				<NavigationListItem item={nav}>
-					{nav.children.length !== 0 ? (
-						<Dropdown closeOnClick={true} id={nav.id.replace(/-/g, ' ')} client:visible>
-							<ul class="navigation-list-submenu unstyled">
-								{nav.children.map((child: MenuItemType) => {
-									return (
-										<NavigationListItem item={child} />
-									);
-								})}
-							</ul>
-						</Dropdown>
-					) : (null)}
-				</NavigationListItem>
-			)
-		})}
-	</ul>
-</nav>
+{navigationList.length !== 0 ? (
+	<nav id={`navigation-${id}`} class={`navigation navigation-${id}`}>
+		<ul class={`navigation-list navigation-list-${navDirection} unstyled`}>
+			{navigationList.map((nav: MenuType) => {
+				return (
+					<NavigationListItem item={nav}>
+						{nav.children.length !== 0 && showNavChildren ? (
+							<Dropdown closeOnClick={true} id={nav.id.replace(/-/g, ' ')} client:visible>
+								<ul class="navigation-list-submenu unstyled">
+									{nav.children.map((child: MenuItemType) => {
+										return (
+											<NavigationListItem item={child} />
+										);
+									})}
+								</ul>
+							</Dropdown>
+						) : (null)}
+					</NavigationListItem>
+				)
+			})}
+		</ul>
+	</nav>
+) : (null)}

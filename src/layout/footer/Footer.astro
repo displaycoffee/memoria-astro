@@ -6,7 +6,9 @@ import './styles/footer.scss';
 import type { FooterProps } from './scripts/footer-types';
 
 /* Components */
+import { context } from '../../context/scripts/context';
 import Icons from '../../components/icons/Icons.astro';
+import Navigation from '../../components/navigation/Navigation.astro';
 
 /* Define prop types */
 type Props = FooterProps;
@@ -16,13 +18,24 @@ const { options } = Astro.props;
 
 /* Get year */
 const year = new Date().getFullYear();
+
+/* Get footer menu to conditionally render nav block */
+const footerMenu = await context.wp.menu('footer');
 ---
 
 <footer class="footer">
 	{options.footer.blocks.length !== 0 ? (
 		<div class="footer-blocks row row-wrap row-fit row-spacing-20">
 			{options.footer.blocks.map((block) => (
-				<div id={block.id} class="footer-block column" set:html={block.content}></div>
+				block.content == 'nav menu' ? (
+					footerMenu.length !== 0 ? (
+						<div id={block.id} class="footer-block column">
+							<Navigation direction={'vertical'} id={'footer'} menu={footerMenu} showChildren={false} />
+						</div>
+					) : null
+				) : (
+					<div id={block.id} class="footer-block column" set:html={block.content}></div>
+				)
 			))}
 		</div>
 	) : (null)}

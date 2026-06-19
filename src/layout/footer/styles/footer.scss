@@ -44,11 +44,21 @@
 			}
 		}
 	}
+	@include mixins.respond(theme.$bp-03 - 1px) {
+		.footer {
+			.footer-blocks {
+				.footer-block {
+					min-width: 40%;
+				}
+			}
+		}
+	}
 	@include mixins.respond(theme.$bp-02 - 1px) {
 		.footer {
 			.footer-blocks {
 				.footer-block {
 					@include mixins.flex(1 1 100%);
+					min-width: 1px;
 				}
 			}
 		}

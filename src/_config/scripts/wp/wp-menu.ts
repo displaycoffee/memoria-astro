@@ -6,12 +6,26 @@ import { variables } from '../variables';
 export const wpMenu = {
 	format: (data: MenuRawNodesType, isChild: boolean) => {
 		const menuItemPrefix = isChild ? 'menu-item-child' : 'menu-item';
+		const url = data.url.replace(variables.urls.wp, '');
+
+		// Check if the link is the home page
+		const homelabels = ['home', 'home page', 'index', 'start'];
+		const isHome = homelabels.includes(data.label.toLowerCase()) || url == '/';
+
+		// Determine link type
+		let type = 'link';
+		if (isHome) {
+			type = 'home';
+		} else if (data?.connectedObject?.__typename) {
+			type = data.connectedObject.__typename.toLowerCase();
+		}
 
 		// Format menu data
 		return {
 			label: data.label,
 			id: `${menuItemPrefix}-${data.menuItemId}`,
-			url: data.url.replace(variables.urls.wp, ''),
+			type: type,
+			url: url,
 		};
 	},
 	fetch: {
@@ -51,6 +65,9 @@ export const wpMenu = {
 	query: () => {
 		// Shared query function for fetching menu data
 		const urlAttrs = `
+			connectedObject {
+				__typename
+			}
 			label
 			menuItemId
 			url

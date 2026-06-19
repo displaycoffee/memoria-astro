@@ -1,13 +1,25 @@
 /* Type definitions */
 type Navigation = {
-	name: string;
+	direction?: 'horizontal' | 'vertical';
+	id: string;
+	menu?: MenuType[];
+	showChildren?: boolean;
 };
 
 type NavigationListItem = {
 	item: MenuItemType;
 };
 
+type NavigationListItemAttributes = {
+	class: string;
+	href: string;
+	target?: string;
+	rel?: string;
+};
+
 /* Export prop types */
 export type NavigationProps = Navigation;
 
 export type NavigationListItemProps = NavigationListItem;
+
+export type NavigationListItemAttributesType = NavigationListItemAttributes;

@@ -24,6 +24,9 @@ export const wpThemeOptions = {
 		if (data?.footerBlock03Order && data?.footerBlock03Content) {
 			buildBlock('03', data.footerBlock03Order, data.footerBlock03Content);
 		}
+		if (data?.footerBlock04Order) {
+			buildBlock('04', data.footerBlock04Order, 'nav menu');
+		}
 
 		// Re-sort footer blocks
 		themeOptionsData.footer.blocks.sort((a, b) => a.order - b.order);
@@ -45,14 +48,26 @@ export const wpThemeOptions = {
 		if (data?.socialFacebook) {
 			buildLink('facebook', 'Facebook', data.socialFacebook);
 		}
+		if (data?.socialGithub) {
+			buildLink('github', 'GitHub', data.socialGithub);
+		}
 		if (data?.socialInstagram) {
 			buildLink('instagram', 'Instagram', data.socialInstagram);
 		}
-		if (data?.socialTwitter) {
-			buildLink('twitter', 'Twitter / X', data.socialTwitter);
+		if (data?.socialLinkedIn) {
+			buildLink('linkedin', 'LinkedIn', data.socialLinkedIn);
 		}
-		if (data?.socialGithub) {
-			buildLink('github', 'GitHub', data.socialGithub);
+		if (data?.socialTwitch) {
+			buildLink('twitch', 'Twitch', data.socialTwitch);
+		}
+		if (data?.socialTwitter) {
+			buildLink('twitter', 'Twitter', data.socialTwitter);
+		}
+		if (data?.socialX) {
+			buildLink('x', 'X', data.socialX);
+		}
+		if (data?.socialYouTube) {
+			buildLink('youtube', 'YouTube', data.socialYouTube);
 		}
 
 		return themeOptionsData;
@@ -95,15 +110,20 @@ export const wpThemeOptions = {
 			footerBlock02Content
 			footerBlock03Order
 			footerBlock03Content
+			footerBlock04Order
 			headerLogo {
 				altText
 				sourceUrl(size: MEDIUM)
 			}
 			sidebarSlug
 			socialFacebook
-			socialInstagram
-			socialTwitter
 			socialGithub
+			socialInstagram
+			socialLinkedIn
+			socialTwitch
+			socialTwitter
+			socialX
+			socialYouTube
 		`;
 
 		// Return different query depending on format
