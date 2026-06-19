@@ -1,0 +1,78 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// PAGE
+//// --------------------------------------------------------------------------
+
+	.page {
+		.page-image {
+			position: relative;
+			margin: 0 0 theme.$spacing-x4 0;
+			.image-wrapper {
+				padding-bottom: 35%;
+			}
+		}
+		.page-details {
+			& > * {
+				margin: 0 0 theme.$spacing-x4 0;
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+
+//// PAGES LIST
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.pages {
+		.pages {
+			.pages-image {
+				margin: 0 0 theme.$spacing-x2 0;
+				.image-wrapper {
+					padding-bottom: 50%;
+				}
+			}
+			.pages-details {
+				& > * {
+					margin: 0 0 theme.$spacing-x2 0;
+				}
+			}
+		}
+	}
+	@include mixins.respond-min(theme.$bp-02) {
+		.pages {
+			.pages {
+				&, & .pages-details {
+					@include mixins.flex-layout((flex-flow: column nowrap));
+				}
+				.pages-image {
+					@include mixins.flex(0 1 auto);
+				}
+				.pages-details {
+					@include mixins.flex;
+					.pages-title {
+						min-height: 62px;
+						@include mixins.line-clamp(2);
+					}
+					.pages-read-more {
+						margin-top: auto;
+						a {
+							margin-top: -#{theme.$spacing-x2};
+						}					
+					}
+				}
+			}
+		}		
+	}
+	@include mixins.respond-min(theme.$bp-04) {
+		.pages {
+			.page {
+				@include mixins.gap-width(theme.$spacing-x4, 3);
+			}
+		}
+	}

@@ -1,0 +1,15 @@
+---
+/* Styles */
+import './styles/page.scss';
+
+/* Scripts */
+import type { PageListProps } from './scripts/page-types';
+
+/* Components */
+import { PageList as PageListReact } from './PageList';
+
+/* Define prop types */
+type Props = PageListProps;
+---
+
+<PageListReact {...Astro.props} />

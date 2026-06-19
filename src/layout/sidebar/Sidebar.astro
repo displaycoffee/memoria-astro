@@ -15,7 +15,7 @@ const { slug } = Astro.props;
 /* Get sidebar data */
 let sidebar: PageType | null = null;
 if (slug) {
-	sidebar = await context.wp.page(slug);
+	sidebar = await context.wp.page.page(slug);
 }
 
 ---

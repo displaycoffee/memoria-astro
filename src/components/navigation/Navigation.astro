@@ -19,7 +19,7 @@ const showNavChildren = showChildren ?? true;
 const navDirection = direction == 'horizontal' || direction == 'vertical' ? direction : 'horizontal';
 
 /* Get menu */
-const navigationList = menu ?? await context.wp.menu(id);
+const navigationList = menu ?? await context.wp.menu.menu(id);
 ---
 
 {navigationList.length !== 0 ? (

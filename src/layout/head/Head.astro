@@ -6,7 +6,7 @@ import { context } from '../../context/scripts/context';
 import { ClientRouter } from 'astro:transitions';
 
 /* Get site details */
-const site = await context.wp.site();
+const site = await context.wp.site.site();
 
 /* Important preloaded styles */
 const styles = `

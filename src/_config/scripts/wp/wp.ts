@@ -7,12 +7,24 @@ import { wpThemeOptions } from './wp-theme-options';
 
 /* Query functions for WordPress data */
 export const wp: WPType = {
-	menu: wpMenu.fetch.menu,
-	page: wpPage.fetch.page,
-	pages: wpPage.fetch.pages,
-	post: wpPost.fetch.post,
-	posts: wpPost.fetch.posts,
-	search: wpPost.fetch.search,
-	site: wpSite.fetch.site,
-	themeOptions: wpThemeOptions.fetch.themeOptions,
+	menu: {
+		menu: wpMenu.fetch.menu,
+	},
+	page: {
+		all: wpPage.fetch.all,
+		page: wpPage.fetch.page,
+		pages: wpPage.fetch.pages,
+	},
+	post: {
+		all: wpPost.fetch.all,
+		post: wpPost.fetch.post,
+		posts: wpPost.fetch.posts,
+		search: wpPost.fetch.search,
+	},
+	site: {
+		site: wpSite.fetch.site,
+	},
+	themeOptions: {
+		themeOptions: wpThemeOptions.fetch.themeOptions,
+	},
 };

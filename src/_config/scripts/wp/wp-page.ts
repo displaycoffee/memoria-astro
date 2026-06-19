@@ -1,7 +1,6 @@
 /* Scripts */
 import { utils } from '../utils';
 import { variables } from '../variables';
-import { wpAuthor } from './wp-author';
 import { wpImage } from './wp-image';
 
 /* Page settings */
@@ -17,9 +16,7 @@ export const wpPage = {
 		const formatData = (page: PageRawType) => {
 			// Return formatted data
 			return {
-				author: wpAuthor.format(page.author),
 				content: page.content,
-				date: utils.any.getDate(page.date),
 				excerpt: utils.any.truncate(utils.any.stripHTML(page.content), 300),
 				id: `page-${page.pageId}`,
 				image: wpImage.format(`${page.title} - Featured Image`, true, page?.featuredImage),
@@ -39,6 +36,35 @@ export const wpPage = {
 		}
 	},
 	fetch: {
+		all: async (exclude?: string[]) => {
+			let allData: PagesType = [];
+			let hasNextPage = true;
+			let after: string | null = null;
+
+			// Loop through pages until all pages are fetched
+			while (hasNextPage) {
+				// Fetch page data
+				const data = await utils.any.fetch({
+					query: wpPage.query('query-all'),
+					url: variables.urls.graphQL,
+					variables: { after },
+				});
+
+				// Format and set data
+				if (data?.pages?.nodes) {
+					const formatted = wpPage.format(data.pages.nodes) as PagesType;
+					const filtered = exclude?.length ? formatted.filter((page) => !exclude.includes(page.slug)) : formatted;
+					allData = [...allData, ...filtered];
+				}
+
+				// If there is a next page, keep going
+				// Otherwise, end the loop
+				hasNextPage = data?.pages?.pageInfo?.hasNextPage ?? false;
+				after = data?.pages?.pageInfo?.endCursor ?? null;
+			}
+
+			return allData;
+		},
 		page: async (uri: string) => {
 			let pageData: PageType | null = null;
 
@@ -56,7 +82,7 @@ export const wpPage = {
 
 			return pageData;
 		},
-		pages: async (pageSize: number) => {
+		pages: async (pageSize: number, exclude?: string[]) => {
 			let pagesData: PagesType = [];
 
 			// Get pages data
@@ -68,6 +94,7 @@ export const wpPage = {
 			// Format and set data
 			if (data?.pages?.nodes) {
 				pagesData = wpPage.format(data.pages.nodes) as PagesType;
+				pagesData = exclude?.length ? pagesData.filter((page) => !exclude.includes(page.slug)) : pagesData;
 			}
 
 			return pagesData;
@@ -76,11 +103,7 @@ export const wpPage = {
 	query: (format: GraphQLQueryFormatType, pageSize?: number) => {
 		// Shared query function for fetching page data
 		const query = `
-			author {
-				${wpAuthor.query('node')}
-			}
 			content
-			date
 			featuredImage {
 				${wpImage.query('node', settings.imageSize)}
 			}
@@ -104,6 +127,19 @@ export const wpPage = {
 						}
 					}
 				}`;
+			case 'query-all': {
+				return `query Pages($after: String) {
+					pages(first: 100, after: $after) {
+						pageInfo {
+							hasNextPage
+							endCursor
+						}
+						nodes {
+							${query}
+						}
+					}
+				}`;
+			}
 			case 'query-nodes':
 				return `query Pages {
 					pages(first: ${pageSize ?? settings.pageSize}) {

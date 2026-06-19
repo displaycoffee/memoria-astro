@@ -4,15 +4,19 @@ import { context } from '../context/scripts/context.ts';
 
 /* Components */
 import Container from '../layout/container/Container.astro';
-import PostList from '../components/post/PostList.astro';
+import PageList from '../components/page/PageList.astro';
 
-/* Get posts */
-const site = await context.wp.site();
-const posts = await context.wp.posts(site.pageSize);
+/* Get site and theme options */
+const site = await context.wp.site.site();
+const themeOptions = await context.wp.themeOptions.themeOptions();
+const sidebarSlug = themeOptions?.sidebar?.slug ?? '';
+
+/* Get pages */
+const pages = sidebarSlug ? await context.wp.page.pages(site.pageSize + 1, [sidebarSlug]) : await context.wp.page.pages(site.pageSize);
 ---
 
 <Container>
 	<h2>Astro + WordPress 🚀</h2>
 
-	<PostList posts={posts} />
+	<PageList pages={pages} />
 </Container>

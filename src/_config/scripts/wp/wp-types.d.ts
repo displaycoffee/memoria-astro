@@ -53,7 +53,7 @@ type CategoryRawNodes = {
 	nodes: CategoryRaw[];
 };
 
-type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-node' | 'query-nodes' | 'query-search' | 'none';
+type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-all' | 'query-node' | 'query-nodes' | 'query-search' | 'none';
 
 type GraphQLParams = {
 	query: string;
@@ -108,9 +108,7 @@ type MenuRawNodes = MenuItemRaw & {
 };
 
 type Page = {
-	author: Author;
 	content: string;
-	date: string;
 	excerpt: string;
 	id: string;
 	image: Image;
@@ -122,9 +120,7 @@ type Page = {
 type Pages = Page[];
 
 type PageRaw = {
-	author?: AuthorRawNode;
 	content: string;
-	date: string;
 	featuredImage?: ImageRawNode;
 	pageId: number;
 	slug: string;
@@ -248,14 +244,26 @@ type ThemeOptionsRaw = {
 };
 
 type WP = {
-	menu: (id: string) => Promise<Menu[]>;
-	page: (uri: string) => Promise<Page | null>;
-	pages: (pageSize: number) => Promise<Pages>;
-	post: (uri: string) => Promise<Post | null>;
-	posts: (pageSize: number) => Promise<Posts>;
-	search: (query: string, pageSize: number, url?: string) => Promise<Posts>;
-	site: () => Promise<Site>;
-	themeOptions: () => Promise<ThemeOptions>;
+	menu: {
+		menu: (id: string) => Promise<Menu[]>;
+	};
+	page: {
+		all: (exclude?: string[]) => Promise<Pages>;
+		page: (uri: string) => Promise<Page | null>;
+		pages: (pageSize: number, exclude?: string[]) => Promise<Pages>;
+	};
+	post: {
+		all: () => Promise<Posts>;
+		post: (uri: string) => Promise<Post | null>;
+		posts: (pageSize: number) => Promise<Posts>;
+		search: (query: string, pageSize: number, url?: string) => Promise<Posts>;
+	};
+	site: {
+		site: () => Promise<Site>;
+	};
+	themeOptions: {
+		themeOptions: () => Promise<ThemeOptions>;
+	};
 };
 
 declare global {

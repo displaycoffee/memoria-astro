@@ -17,7 +17,7 @@ type Props = HeaderProps;
 const { options } = Astro.props;
 
 /* Get site details */
-const site = await context.wp.site();
+const site = await context.wp.site.site();
 ---
 
 <header class="header">

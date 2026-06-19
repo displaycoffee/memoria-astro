@@ -7,8 +7,8 @@ import Container from '../../layout/container/Container.astro';
 import PostList from '../../components/post/PostList.astro';
 
 /* Get posts */
-const site = await context.wp.site();
-const posts = await context.wp.posts(site.pageSize);
+const site = await context.wp.site.site();
+const posts = await context.wp.post.posts(site.pageSize);
 ---
 
 <Container>

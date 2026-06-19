@@ -58,6 +58,33 @@ export const wpPost = {
 		}
 	},
 	fetch: {
+		all: async () => {
+			let allData: PostsType = [];
+			let hasNextPage = true;
+			let after: string | null = null;
+
+			// Loop through pages until all posts are fetched
+			while (hasNextPage) {
+				// Fetch post data
+				const data = await utils.any.fetch({
+					query: wpPost.query('query-all'),
+					url: variables.urls.graphQL,
+					variables: { after },
+				});
+
+				// Format and set data
+				if (data?.posts?.nodes) {
+					allData = [...allData, ...(wpPost.format(data.posts.nodes) as PostsType)];
+				}
+
+				// If there is a next page, keep going
+				// Otherwise, end the loop
+				hasNextPage = data?.posts?.pageInfo?.hasNextPage ?? false;
+				after = data?.posts?.pageInfo?.endCursor ?? null;
+			}
+
+			return allData;
+		},
 		post: async (uri: string) => {
 			let postData: PostType | null = null;
 
@@ -152,10 +179,22 @@ export const wpPost = {
 						}
 					}
 				}`;
+			case 'query-all':
+				return `query Posts($after: String) {
+					posts(first: 100, after: $after) {
+						pageInfo {
+							hasNextPage
+							endCursor
+						}
+						nodes {
+							${query}
+						}
+					}
+				}`;
 			case 'query-nodes':
 				return `query Posts {
 					posts(first: ${pageSize ?? settings.pageSize}) {
-						nodes { 
+						nodes {
 							${query}
 						}
 					}

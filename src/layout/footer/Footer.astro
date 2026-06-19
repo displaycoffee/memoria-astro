@@ -20,7 +20,7 @@ const { options } = Astro.props;
 const year = new Date().getFullYear();
 
 /* Get footer menu to conditionally render nav block */
-const footerMenu = await context.wp.menu('footer');
+const footerMenu = await context.wp.menu.menu('footer');
 ---
 
 <footer class="footer">

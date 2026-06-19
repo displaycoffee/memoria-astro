@@ -4,7 +4,7 @@ import { wp } from '../_config/scripts/wp/wp';
 import { context } from '../context/scripts/context';
 
 export const GET: APIRoute = async () => {
-	const site = await wp.site();
+	const site = await wp.site.site();
 
 	const manifest = {
 		short_name: site.title,

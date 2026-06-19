@@ -30,7 +30,7 @@ export const SearchResults = (props: SearchResultsProps) => {
 			// If query is present, do search
 			try {
 				setLoading(true);
-				const data = await context.wp.search(q, 12, graphqlUrl);
+				const data = await context.wp.post.search(q, 12, graphqlUrl);
 				if (!cancelled) {
 					setResults(data);
 				}

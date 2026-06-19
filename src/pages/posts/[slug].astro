@@ -7,8 +7,8 @@ import Container from '../../layout/container/Container.astro';
 import Post from '../../components/post/Post.astro';
 
 /* Get posts */
-export async function getStaticPaths() {
-	const posts = await context.wp.posts(100);
+export const getStaticPaths = async() => {
+	const posts = await context.wp.post.all();
 	return posts.map((post) => ({
 		params: { slug: post.slug },
 		props: { post },

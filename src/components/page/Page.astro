@@ -1,0 +1,30 @@
+---
+/* Styles */
+import './styles/page.scss';
+
+/* Scripts */
+import type { PageProps } from './scripts/page-types';
+
+/* Components */
+import { PageImage } from './PageBlocks';
+
+/* Define prop types */
+type Props = PageProps;
+
+/* Props */
+const { page } = Astro.props;
+---
+
+<div id={page.id} class="page">
+	{!page.image.url.includes('placeholder') ? (
+		<PageImage page={page} />
+	) : null}
+
+	<div class="page-details">
+		<h2 class="page-title">
+			<a href={page.url}>{page.title}</a>
+		</h2>
+
+		<div class="page-content" set:html={page.content}></div>
+	</div>
+</div>

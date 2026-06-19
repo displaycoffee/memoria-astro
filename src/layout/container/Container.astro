@@ -17,7 +17,7 @@ import IconMap from '../../components/icons/IconMap.astro';
 import { SlideoutOverlay, Slideout } from '../../components/slideout/Slideout';
 
 /* Get theme options */
-const options = await context.wp.themeOptions();
+const options = await context.wp.themeOptions.themeOptions();
 
 /* Create body class */
 const pathname = Astro.url.pathname;
