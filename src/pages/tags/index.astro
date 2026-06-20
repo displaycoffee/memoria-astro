@@ -1,0 +1,17 @@
+---
+/* Scripts */
+import { context } from '../../context/scripts/context.ts';
+
+/* Components */
+import Container from '../../layout/container/Container.astro';
+import TagList from '../../components/tag/TagList.astro';
+
+/* Get tags */
+const tags = await context.wp.tag.tags(12);
+---
+
+<Container>
+	<h2>Tags</h2>
+
+	<TagList tags={tags} />
+</Container>

@@ -1,7 +1,8 @@
 /* Type definitions */
 type Author = {
 	avatar: Image;
-	description: string;
+	content: string;
+	excerpt: string;
 	id: string;
 	name: string;
 	slug: string;
@@ -21,15 +22,11 @@ type AuthorRaw = {
 	userId: number;
 };
 
-type AuthorRawNode = {
-	node: AuthorRaw;
-};
-
-type AuthorRawNodes = {
-	nodes: AuthorRaw[];
-};
+type AuthorsRaw = AuthorRaw[];
 
 type Category = {
+	content: string;
+	excerpt: string;
 	id: string;
 	name: string;
 	slug: string;
@@ -40,20 +37,15 @@ type Categories = Category[];
 
 type CategoryRaw = {
 	categoryId: number;
+	description: string;
 	name: string;
 	slug: string;
 	uri: string;
 };
 
-type CategoryRawNode = {
-	node: CategoryRaw;
-};
+type CategoriesRaw = CategoryRaw[];
 
-type CategoryRawNodes = {
-	nodes: CategoryRaw[];
-};
-
-type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-all' | 'query-node' | 'query-nodes' | 'query-search' | 'none';
+type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-all' | 'query-author' | 'query-category' | 'query-nodes' | 'query-search' | 'query-tag';
 
 type GraphQLParams = {
 	query: string;
@@ -147,15 +139,21 @@ type Post = {
 type Posts = Post[];
 
 type PostRaw = {
-	author?: AuthorRawNode;
-	categories: CategoryRawNodes;
+	author?: {
+		node: AuthorRaw;
+	};
+	categories: {
+		nodes: CategoriesRaw;
+	};
 	content: string;
 	date: string;
 	excerpt: string;
 	featuredImage?: ImageRawNode;
 	postId: number;
 	slug: string;
-	tags: TagRawNodes;
+	tags: {
+		nodes: TagsRaw;
+	};
 	title: string;
 	uri: string;
 };
@@ -176,6 +174,8 @@ type SiteRaw = {
 };
 
 type Tag = {
+	content: string;
+	excerpt: string;
 	id: string;
 	name: string;
 	slug: string;
@@ -185,19 +185,14 @@ type Tag = {
 type Tags = Tag[];
 
 type TagRaw = {
-	tagId: number;
+	description: string;
 	name: string;
 	slug: string;
+	tagId: number;
 	uri: string;
 };
 
-type TagRawNode = {
-	node: TagRaw;
-};
-
-type TagRawNodes = {
-	nodes: TagRaw[];
-};
+type TagsRaw = TagRaw[];
 
 type ThemeOptions = {
 	footer: {
@@ -244,6 +239,14 @@ type ThemeOptionsRaw = {
 };
 
 type WP = {
+	author: {
+		all: () => Promise<Authors>;
+		authors: (pageSize: number) => Promise<Authors>;
+	};
+	category: {
+		all: () => Promise<Categories>;
+		categories: (pageSize: number) => Promise<Categories>;
+	};
 	menu: {
 		menu: (id: string) => Promise<Menu[]>;
 	};
@@ -254,12 +257,19 @@ type WP = {
 	};
 	post: {
 		all: () => Promise<Posts>;
+		author: (slug: string, pageSize: number) => Promise<Posts>;
+		category: (slug: string, pageSize: number) => Promise<Posts>;
 		post: (uri: string) => Promise<Post | null>;
 		posts: (pageSize: number) => Promise<Posts>;
 		search: (query: string, pageSize: number, url?: string) => Promise<Posts>;
+		tag: (slug: string, pageSize: number) => Promise<Posts>;
 	};
 	site: {
 		site: () => Promise<Site>;
+	};
+	tag: {
+		all: () => Promise<Tags>;
+		tags: (pageSize: number) => Promise<Tags>;
 	};
 	themeOptions: {
 		themeOptions: () => Promise<ThemeOptions>;
@@ -274,9 +284,7 @@ declare global {
 
 	type AuthorRawType = AuthorRaw;
 
-	type AuthorRawNodeType = AuthorRawNode;
-
-	type AuthorRawNodesType = AuthorRawNodes;
+	type AuthorsRawType = AuthorsRaw;
 
 	type CategoryType = Category;
 
@@ -284,9 +292,7 @@ declare global {
 
 	type CategoryRawType = CategoryRaw;
 
-	type CategoryRawNodeType = CategoryRawNode;
-
-	type CategoryRawNodesType = CategoryRawNodes;
+	type CategoriesRawType = CategoriesRaw;
 
 	type GraphQLParamsType = GraphQLParams;
 
@@ -336,9 +342,7 @@ declare global {
 
 	type TagRawType = TagRaw;
 
-	type TagRawNodeType = TagRawNode;
-
-	type TagRawNodesType = TagRawNodes;
+	type TagsRawType = TagsRaw;
 
 	type ThemeOptionsType = ThemeOptions;
 

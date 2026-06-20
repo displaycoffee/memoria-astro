@@ -1,0 +1,28 @@
+---
+/* Scripts */
+import { context } from '../../context/scripts/context.ts';
+
+/* Components */
+import Container from '../../layout/container/Container.astro';
+import Tag from '../../components/tag/Tag.astro';
+
+/* Get tags */
+export const getStaticPaths = async() => {
+	const tags = await context.wp.tag.all();
+	return tags.map((tag) => ({
+		params: { slug: tag.slug },
+		props: { tag },
+	}));
+};
+
+/* Define prop types */
+import type { InferGetStaticPropsType } from 'astro';
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+/* Props */
+const { tag } = Astro.props;
+---
+
+<Container>
+	<Tag tag={tag} />
+</Container>

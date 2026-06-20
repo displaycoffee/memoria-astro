@@ -1,0 +1,35 @@
+---
+/* Styles */
+import './styles/tag.scss';
+
+/* Scripts */
+import type { TagProps } from './scripts/tag-types';
+import { context } from '../../context/scripts/context.ts';
+
+/* Components */
+import PostList from '../post/PostList.astro';
+
+/* Define prop types */
+type Props = TagProps;
+
+/* Props */
+const { tag } = Astro.props;
+
+/* Get posts */
+const site = await context.wp.site.site();
+const posts = await context.wp.post.tag(tag.slug, site.pageSize);
+---
+
+<div id={tag.id} class="tag">
+	<div class="tag-details">
+		<h2 class="tag-title">
+			<a href={tag.url}>{tag.name}</a>
+		</h2>
+
+		<div class="tag-content" set:html={tag.content}></div>
+	</div>
+
+	<div class="tag-posts">
+		<PostList posts={posts} />
+	</div>
+</div>

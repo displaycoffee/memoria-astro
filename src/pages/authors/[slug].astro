@@ -1,0 +1,28 @@
+---
+/* Scripts */
+import { context } from '../../context/scripts/context.ts';
+
+/* Components */
+import Container from '../../layout/container/Container.astro';
+import Author from '../../components/author/Author.astro';
+
+/* Get authors */
+export const getStaticPaths = async() => {
+	const authors = await context.wp.author.all();
+	return authors.map((author) => ({
+		params: { slug: author.slug },
+		props: { author },
+	}));
+};
+
+/* Define prop types */
+import type { InferGetStaticPropsType } from 'astro';
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+/* Props */
+const { author } = Astro.props;
+---
+
+<Container>
+	<Author author={author} />
+</Container>

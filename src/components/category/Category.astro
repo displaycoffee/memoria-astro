@@ -1,0 +1,35 @@
+---
+/* Styles */
+import './styles/category.scss';
+
+/* Scripts */
+import type { CategoryProps } from './scripts/category-types';
+import { context } from '../../context/scripts/context.ts';
+
+/* Components */
+import PostList from '../post/PostList.astro';
+
+/* Define prop types */
+type Props = CategoryProps;
+
+/* Props */
+const { category } = Astro.props;
+
+/* Get posts */
+const site = await context.wp.site.site();
+const posts = await context.wp.post.category(category.slug, site.pageSize);
+---
+
+<div id={category.id} class="category">
+	<div class="category-details">
+		<h2 class="category-title">
+			<a href={category.url}>{category.name}</a>
+		</h2>
+
+		<div class="category-content" set:html={category.content}></div>
+	</div>
+
+	<div class="category-posts">
+		<PostList posts={posts} />
+	</div>
+</div>

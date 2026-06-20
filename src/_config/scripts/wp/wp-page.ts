@@ -40,9 +40,13 @@ export const wpPage = {
 			let allData: PagesType = [];
 			let hasNextPage = true;
 			let after: string | null = null;
+			let page = 0;
+			const maxPages = 100;
 
 			// Loop through pages until all pages are fetched
-			while (hasNextPage) {
+			while (hasNextPage && page < maxPages) {
+				page++;
+
 				// Fetch page data
 				const data = await utils.any.fetch({
 					query: wpPage.query('query-all'),

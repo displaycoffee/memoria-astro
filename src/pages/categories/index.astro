@@ -1,0 +1,17 @@
+---
+/* Scripts */
+import { context } from '../../context/scripts/context.ts';
+
+/* Components */
+import Container from '../../layout/container/Container.astro';
+import CategoryList from '../../components/category/CategoryList.astro';
+
+/* Get categories */
+const categories = await context.wp.category.categories(12);
+---
+
+<Container>
+	<h2>Categories</h2>
+
+	<CategoryList categories={categories} />
+</Container>

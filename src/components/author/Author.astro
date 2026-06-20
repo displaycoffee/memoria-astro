@@ -1,0 +1,35 @@
+---
+/* Styles */
+import './styles/author.scss';
+
+/* Scripts */
+import type { AuthorProps } from './scripts/author-types';
+import { context } from '../../context/scripts/context.ts';
+
+/* Components */
+import PostList from '../post/PostList.astro';
+
+/* Define prop types */
+type Props = AuthorProps;
+
+/* Props */
+const { author } = Astro.props;
+
+/* Get posts */
+const site = await context.wp.site.site();
+const posts = await context.wp.post.author(author.slug, site.pageSize);
+---
+
+<div id={author.id} class="author">
+	<div class="author-details">
+		<h2 class="author-title">
+			<a href={author.url}>{author.name}</a>
+		</h2>
+
+		<div class="author-content" set:html={author.content}></div>
+	</div>
+
+	<div class="author-posts">
+		<PostList posts={posts} />
+	</div>
+</div>

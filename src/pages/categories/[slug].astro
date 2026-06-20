@@ -1,0 +1,28 @@
+---
+/* Scripts */
+import { context } from '../../context/scripts/context.ts';
+
+/* Components */
+import Container from '../../layout/container/Container.astro';
+import Category from '../../components/category/Category.astro';
+
+/* Get categories */
+export const getStaticPaths = async() => {
+	const categories = await context.wp.category.all();
+	return categories.map((category) => ({
+		params: { slug: category.slug },
+		props: { category },
+	}));
+};
+
+/* Define prop types */
+import type { InferGetStaticPropsType } from 'astro';
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+/* Props */
+const { category } = Astro.props;
+---
+
+<Container>
+	<Category category={category} />
+</Container>

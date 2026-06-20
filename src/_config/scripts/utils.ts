@@ -2,28 +2,36 @@ export const utils: UtilsType = {
 	any: {
 		fetch: async ({ url, query, variables = {} }: GraphQLParamsType) => {
 			// Fetch data from WordPress
-			const response = await fetch(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					query,
-					variables,
-				}),
-			});
+			const controller = new AbortController();
+			const timeout = setTimeout(() => controller.abort(), 30000);
 
-			if (!response.ok) {
-				throw new Error(`Failed to fetch WordPress data: ${response.statusText}`);
+			try {
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						query,
+						variables,
+					}),
+					signal: controller.signal,
+				});
+
+				if (!response.ok) {
+					throw new Error(`Failed to fetch WordPress data: ${response.statusText}`);
+				}
+
+				const json = await response.json();
+
+				if (json.errors) {
+					throw new Error(json.errors.map((e: { message: string }) => e.message).join(', '));
+				}
+
+				return json.data;
+			} finally {
+				clearTimeout(timeout);
 			}
-
-			const json = await response.json();
-
-			if (json.errors) {
-				throw new Error(json.errors.map((e: { message: string }) => e.message).join(', '));
-			}
-
-			return json.data;
 		},
 		getDate: (time: string) => {
 			// Get date
