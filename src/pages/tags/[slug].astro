@@ -23,6 +23,6 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { tag } = Astro.props;
 ---
 
-<Container>
+<Container title={tag.name}>
 	<Tag tag={tag} />
 </Container>

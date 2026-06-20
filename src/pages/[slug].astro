@@ -25,6 +25,6 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { page } = Astro.props;
 ---
 
-<Container>
+<Container title={page.title} hideSidebar={page.hideSidebar}>
 	<Page page={page} />
 </Container>

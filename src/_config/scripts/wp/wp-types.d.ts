@@ -102,6 +102,7 @@ type MenuRawNodes = MenuItemRaw & {
 type Page = {
 	content: string;
 	excerpt: string;
+	hideSidebar: boolean;
 	id: string;
 	image: Image;
 	slug: string;
@@ -114,6 +115,7 @@ type Pages = Page[];
 type PageRaw = {
 	content: string;
 	featuredImage?: ImageRawNode;
+	hideSidebar?: boolean;
 	pageId: number;
 	slug: string;
 	title: string;
@@ -128,6 +130,7 @@ type Post = {
 	content: string;
 	date: string;
 	excerpt: string;
+	hideSidebar: boolean;
 	id: string;
 	image: Image;
 	slug: string;
@@ -149,6 +152,7 @@ type PostRaw = {
 	date: string;
 	excerpt: string;
 	featuredImage?: ImageRawNode;
+	hideSidebar?: boolean;
 	postId: number;
 	slug: string;
 	tags: {

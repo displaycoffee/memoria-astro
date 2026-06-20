@@ -8,10 +8,13 @@ import TagList from '../../components/tag/TagList.astro';
 
 /* Get tags */
 const tags = await context.wp.tag.tags(12);
+
+/* Page title */
+const pageTitle = 'Tags';
 ---
 
-<Container>
-	<h2>Tags</h2>
+<Container title={pageTitle}>
+	<h2>{pageTitle}</h2>
 
 	<TagList tags={tags} />
 </Container>

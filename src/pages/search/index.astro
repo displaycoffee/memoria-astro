@@ -7,6 +7,6 @@ import Container from '../../layout/container/Container.astro';
 import { SearchResults } from '../../components/search/SearchResults';
 ---
 
-<Container>
+<Container title="Search">
 	<SearchResults graphqlUrl={context.variables.urls.graphQL} client:load />
 </Container>

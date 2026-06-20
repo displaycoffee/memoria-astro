@@ -1,12 +1,20 @@
 ---
 /* Scripts */
+import type { HeadProps } from './scripts/head-types';
 import { context } from '../../context/scripts/context';
 
 /* Components */
 import { ClientRouter } from 'astro:transitions';
 
+/* Define prop types */
+type Props = HeadProps;
+
+/* Props */
+const { title } = Astro.props;
+
 /* Get site details */
 const site = await context.wp.site.site();
+const pageTitle = title ? `${title} | ${site.title}` : site.title;
 
 /* Important preloaded styles */
 const styles = `
@@ -102,13 +110,13 @@ const styles = `
 ---
 
 <head>
-	<title>{site.title}</title>
+	<title>{pageTitle}</title>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="description" content={site.description} />
 	<meta name="generator" content={Astro.generator} />
-	<meta property="og:title" content={site.title} />
+	<meta property="og:title" content={pageTitle} />
 	<meta property="og:site_name" content={site.title} />
 	<meta property="og:url" content={site.url} />
 	<meta property="og:locale" content="en_US" />

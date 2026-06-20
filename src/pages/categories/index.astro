@@ -8,10 +8,13 @@ import CategoryList from '../../components/category/CategoryList.astro';
 
 /* Get categories */
 const categories = await context.wp.category.categories(12);
+
+/* Page title */
+const pageTitle = 'Categories';
 ---
 
-<Container>
-	<h2>Categories</h2>
+<Container title={pageTitle}>
+	<h2>{pageTitle}</h2>
 
 	<CategoryList categories={categories} />
 </Container>

@@ -1,10 +1,13 @@
 ---
 /* Components */
 import Container from '../layout/container/Container.astro';
+
+/* Page title */
+const pageTitle = 'Page Not Found';
 ---
 
-<Container>
-	<h2>Page Not Found</h2>
+<Container title={pageTitle}>
+	<h2>{pageTitle}</h2>
 
 	<p>Oops, that page wasn't found. <a href="/">Go back home?</a></p>
 </Container>

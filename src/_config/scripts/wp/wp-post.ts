@@ -39,6 +39,7 @@ export const wpPost = {
 				content: post.content,
 				date: utils.any.getDate(post.date),
 				excerpt: utils.any.truncate(utils.any.stripHTML(post.excerpt), 300),
+				hideSidebar: post?.hideSidebar ?? false,
 				id: `post-${post.postId}`,
 				image: wpImage.format(`${post.title} - Featured Image`, true, post?.featuredImage),
 				slug: post.slug,
@@ -206,6 +207,7 @@ export const wpPost = {
 			featuredImage {
 				${wpImage.query('node', settings.imageSize)}
 			}
+			hideSidebar
 			postId
 			slug
 			tags {

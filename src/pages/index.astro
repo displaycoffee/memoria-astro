@@ -13,10 +13,13 @@ const sidebarSlug = themeOptions?.sidebar?.slug ?? '';
 
 /* Get pages */
 const pages = sidebarSlug ? await context.wp.page.pages(site.pageSize + 1, [sidebarSlug]) : await context.wp.page.pages(site.pageSize);
+
+/* Page title */
+const pageTitle = 'Pages';
 ---
 
 <Container>
-	<h2>Pages</h2>
+	<h2>{pageTitle}</h2>
 
 	<PageList pages={pages} />
 </Container>

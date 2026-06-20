@@ -9,10 +9,13 @@ import PostList from '../../components/post/PostList.astro';
 /* Get posts */
 const site = await context.wp.site.site();
 const posts = await context.wp.post.posts(site.pageSize);
+
+/* Page title */
+const pageTitle = 'Posts';
 ---
 
-<Container>
-	<h2>Posts</h2>
+<Container title={pageTitle}>
+	<h2>{pageTitle}</h2>
 
 	<PostList posts={posts} />
 </Container>

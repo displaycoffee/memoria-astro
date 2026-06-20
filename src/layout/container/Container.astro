@@ -4,6 +4,7 @@ import './styles/container.scss';
 
 /* Scripts */
 import { slide } from 'astro:transitions';
+import type { ContainerProps } from './scripts/container-types';
 import { context } from '../../context/scripts/context';
 
 /* Components */
@@ -16,12 +17,17 @@ import Footer from '../footer/Footer.astro';
 import IconMap from '../../components/icons/IconMap.astro';
 import { SlideoutOverlay, Slideout } from '../../components/slideout/Slideout';
 
+/* Define prop types */
+type Props = ContainerProps;
+
+/* Props */
+const { hideSidebar = false, title } = Astro.props;
+
 /* Get theme options */
 const options = await context.wp.themeOptions.themeOptions();
 
 /* Create body class */
-const pathname = Astro.url.pathname;
-const bodyClass = pathname === '/' ? 'home' : context.utils.any.handleize(pathname);
+const bodyClass = title ? context.utils.any.handleize(title) : 'home';
 
 /* Slideout options */
 const slideoutOptions = {
@@ -37,7 +43,7 @@ const slideoutOptions = {
 
 <!doctype html>
 <html lang="en">
-	<Head />
+	<Head title={title} />
 	
 	<body class={`scrollbar page-${bodyClass}`}>
 		<div id="container" class="container">			
@@ -61,7 +67,7 @@ const slideoutOptions = {
 						<slot />
 					</Content>
 
-					<Sidebar slug={options?.sidebar?.slug ?? ''} />
+					{!hideSidebar && <Sidebar slug={options?.sidebar?.slug ?? ''} />}
 				</div>
 			</main>
 

@@ -18,6 +18,7 @@ export const wpPage = {
 			return {
 				content: page.content,
 				excerpt: utils.any.truncate(utils.any.stripHTML(page.content), 300),
+				hideSidebar: page?.hideSidebar ?? false,
 				id: `page-${page.pageId}`,
 				image: wpImage.format(`${page.title} - Featured Image`, true, page?.featuredImage),
 				slug: page.slug,
@@ -111,6 +112,7 @@ export const wpPage = {
 			featuredImage {
 				${wpImage.query('node', settings.imageSize)}
 			}
+			hideSidebar
 			pageId
 			slug
 			title

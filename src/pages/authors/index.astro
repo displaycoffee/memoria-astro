@@ -8,10 +8,13 @@ import AuthorList from '../../components/author/AuthorList.astro';
 
 /* Get authors */
 const authors = await context.wp.author.authors(12);
+
+/* Page title */
+const pageTitle = 'Authors';
 ---
 
-<Container>
-	<h2>Authors</h2>
+<Container title={pageTitle}>
+	<h2>{pageTitle}</h2>
 
 	<AuthorList authors={authors} />
 </Container>

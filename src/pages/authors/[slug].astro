@@ -23,6 +23,6 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { author } = Astro.props;
 ---
 
-<Container>
+<Container title={author.name}>
 	<Author author={author} />
 </Container>
