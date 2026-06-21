@@ -21,9 +21,9 @@ const { authors } = Astro.props;
 						<a href={author.url}>{author.name}</a>
 					</h3>
 
-					<div class="author-content">
-						<p>{author.excerpt}</p>
-					</div>
+					{author.excerpt && (
+						<div class="author-content margin-trim">{author.excerpt}</div>
+					)}
 
 					<div class="author-read-more">
 						<a class="button" href={author.url}>

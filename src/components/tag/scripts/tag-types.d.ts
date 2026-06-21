@@ -1,5 +1,6 @@
 /* Type definitions */
 type Tag = {
+	posts: PostsType;
 	tag: TagType;
 };
 

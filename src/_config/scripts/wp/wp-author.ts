@@ -3,11 +3,6 @@ import { utils } from '../utils';
 import { variables } from '../variables';
 import { wpImage } from './wp-image';
 
-/* Author settings */
-const settings = {
-	pageSize: 12,
-};
-
 export const wpAuthor = {
 	format: (data: AuthorRawType | AuthorsRawType | undefined) => {
 		// Format author data
@@ -67,24 +62,8 @@ export const wpAuthor = {
 
 			return allData;
 		},
-		authors: async (pageSize: number) => {
-			let authorsData: AuthorsType = [];
-
-			// Get authors data
-			const data = await utils.any.fetch({
-				query: wpAuthor.query('query-nodes', pageSize),
-				url: variables.urls.graphQL,
-			});
-
-			// Format and set data
-			if (data?.users?.nodes) {
-				authorsData = wpAuthor.format(data.users.nodes) as AuthorsType;
-			}
-
-			return authorsData;
-		},
 	},
-	query: (format: GraphQLQueryFormatType, pageSize?: number) => {
+	query: (format: GraphQLQueryFormatType) => {
 		// Shared query function for fetching author data
 		const query = `
 			avatar {
@@ -110,14 +89,6 @@ export const wpAuthor = {
 							hasNextPage
 							endCursor
 						}
-						nodes {
-							${query}
-						}
-					}
-				}`;
-			case 'query-nodes':
-				return `query Authors {
-					users(first: ${pageSize ?? settings.pageSize}, where: { hasPublishedPosts: [POST] }) {
 						nodes {
 							${query}
 						}

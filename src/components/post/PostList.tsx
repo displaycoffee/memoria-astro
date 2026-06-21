@@ -24,9 +24,7 @@ export const PostList = (props: PostListProps) => {
 
 							<PostMeta post={post} />
 
-							<div className="post-content">
-								<p>{post.excerpt}</p>
-							</div>
+							<div className="post-content margin-trim">{post.excerpt}</div>
 
 							<div className="post-read-more">
 								<a className="button" href={post.url}>

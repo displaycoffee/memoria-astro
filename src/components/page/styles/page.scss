@@ -40,6 +40,9 @@
 			.page-details {
 				& > * {
 					margin: 0 0 theme.$spacing-x2 0;
+					&:last-child {
+						margin-bottom: 0;
+					}
 				}
 			}
 		}
@@ -55,15 +58,15 @@
 				}
 				.page-details {
 					@include mixins.flex;
+					@include mixins.gap(theme.$spacing-x2);
+					& > * {
+						margin: 0;
+					}
 					.page-title {
-						min-height: 62px;
-						@include mixins.line-clamp(2);
+						@include mixins.line-clamp(1);
 					}
 					.page-read-more {
-						margin-top: auto;
-						a {
-							margin-top: -#{theme.$spacing-x2};
-						}					
+						margin-top: auto;					
 					}
 				}
 			}

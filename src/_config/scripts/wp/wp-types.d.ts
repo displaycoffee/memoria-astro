@@ -45,13 +45,15 @@ type CategoryRaw = {
 
 type CategoriesRaw = CategoryRaw[];
 
-type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-all' | 'query-author' | 'query-category' | 'query-nodes' | 'query-search' | 'query-tag';
-
 type GraphQLParams = {
 	query: string;
 	url: string;
 	variables?: object;
 };
+
+type GraphQLPostWhere = 'author' | 'category' | 'tag';
+
+type GraphQLQueryFormat = 'node' | 'nodes' | 'query' | 'query-all' | 'query-nodes' | 'query-search';
 
 type Image = {
 	alt: string;
@@ -245,11 +247,9 @@ type ThemeOptionsRaw = {
 type WP = {
 	author: {
 		all: () => Promise<Authors>;
-		authors: (pageSize: number) => Promise<Authors>;
 	};
 	category: {
 		all: () => Promise<Categories>;
-		categories: (pageSize: number) => Promise<Categories>;
 	};
 	menu: {
 		menu: (id: string) => Promise<Menu[]>;
@@ -260,20 +260,15 @@ type WP = {
 		pages: (pageSize: number, exclude?: string[]) => Promise<Pages>;
 	};
 	post: {
-		all: () => Promise<Posts>;
-		author: (slug: string, pageSize: number) => Promise<Posts>;
-		category: (slug: string, pageSize: number) => Promise<Posts>;
+		all: (slug?: string, type?: GraphQLPostWhereType) => Promise<Posts>;
 		post: (uri: string) => Promise<Post | null>;
-		posts: (pageSize: number) => Promise<Posts>;
 		search: (query: string, pageSize: number, url?: string) => Promise<Posts>;
-		tag: (slug: string, pageSize: number) => Promise<Posts>;
 	};
 	site: {
 		site: () => Promise<Site>;
 	};
 	tag: {
 		all: () => Promise<Tags>;
-		tags: (pageSize: number) => Promise<Tags>;
 	};
 	themeOptions: {
 		themeOptions: () => Promise<ThemeOptions>;
@@ -299,6 +294,8 @@ declare global {
 	type CategoriesRawType = CategoriesRaw;
 
 	type GraphQLParamsType = GraphQLParams;
+
+	type GraphQLPostWhereType = GraphQLPostWhere;
 
 	type GraphQLQueryFormatType = GraphQLQueryFormat;
 

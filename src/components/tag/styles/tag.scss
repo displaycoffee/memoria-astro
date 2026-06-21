@@ -30,6 +30,9 @@
 			.tag-details {
 				& > * {
 					margin: 0 0 theme.$spacing-x2 0;
+					&:last-child {
+						margin-bottom: 0;
+					}
 				}
 			}
 		}
@@ -42,14 +45,15 @@
 				}
 				.tag-details {
 					@include mixins.flex;
+					@include mixins.gap(theme.$spacing-x2);
+					& > * {
+						margin: 0;
+					}
 					.tag-title {
 						@include mixins.line-clamp(1);
 					}
 					.tag-read-more {
-						margin-top: auto;
-						a {
-							margin-top: -#{theme.$spacing-x2};
-						}					
+						margin-top: auto;				
 					}
 				}
 			}

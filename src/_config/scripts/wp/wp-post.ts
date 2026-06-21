@@ -9,7 +9,6 @@ import { wpTag } from './wp-tag';
 /* Post settings */
 const settings = {
 	imageSize: 'LARGE',
-	pageSize: 12,
 };
 
 /* Main post functions */
@@ -59,7 +58,7 @@ export const wpPost = {
 		}
 	},
 	fetch: {
-		all: async () => {
+		all: async (slug?: string, type?: GraphQLPostWhereType) => {
 			let allData: PostsType = [];
 			let hasNextPage = true;
 			let after: string | null = null;
@@ -70,12 +69,15 @@ export const wpPost = {
 			while (hasNextPage && page < maxPages) {
 				page++;
 
-				// Fetch post data
-				const data = await utils.any.fetch({
-					query: wpPost.query('query-all'),
+				// Build fetch options
+				const options = {
+					query: type ? wpPost.query('query-all', undefined, type) : wpPost.query('query-all'),
 					url: variables.urls.graphQL,
-					variables: { after },
-				});
+					variables: { after, slug },
+				};
+
+				// Fetch post data
+				const data = await utils.any.fetch(options);
 
 				// Format and set data
 				if (data?.posts?.nodes) {
@@ -89,40 +91,6 @@ export const wpPost = {
 			}
 
 			return allData;
-		},
-		author: async (slug: string, pageSize: number) => {
-			let authorData: PostsType = [];
-
-			// Get posts data
-			const data = await utils.any.fetch({
-				query: wpPost.query('query-author', pageSize),
-				url: variables.urls.graphQL,
-				variables: { slug },
-			});
-
-			if (data?.posts?.nodes) {
-				authorData = wpPost.format(data.posts.nodes) as PostsType;
-			}
-
-			// Format and set data
-			return authorData;
-		},
-		category: async (slug: string, pageSize: number) => {
-			let categoryData: PostsType = [];
-
-			// Get posts data
-			const data = await utils.any.fetch({
-				query: wpPost.query('query-category', pageSize),
-				url: variables.urls.graphQL,
-				variables: { slug },
-			});
-
-			// Format and set data
-			if (data?.posts?.nodes) {
-				categoryData = wpPost.format(data.posts.nodes) as PostsType;
-			}
-
-			return categoryData;
 		},
 		post: async (uri: string) => {
 			let postData: PostType | null = null;
@@ -141,22 +109,6 @@ export const wpPost = {
 
 			return postData;
 		},
-		posts: async (pageSize: number) => {
-			let postsData: PostsType = [];
-
-			// Get posts data
-			const data = await utils.any.fetch({
-				query: wpPost.query('query-nodes', pageSize),
-				url: variables.urls.graphQL,
-			});
-
-			// Format and set data
-			if (data?.posts?.nodes) {
-				postsData = wpPost.format(data.posts.nodes) as PostsType;
-			}
-
-			return postsData;
-		},
 		search: async (query: string, pageSize: number, url = variables.urls.graphQL) => {
 			let searchData: PostsType = [];
 
@@ -174,25 +126,8 @@ export const wpPost = {
 
 			return searchData;
 		},
-		tag: async (slug: string, pageSize: number) => {
-			let tagData: PostsType = [];
-
-			// Get posts data
-			const data = await utils.any.fetch({
-				query: wpPost.query('query-tag', pageSize),
-				url: variables.urls.graphQL,
-				variables: { slug },
-			});
-
-			// Format and set data
-			if (data?.posts?.nodes) {
-				tagData = wpPost.format(data.posts.nodes) as PostsType;
-			}
-
-			return tagData;
-		},
 	},
-	query: (format: GraphQLQueryFormatType, pageSize?: number) => {
+	query: (format: GraphQLQueryFormatType, pageSize?: number, type?: GraphQLPostWhereType) => {
 		// Shared query function for fetching post data
 		const query = `
 			author {
@@ -222,6 +157,21 @@ export const wpPost = {
 			uri
 		`;
 
+		// Create "slug" and "where" filter
+		let slug: string = '';
+		let where: string = '';
+
+		if (type) {
+			slug = ', $slug: String';
+			if (type == 'author') {
+				where = ', where: { authorName: $slug }';
+			} else if (type == 'category') {
+				where = ', where: { categoryName: $slug }';
+			} else if (type == 'tag') {
+				where = ', where: { tag: $slug }';
+			}
+		}
+
 		// Return different query depending on format
 		switch (format) {
 			case 'node':
@@ -237,8 +187,8 @@ export const wpPost = {
 					}
 				}`;
 			case 'query-all':
-				return `query Posts($after: String) {
-					posts(first: 100, after: $after) {
+				return `query Posts($after: String${slug}) {
+					posts(first: 100, after: $after${where}) {
 						pageInfo {
 							hasNextPage
 							endCursor
@@ -248,41 +198,9 @@ export const wpPost = {
 						}
 					}
 				}`;
-			case 'query-author':
-				return `query Posts($slug: String) {
-					posts(first: ${pageSize ?? settings.pageSize}, where: { authorName: $slug }) {
-						nodes {
-							${query}
-						}
-					}
-				}`;
-			case 'query-category':
-				return `query Posts($slug: String) {
-					posts(first: ${pageSize ?? settings.pageSize}, where: { categoryName: $slug }) {
-						nodes {
-							${query}
-						}
-					}
-				}`;
-			case 'query-nodes':
-				return `query Posts {
-					posts(first: ${pageSize ?? settings.pageSize}) {
-						nodes {
-							${query}
-						}
-					}
-				}`;
 			case 'query-search':
 				return `query Search($query: String) {
 					posts(first: ${pageSize}, where: { search: $query }) {
-						nodes { 
-							${query}
-						}
-					}
-				}`;
-			case 'query-tag':
-				return `query Posts($slug: String) {
-					posts(first: ${pageSize ?? settings.pageSize}, where: { tag: $slug }) {
 						nodes {
 							${query}
 						}

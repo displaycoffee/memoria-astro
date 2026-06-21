@@ -27,7 +27,7 @@ const { post } = Astro.props;
 
 		<PostMeta post={post} />
 
-		<div class="post-content" set:html={post.content}></div>
+		<div class="post-content margin-trim" set:html={post.content}></div>
 
 		<PostTaxonomies post={post} />
 	</div>

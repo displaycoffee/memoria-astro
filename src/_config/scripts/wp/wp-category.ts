@@ -2,11 +2,6 @@
 import { utils } from '../utils';
 import { variables } from '../variables';
 
-/* Category settings */
-const settings = {
-	pageSize: 12,
-};
-
 export const wpCategory = {
 	format: (data: CategoryRawType | CategoriesRawType) => {
 		// Format category data
@@ -63,24 +58,8 @@ export const wpCategory = {
 
 			return allData;
 		},
-		categories: async (pageSize: number) => {
-			let categoriesData: CategoriesType = [];
-
-			// Get categories data
-			const data = await utils.any.fetch({
-				query: wpCategory.query('query-nodes', pageSize),
-				url: variables.urls.graphQL,
-			});
-
-			// Format and set data
-			if (data?.categories?.nodes) {
-				categoriesData = wpCategory.format(data.categories.nodes) as CategoriesType;
-			}
-
-			return categoriesData;
-		},
 	},
-	query: (format: GraphQLQueryFormatType, pageSize?: number) => {
+	query: (format: GraphQLQueryFormatType) => {
 		// Shared query function for fetching category data
 		const query = `
 			categoryId
@@ -103,14 +82,6 @@ export const wpCategory = {
 							hasNextPage
 							endCursor
 						}
-						nodes {
-							${query}
-						}
-					}
-				}`;
-			case 'query-nodes':
-				return `query Categories {
-					categories(first: ${pageSize ?? settings.pageSize}) {
 						nodes {
 							${query}
 						}

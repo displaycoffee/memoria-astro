@@ -22,9 +22,7 @@ export const PageList = (props: PageListProps) => {
 								<a href={page.url}>{page.title}</a>
 							</h3>
 
-							<div className="page-content">
-								<p>{page.excerpt}</p>
-							</div>
+							<div className="page-content margin-trim">{page.excerpt}</div>
 
 							<div className="page-read-more">
 								<a className="button" href={page.url}>

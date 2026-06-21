@@ -21,9 +21,9 @@ const { categories } = Astro.props;
 						<a href={category.url}>{category.name}</a>
 					</h3>
 
-					<div class="category-content">
-						<p>{category.excerpt}</p>
-					</div>
+					{category.excerpt && (
+						<div class="category-content margin-trim">{category.excerpt}</div>
+					)}
 
 					<div class="category-read-more">
 						<a class="button" href={category.url}>

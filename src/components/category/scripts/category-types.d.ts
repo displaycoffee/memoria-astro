@@ -1,6 +1,7 @@
 /* Type definitions */
 type Category = {
 	category: CategoryType;
+	posts: PostsType;
 };
 
 type CategoryList = {

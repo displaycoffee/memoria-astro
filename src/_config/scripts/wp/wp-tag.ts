@@ -2,11 +2,6 @@
 import { utils } from '../utils';
 import { variables } from '../variables';
 
-/* Tag settings */
-const settings = {
-	pageSize: 12,
-};
-
 export const wpTag = {
 	format: (data: TagRawType | TagsRawType) => {
 		// Format tag data
@@ -63,24 +58,8 @@ export const wpTag = {
 
 			return allData;
 		},
-		tags: async (pageSize: number) => {
-			let tagsData: TagsType = [];
-
-			// Get tags data
-			const data = await utils.any.fetch({
-				query: wpTag.query('query-nodes', pageSize),
-				url: variables.urls.graphQL,
-			});
-
-			// Format and set data
-			if (data?.tags?.nodes) {
-				tagsData = wpTag.format(data.tags.nodes) as TagsType;
-			}
-
-			return tagsData;
-		},
 	},
-	query: (format: GraphQLQueryFormatType, pageSize?: number) => {
+	query: (format: GraphQLQueryFormatType) => {
 		// Shared query function for fetching tag data
 		const query = `
 			tagId
@@ -103,14 +82,6 @@ export const wpTag = {
 							hasNextPage
 							endCursor
 						}
-						nodes {
-							${query}
-						}
-					}
-				}`;
-			case 'query-nodes':
-				return `query Tags {
-					tags(first: ${pageSize ?? settings.pageSize}) {
 						nodes {
 							${query}
 						}

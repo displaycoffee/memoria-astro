@@ -30,6 +30,9 @@
 			.author-details {
 				& > * {
 					margin: 0 0 theme.$spacing-x2 0;
+					&:last-child {
+						margin-bottom: 0;
+					}
 				}
 			}
 		}
@@ -42,14 +45,15 @@
 				}
 				.author-details {
 					@include mixins.flex;
+					@include mixins.gap(theme.$spacing-x2);
+					& > * {
+						margin: 0;
+					}
 					.author-title {
 						@include mixins.line-clamp(1);
 					}
 					.author-read-more {
-						margin-top: auto;
-						a {
-							margin-top: -#{theme.$spacing-x2};
-						}					
+						margin-top: auto;				
 					}
 				}
 			}

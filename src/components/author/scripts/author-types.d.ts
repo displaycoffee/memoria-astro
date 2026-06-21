@@ -1,6 +1,7 @@
 /* Type definitions */
 type Author = {
 	author: AuthorType;
+	posts: PostsType;
 };
 
 type AuthorList = {

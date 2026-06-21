@@ -21,9 +21,9 @@ const { tags } = Astro.props;
 						<a href={tag.url}>{tag.name}</a>
 					</h3>
 
-					<div class="tag-content">
-						<p>{tag.excerpt}</p>
-					</div>
+					{tag.excerpt && (
+						<div class="tag-content margin-trim">{tag.excerpt}</div>
+					)}
 
 					<div class="tag-read-more">
 						<a class="button" href={tag.url}>
