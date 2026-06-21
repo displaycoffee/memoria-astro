@@ -50,14 +50,14 @@ const slideoutOptions = {
 			<Header options={options} />
 			
 			<div class="hide-mobile">
-				<Navigation id={'primary'} />
+				<Navigation id={'primary'} label={'Primary Navigation'} />
 			</div>
 
 			<div class="hide-desktop">
 				<SlideoutOverlay client:load />
 
 				<Slideout options={slideoutOptions} client:visible>
-					<Navigation id={'primary'} />
+					<Navigation id={'primary'} label={'Primary Navigation'} />
 				</Slideout>
 			</div>
 

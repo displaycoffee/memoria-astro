@@ -18,7 +18,7 @@ export const Icon = (props: IconsProps) => {
 
 	return (
 		<div className={iconClasses.join(' ')}>
-			<svg className={`icon icon-${id}`}>
+			<svg className={`icon icon-${id}`} aria-hidden="true" focusable="false">
 				<use xlinkHref={`#icon-${id}`} />
 			</svg>
 		</div>

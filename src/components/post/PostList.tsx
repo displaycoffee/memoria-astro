@@ -28,7 +28,7 @@ export const PostList = (props: PostListProps) => {
 
 							<div className="post-read-more">
 								<a className="button" href={post.url}>
-									Read More
+									Read More<span className="sr-only"> about {post.title}</span>
 								</a>
 							</div>
 						</div>

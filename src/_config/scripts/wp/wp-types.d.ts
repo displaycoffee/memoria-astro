@@ -143,6 +143,11 @@ type Post = {
 
 type Posts = Post[];
 
+type PostSearchResults = {
+	hasNextPage: boolean;
+	posts: Posts;
+};
+
 type PostRaw = {
 	author?: {
 		node: AuthorRaw;
@@ -262,7 +267,7 @@ type WP = {
 	post: {
 		all: (slug?: string, type?: GraphQLPostWhereType) => Promise<Posts>;
 		post: (uri: string) => Promise<Post | null>;
-		search: (query: string, pageSize: number, url?: string) => Promise<Posts>;
+		search: (query: string, pageSize: number, url?: string) => Promise<PostSearchResults>;
 	};
 	site: {
 		site: () => Promise<Site>;
@@ -328,6 +333,8 @@ declare global {
 	type PostType = Post;
 
 	type PostsType = Posts;
+
+	type PostSearchResultsType = PostSearchResults;
 
 	type PostRawType = PostRaw;
 

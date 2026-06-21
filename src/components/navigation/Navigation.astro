@@ -14,7 +14,7 @@ import { Dropdown } from '../dropdown/Dropdown';
 type Props = NavigationProps;
 
 /* Props */
-const { direction, id, menu, showChildren } = Astro.props;
+const { direction, id, label, menu, showChildren } = Astro.props;
 const showNavChildren = showChildren ?? true;
 const navDirection = direction == 'horizontal' || direction == 'vertical' ? direction : 'horizontal';
 
@@ -23,7 +23,7 @@ const navigationList = menu ?? await context.wp.menu.menu(id);
 ---
 
 {navigationList.length !== 0 ? (
-	<nav id={`navigation-${id}`} class={`navigation navigation-${id}`}>
+	<nav id={`navigation-${id}`} class={`navigation navigation-${id}`} aria-label={label}>
 		<ul class={`navigation-list navigation-list-${navDirection} unstyled`}>
 			{navigationList.map((nav: MenuType) => {
 				return (

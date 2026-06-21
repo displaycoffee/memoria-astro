@@ -27,7 +27,7 @@ const { categories } = Astro.props;
 
 					<div class="category-read-more">
 						<a class="button" href={category.url}>
-							Read More
+							Read More<span class="sr-only"> about {category.name}</span>
 						</a>
 					</div>
 				</div>

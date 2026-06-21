@@ -11,6 +11,8 @@ type DropdownButton = {
 	buttonLinkClass?: string;
 	buttonUrl?: string;
 	closeContent: MouseEvent<HTMLAnchorElement>;
+	contentId: string;
+	isExpanded: boolean;
 	toggleDropdown: MouseEvent<HTMLButtonElement>;
 };
 
@@ -19,6 +21,7 @@ type DropdownButtonAttributes = HTMLAttributes<HTMLDivElement>;
 type DropdownContent = {
 	children: ReactNode;
 	closeContent: MouseEvent<HTMLDivElement>;
+	id: string;
 };
 
 /* Export types */

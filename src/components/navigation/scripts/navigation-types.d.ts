@@ -2,6 +2,7 @@
 type Navigation = {
 	direction?: 'horizontal' | 'vertical';
 	id: string;
+	label: string;
 	menu?: MenuType[];
 	showChildren?: boolean;
 };

@@ -27,7 +27,7 @@ const { authors } = Astro.props;
 
 					<div class="author-read-more">
 						<a class="button" href={author.url}>
-							Read More
+							Read More<span class="sr-only"> about {author.name}</span>
 						</a>
 					</div>
 				</div>

@@ -124,7 +124,10 @@ export const wpPost = {
 				searchData = wpPost.format(data.posts.nodes) as PostsType;
 			}
 
-			return searchData;
+			return {
+				hasNextPage: data?.posts?.pageInfo?.hasNextPage ?? false,
+				posts: searchData,
+			};
 		},
 	},
 	query: (format: GraphQLQueryFormatType, pageSize?: number, type?: GraphQLPostWhereType) => {
@@ -201,6 +204,9 @@ export const wpPost = {
 			case 'query-search':
 				return `query Search($query: String) {
 					posts(first: ${pageSize}, where: { search: $query }) {
+						pageInfo {
+							hasNextPage
+						}
 						nodes {
 							${query}
 						}

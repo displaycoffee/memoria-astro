@@ -30,7 +30,7 @@ const footerMenu = await context.wp.menu.menu('footer');
 				block.content == 'nav menu' ? (
 					footerMenu.length !== 0 ? (
 						<div id={block.id} class="footer-block column">
-							<Navigation direction={'vertical'} id={'footer'} menu={footerMenu} showChildren={false} />
+							<Navigation direction={'vertical'} id={'footer'} label={'Footer Navigation'} menu={footerMenu} showChildren={false} />
 						</div>
 					) : null
 				) : (
@@ -43,9 +43,9 @@ const footerMenu = await context.wp.menu.menu('footer');
 	<div class="footer-blocks row row-wrap row-fit row-spacing-20">
 		{options.social.length !== 0 ? (
 			<div id="footer-social" class="footer-social footer-block column">
-				<nav class="footer-social-links">
+				<nav class="footer-social-links" aria-label={'Social Links'}>
 					{options.social.map((social) => (
-						<a title={social.label} class="footer-social-link" href={social.url} target="_blank" rel="noreferrer">
+						<a aria-label={social.label} class="footer-social-link" href={social.url} target="_blank" rel="noreferrer">
 							<Icons id={social.id} size={'x-large'} />
 						</a>
 					))}

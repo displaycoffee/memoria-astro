@@ -15,11 +15,13 @@ import { Icon } from '../icons/Icons';
 export const Dropdown = (props: DropdownProps) => {
 	const { buttonLabel, children, closeOnClick, id } = props;
 	const dropdownId = `dropdown-${context.utils.any.handleize(id)}`;
+	const contentId = `${dropdownId}-content`;
 	const [dropdown, setDropdown] = useState('');
+	const isExpanded = dropdown === dropdownId;
 
 	// Toggle dropdown state
 	const toggleDropdown = () => {
-		setDropdown(dropdown === dropdownId ? '' : dropdownId);
+		setDropdown(isExpanded ? '' : dropdownId);
 	};
 
 	// Detect click outside dropdown
@@ -33,15 +35,23 @@ export const Dropdown = (props: DropdownProps) => {
 	};
 
 	return (
-		<div id={dropdownId} className={`dropdown dropdown-${dropdown === dropdownId ? 'expanded' : 'collapsed'}`} ref={dropdownRef}>
-			<DropdownButton buttonLabel={buttonLabel || ''} closeContent={closeContent} toggleDropdown={toggleDropdown} />
-			<DropdownContent closeContent={closeContent}>{children}</DropdownContent>
+		<div id={dropdownId} className={`dropdown dropdown-${isExpanded ? 'expanded' : 'collapsed'}`} ref={dropdownRef}>
+			<DropdownButton
+				buttonLabel={buttonLabel || ''}
+				closeContent={closeContent}
+				contentId={contentId}
+				isExpanded={isExpanded}
+				toggleDropdown={toggleDropdown}
+			/>
+			<DropdownContent closeContent={closeContent} id={contentId}>
+				{children}
+			</DropdownContent>
 		</div>
 	);
 };
 
 export const DropdownButton = (props: DropdownButtonProps) => {
-	const { buttonLabel, toggleDropdown } = props;
+	const { buttonLabel, contentId, isExpanded, toggleDropdown } = props;
 
 	// Create dropdown icon
 	const icon = <Icon id={'angle-down'} />;
@@ -50,6 +60,8 @@ export const DropdownButton = (props: DropdownButtonProps) => {
 	const buttonAttributes: DropdownButtonAttributesType = {
 		className: 'dropdown-button-toggle unstyled',
 		type: 'button',
+		['aria-controls']: contentId,
+		['aria-expanded']: isExpanded,
 		['aria-label']: 'Dropdown button',
 		onClick: toggleDropdown,
 	};
@@ -65,10 +77,10 @@ export const DropdownButton = (props: DropdownButtonProps) => {
 };
 
 export const DropdownContent = (props: DropdownContentProps) => {
-	const { children, closeContent } = props;
+	const { children, closeContent, id } = props;
 
 	return (
-		<div className="dropdown-content margin-trim" onClick={closeContent} role="presentation">
+		<div id={id} className="dropdown-content margin-trim" onClick={closeContent} role="presentation">
 			{children}
 		</div>
 	);

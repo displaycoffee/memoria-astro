@@ -26,7 +26,7 @@ export const PageList = (props: PageListProps) => {
 
 							<div className="page-read-more">
 								<a className="button" href={page.url}>
-									Read More
+									Read More<span className="sr-only"> about {page.title}</span>
 								</a>
 							</div>
 						</div>
