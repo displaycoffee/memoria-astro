@@ -43,7 +43,7 @@ export const Dropdown = (props: DropdownProps) => {
 				isExpanded={isExpanded}
 				toggleDropdown={toggleDropdown}
 			/>
-			<DropdownContent closeContent={closeContent} id={contentId}>
+			<DropdownContent closeContent={closeContent} contentId={contentId}>
 				{children}
 			</DropdownContent>
 		</div>
@@ -77,10 +77,10 @@ export const DropdownButton = (props: DropdownButtonProps) => {
 };
 
 export const DropdownContent = (props: DropdownContentProps) => {
-	const { children, closeContent, id } = props;
+	const { children, closeContent, contentId } = props;
 
 	return (
-		<div id={id} className="dropdown-content margin-trim" onClick={closeContent} role="presentation">
+		<div id={contentId} className="dropdown-content margin-trim" onClick={closeContent} role="presentation">
 			{children}
 		</div>
 	);

@@ -21,7 +21,7 @@ type DropdownButtonAttributes = HTMLAttributes<HTMLDivElement>;
 type DropdownContent = {
 	children: ReactNode;
 	closeContent: MouseEvent<HTMLDivElement>;
-	id: string;
+	contentId: string;
 };
 
 /* Export types */
