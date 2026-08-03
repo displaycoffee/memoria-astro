@@ -46,22 +46,26 @@ const slideoutOptions = {
 	<Head title={title} />
 	
 	<body class={`scrollbar page-${bodyClass}`}>
-		<div id="container" class="container">			
+		<div id="container" class="container">
+			<a href="#main-content" class="skip-link sr-only">
+				Skip to main content
+			</a>
+
 			<Header options={options} />
 			
 			<div class="hide-mobile">
-				<Navigation id={'primary'} label={'Primary Navigation'} />
+				<Navigation id={'primary'} label={'Primary Navigation'} name={'primary'} />
 			</div>
 
 			<div class="hide-desktop">
 				<SlideoutOverlay client:load />
 
 				<Slideout options={slideoutOptions} client:visible>
-					<Navigation id={'primary'} label={'Primary Navigation'} />
+					<Navigation id={'mobile'} label={'Mobile Navigation'} name={'primary'} />
 				</Slideout>
 			</div>
 
-			<main class="main" transition:animate={slide({ duration: '0.5s' })}>
+			<main id="main-content" class="main" transition:animate={slide({ duration: '0.5s' })}>
 				<div class="main-layout flex-wrap">
 					<Content>
 						<slot />
@@ -84,17 +88,21 @@ const slideoutOptions = {
 			import { closeFormFields } from './scripts/forms.ts';
 			import { context } from '../../context/scripts/context';
 
-			// Close form fields
-			closeFormFields('.form-field-close', '.input', '.button-close');
+			// Astro doesn't re-run this script after a ClientRouter navigation, but it does
+			// dispatch astro:page-load after every navigation (including the initial one)
+			document.addEventListener('astro:page-load', () => {
+				// Close form fields
+				closeFormFields('.form-field-close', '.input', '.button-close');
 
-			// Set scroll to top functionality
-			const scrollToTopButton = document.querySelector('[data-scroll-to="scroll-to-top"]');
+				// Set scroll to top functionality
+				const scrollToTopButton = document.querySelector('[data-scroll-to="scroll-to-top"]');
 
-			if (scrollToTopButton) {
-				scrollToTopButton.addEventListener('click', (e) => {
-					context.utils.browser.scrollTo(e, 'body');
-				});
-			}
+				if (scrollToTopButton) {
+					scrollToTopButton.addEventListener('click', (e) => {
+						context.utils.browser.scrollTo(e, 'body');
+					});
+				}
+			});
 		</script>
 	</body>
 </html>

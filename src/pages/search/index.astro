@@ -4,9 +4,12 @@ import { context } from '../../context/scripts/context';
 
 /* Components */
 import Container from '../../layout/container/Container.astro';
+import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
 import { SearchResults } from '../../components/search/SearchResults';
 ---
 
 <Container title="Search">
-	<SearchResults graphqlUrl={context.variables.urls.graphQL} client:load />
+	<ErrorBoundary message="Something went wrong loading search results." client:load>
+		<SearchResults graphqlUrl={context.variables.urls.graphQL} />
+	</ErrorBoundary>
 </Container>

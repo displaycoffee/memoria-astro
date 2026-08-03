@@ -36,6 +36,7 @@
 		@include mixins.transition(color 0.3s ease-in-out);
 		&:active, &:hover {
 			color: theme.$color-04;
+			text-decoration: underline;
 		}
 	}
 	mark {

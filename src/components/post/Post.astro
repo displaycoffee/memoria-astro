@@ -6,6 +6,7 @@ import './styles/post.scss';
 import type { PostProps } from './scripts/post-types';
 
 /* Components */
+import { ErrorBoundary } from '../error-boundary/ErrorBoundary';
 import { PostImage, PostMeta, PostTaxonomies } from './PostBlocks';
 
 /* Define prop types */
@@ -17,7 +18,9 @@ const { post } = Astro.props;
 
 <div id={post.id} class="post">
 	{!post.image.url.includes('placeholder') ? (
-		<PostImage post={post} />
+		<ErrorBoundary message="Something went wrong loading this image.">
+			<PostImage post={post} />
+		</ErrorBoundary>
 	) : null}
 
 	<div class="post-details">
@@ -25,10 +28,14 @@ const { post } = Astro.props;
 			<a href={post.url}>{post.title}</a>
 		</h2>
 
-		<PostMeta post={post} />
+		<ErrorBoundary message="Something went wrong loading this post's details.">
+			<PostMeta post={post} />
+		</ErrorBoundary>
 
 		<div class="post-content margin-trim" set:html={post.content}></div>
 
-		<PostTaxonomies post={post} />
+		<ErrorBoundary message="Something went wrong loading this post's categories/tags.">
+			<PostTaxonomies post={post} />
+		</ErrorBoundary>
 	</div>
 </div>

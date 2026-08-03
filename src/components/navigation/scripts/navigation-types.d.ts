@@ -4,6 +4,7 @@ type Navigation = {
 	id: string;
 	label: string;
 	menu?: MenuType[];
+	name: string;
 	showChildren?: boolean;
 };
 

@@ -6,10 +6,13 @@ import './styles/post.scss';
 import type { PostListProps } from './scripts/post-types';
 
 /* Components */
+import { ErrorBoundary } from '../error-boundary/ErrorBoundary';
 import { PostList as PostListReact } from './PostList';
 
 /* Define prop types */
 type Props = PostListProps;
 ---
 
-<PostListReact {...Astro.props} />
+<ErrorBoundary message="Something went wrong loading this list of posts.">
+	<PostListReact {...Astro.props} />
+</ErrorBoundary>

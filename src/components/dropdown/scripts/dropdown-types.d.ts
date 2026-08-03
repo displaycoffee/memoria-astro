@@ -1,18 +1,21 @@
 /* Type definitions */
 type Dropdown = {
-	buttonLabel?: string;
+	buttonLabel: string;
 	children: ReactNode;
 	closeOnClick?: boolean;
 	id: string;
+	showLabel?: boolean;
 };
 
 type DropdownButton = {
 	buttonLabel: string;
 	buttonLinkClass?: string;
+	buttonRef: RefObject<HTMLButtonElement | null>;
 	buttonUrl?: string;
 	closeContent: MouseEvent<HTMLAnchorElement>;
 	contentId: string;
 	isExpanded: boolean;
+	showLabel?: boolean;
 	toggleDropdown: MouseEvent<HTMLButtonElement>;
 };
 

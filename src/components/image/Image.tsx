@@ -58,9 +58,9 @@ export const Image = (props: ImageProps) => {
 
 	return hasWrapper ? (
 		<div {...wrapperAttributes}>
-			<img {...imageAttributes} alt={altText} title={altText} />
+			<img {...imageAttributes} alt={altText} />
 		</div>
 	) : (
-		<img {...imageAttributes} alt={altText} title={altText} />
+		<img {...imageAttributes} alt={altText} />
 	);
 };

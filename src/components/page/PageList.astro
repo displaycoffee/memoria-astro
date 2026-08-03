@@ -6,10 +6,13 @@ import './styles/page.scss';
 import type { PageListProps } from './scripts/page-types';
 
 /* Components */
+import { ErrorBoundary } from '../error-boundary/ErrorBoundary';
 import { PageList as PageListReact } from './PageList';
 
 /* Define prop types */
 type Props = PageListProps;
 ---
 
-<PageListReact {...Astro.props} />
+<ErrorBoundary message="Something went wrong loading this list of pages.">
+	<PageListReact {...Astro.props} />
+</ErrorBoundary>
