@@ -2,10 +2,10 @@
 import './styles/slideout.scss';
 
 /* Packages */
-import { type RefObject, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 /* Scripts */
-import type { SlideoutProps } from './scripts/slideout-types';
+import type { SlideoutProps, SlideoutTouchType, SlideoutTouchRefType, SlideoutOverlayRefType } from './scripts/slideout-types';
 import { context } from '../../context/scripts/context';
 import { slideout } from './scripts/slideout';
 
@@ -15,22 +15,18 @@ import { Icon } from '../icons/Icons';
 export const Slideout = (props: SlideoutProps) => {
 	const { children, options } = props;
 	const { config, get, toggle } = slideout;
-	const slideoutId = `slideout-${options.id}`;
-	const slideoutTitle = `${slideoutId}-title`;
+	const id = `slideout-${options.id}`;
+	const title = `${id}-title`;
 
 	// Get default attributes for slideout
 	const width = options?.width ?? config.values.width;
 	const direction = options?.direction ?? config.values.direction;
-	const orientation = get.orientation(direction);
-	const styles = {
-		width: width,
-		transition: `${direction} 0.5s ease-in-out`,
-		[direction]: orientation === 'vertical' ? config.values.vertical : `-${width}`,
-	};
+	const orientation = slideout.get.orientation(direction);
+	const styles = get.styles(direction, width);
 
 	// Create shared slideout button
 	const slideoutButton = (
-		<button className="slideout-button unstyled pointer" type="button" aria-label="Slideout button" onClick={(e) => toggle(e, slideoutId)}>
+		<button className="slideout-button unstyled pointer" type="button" onClick={(e) => toggle(e, id)}>
 			<Icon id={'equalizer'} size={'large'} />
 			{options.label}
 		</button>
@@ -39,21 +35,63 @@ export const Slideout = (props: SlideoutProps) => {
 	// Set button properties
 	const button = typeof options?.button === 'object' ? options.button : { outside: false, show: true };
 
+	// Track touch start position to detect a swipe that closes the slideout
+	const touchStart = useRef<SlideoutTouchRefType>(null);
+	const swipeThreshold = 50; // minimum distance (px) to count as a swipe
+	const isNegativeDirection = direction === 'top' || direction === 'left';
+
+	// Touch start function for swipe on mobile
+	const handleTouchStart = (e: SlideoutTouchType) => {
+		const touch = e.touches[0];
+		touchStart.current = { x: touch.clientX, y: touch.clientY };
+	};
+
+	// Touch end function for swipe on mobile
+	const handleTouchEnd = (e: SlideoutTouchType) => {
+		if (!touchStart.current) return;
+
+		// Set delta coordinates
+		const touch = e.changedTouches[0];
+		const deltaX = touch.clientX - touchStart.current.x;
+		const deltaY = touch.clientY - touchStart.current.y;
+		touchStart.current = null;
+
+		// Use whichever axis matches the direction the slideout enters / exits along
+		const delta = orientation === 'vertical' ? deltaY : deltaX;
+		const crossDelta = orientation === 'vertical' ? deltaX : deltaY;
+
+		// Ignore short drags and swipes that lean more on the cross axis (e.g. scrolling the nav list)
+		if (Math.abs(delta) < swipeThreshold || Math.abs(delta) < Math.abs(crossDelta)) return;
+
+		// Only close when swiping toward the edge the slideout exits through
+		const isClosingSwipe = isNegativeDirection ? delta < 0 : delta > 0;
+		if (isClosingSwipe) toggle(e, false);
+	};
+
 	return button.outside && button.show ? (
 		slideoutButton
 	) : (
 		<div
-			id={slideoutId}
-			className={`${config.classes.slideout} slideout-${orientation}`}
+			id={id}
+			className={`${config.classes.slideout} slideout-${orientation} slideout-${direction}`}
 			data-width={width}
 			data-direction={direction}
 			data-orientation={orientation}
 		>
 			{!button.outside && button.show ? slideoutButton : null}
 
-			<div className={config.classes.menu} style={styles} inert role="dialog" aria-modal="true" aria-labelledby={slideoutTitle}>
+			<div
+				className={config.classes.content}
+				style={styles}
+				inert
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby={title}
+				onTouchStart={handleTouchStart}
+				onTouchEnd={handleTouchEnd}
+			>
 				<header className="slideout-header flex-nowrap flex-align-items-center">
-					<h2 id={slideoutTitle} className="slideout-title">
+					<h2 id={title} className="slideout-title">
 						{options.label}
 					</h2>
 
@@ -69,13 +107,14 @@ export const Slideout = (props: SlideoutProps) => {
 
 				<div className="slideout-scrollbar scrollbar">
 					<div
-						className="slideout-content"
+						className="slideout-body"
 						onClick={(e) => {
-							const eventNode = e.target as Node;
+							const eventElement = e.target as HTMLElement;
 
-							// Close slideout menu if inner link is clicked on
-							if (eventNode?.nodeName) {
-								if (eventNode.nodeName.toLowerCase() === 'a') {
+							// Close slideout content if inner nav button is clicked on
+							if (eventElement) {
+								const elementName = eventElement?.nodeName?.toLowerCase() ?? '';
+								if (elementName === 'a' || (elementName === 'button' && eventElement.classList.contains('a'))) {
 									setTimeout(() => {
 										toggle(e, false);
 									});
@@ -95,19 +134,26 @@ export const Slideout = (props: SlideoutProps) => {
 export const SlideoutOverlay = () => {
 	const { utils } = context;
 	const { config, toggle } = slideout;
-	const elementRef: RefObject<HTMLDivElement | null> = useRef(null);
+	const elementRef: SlideoutOverlayRefType = useRef(null);
 
 	// Create overlay element and append to body on mount, remove on unmount
 	useEffect(() => {
 		const slideoutTarget = document.querySelector('body');
 		if (!slideoutTarget) return;
 
+		// Create overlay
 		const overlay = document.createElement('div');
+
+		// Set attributes
 		utils.any.setAttributes(overlay, {
 			class: 'slideout-overlay pointer',
 			role: 'presentation',
 		});
+
+		// Add onclick
 		overlay.onclick = (e) => toggle(e, false);
+
+		// Set children and ref
 		slideoutTarget.appendChild(overlay);
 		elementRef.current = overlay;
 
@@ -117,37 +163,20 @@ export const SlideoutOverlay = () => {
 		};
 	}, [utils, toggle]);
 
-	// Close any active slideout(s) if the viewport crosses into desktop width
-	// Note: unlike the React boilerplate, the slideout markup here is never unmounted (only CSS-hidden
-	// via .hide-desktop), so this only needs to catch the case where it's left open across that crossing
-	useEffect(() => {
-		const activeSelector = `.${config.classes.slideout}.${config.classes.active}`;
-		const mediaQuery = window.matchMedia(`(min-width: ${context.theme.bps.bp02}px)`);
-
-		const handleChange = (e: MediaQueryListEvent) => {
-			if (!e.matches) return;
-			if (document.querySelectorAll(activeSelector).length === 0) return;
-			toggle(e, false);
-		};
-
-		mediaQuery.addEventListener('change', handleChange);
-
-		return () => mediaQuery.removeEventListener('change', handleChange);
-	}, [config, toggle]);
-
 	// Close active slideout(s) when escape is pressed
-	// Note: set.slideout already restores focus to whatever opened the menu
+	// Note: set.slideout already restores focus to whatever opened the content
 	useEffect(() => {
 		const activeSelector = `.${config.classes.slideout}.${config.classes.active}`;
 
+		// Function for keydown events
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key !== 'Escape') return;
 			if (document.querySelectorAll(activeSelector).length === 0) return;
 			toggle(e, false);
 		};
 
+		// Add and remove event listeners
 		document.addEventListener('keydown', handleKeyDown);
-
 		return () => document.removeEventListener('keydown', handleKeyDown);
 	}, [config, toggle]);
 

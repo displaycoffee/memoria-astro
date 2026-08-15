@@ -1,5 +1,5 @@
 /* Type definitions */
-type Events = Event;
+type Events = SyntheticEvent | Event;
 
 type ObjectString = {
 	[key: string]: string;
@@ -46,6 +46,10 @@ type Utils = {
 		truncate: (string: string, limit: number) => string;
 	};
 	browser: {
+		focusTrap: {
+			activate: (container: HTMLElement, focusSelector?: string) => void;
+			deactivate: (container: HTMLElement) => void;
+		};
 		getPage: () => string;
 		isSticky: (element: HTMLElement | null, stickyClass: string) => void;
 		scrollTo: (e?: Events, selector?: string, offset?: number) => void;
