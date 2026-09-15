@@ -6,7 +6,7 @@ const trapHandlers = new WeakMap<HTMLElement, (e: KeyboardEvent) => void>();
 
 export const utils: UtilsType = {
 	any: {
-		fetch: async ({ url, query, variables = {} }: GraphQLParamsType) => {
+		async fetch<T = unknown>({ url, query, variables = {} }: GraphQLParamsType): Promise<T> {
 			// Fetch data from WordPress
 			const controller = new AbortController();
 			const timeout = setTimeout(() => controller.abort(), 30000);
@@ -28,10 +28,10 @@ export const utils: UtilsType = {
 					throw new Error(`Failed to fetch WordPress data: ${response.statusText}`);
 				}
 
-				const json = await response.json();
+				const json = (await response.json()) as { data: T; errors?: { message: string }[] };
 
 				if (json.errors) {
-					throw new Error(json.errors.map((e: { message: string }) => e.message).join(', '));
+					throw new Error(json.errors.map((e) => e.message).join(', '));
 				}
 
 				return json.data;

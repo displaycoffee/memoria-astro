@@ -77,7 +77,8 @@ export const wpPost = {
 				};
 
 				// Fetch post data
-				const data = await utils.any.fetch(options);
+				type PostsResponse = { posts: { pageInfo: { hasNextPage: boolean; endCursor: string | null }; nodes: PostsRawType } };
+				const data: PostsResponse = await utils.any.fetch(options);
 
 				// Format and set data
 				if (data?.posts?.nodes) {
@@ -96,7 +97,7 @@ export const wpPost = {
 			let postData: PostType | null = null;
 
 			// Fetch post data
-			const data = await utils.any.fetch({
+			const data = await utils.any.fetch<{ nodeByUri: PostRawType | null }>({
 				query: wpPost.query('query'),
 				url: variables.urls.graphQL,
 				variables: { uri },
@@ -113,7 +114,7 @@ export const wpPost = {
 			let searchData: PostsType = [];
 
 			// Get posts data
-			const data = await utils.any.fetch({
+			const data = await utils.any.fetch<{ posts: { pageInfo: { hasNextPage: boolean }; nodes: PostsRawType } }>({
 				query: wpPost.query('query-search', pageSize),
 				url,
 				variables: { query },

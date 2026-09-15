@@ -88,7 +88,7 @@ export const wpThemeOptions = {
 			};
 
 			// Fetch theme options data
-			const data = await utils.any.fetch({
+			const data = await utils.any.fetch<{ themeOptions: ThemeOptionsRawType }>({
 				query: wpThemeOptions.query('query'),
 				url: variables.urls.graphQL,
 			});

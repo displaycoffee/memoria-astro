@@ -1,5 +1,5 @@
 /* Packages */
-import { RefObject } from 'react';
+import type { ReactNode, RefObject, TouchEvent } from 'react';
 
 /* Type definitions */
 type SlideoutButton = {
@@ -20,7 +20,7 @@ type SlideoutOptions = {
 
 type SlideoutOverlayRef = RefObject<HTMLDivElement | null>;
 
-type SlideoutTouch = React.TouchEvent;
+type SlideoutTouch = TouchEvent<HTMLDivElement>;
 
 type SlideoutTouchRef = { x: number; y: number } | null;
 

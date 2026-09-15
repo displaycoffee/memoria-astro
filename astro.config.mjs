@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
-import { viteUtils } from './vite.utils';
+import { viteUtils } from './vite.utils.js';
 import node from '@astrojs/node';
 
 export default defineConfig({

@@ -24,7 +24,10 @@ export const wpSite = {
 			};
 
 			// Fetch site data
-			const data = await utils.any.fetch({
+			const data = await utils.any.fetch<{
+				generalSettings: { description: string; title: string };
+				readingSettings: { postsPerPage: number };
+			}>({
 				query: wpSite.query('query'),
 				url: variables.urls.graphQL,
 			});

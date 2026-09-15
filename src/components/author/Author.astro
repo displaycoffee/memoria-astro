@@ -21,9 +21,7 @@ const { author, posts } = Astro.props;
 			<a href={author.url}>{author.name}</a>
 		</h2>
 
-		{author.content && (
-			<div class="author-content margin-trim" set:html={author.content}></div>
-		)}
+		{author.content && <div class="author-content margin-trim" set:html={author.content} />}
 	</div>
 
 	<div class="author-posts">

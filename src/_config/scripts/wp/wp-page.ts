@@ -49,7 +49,8 @@ export const wpPage = {
 				page++;
 
 				// Fetch page data
-				const data = await utils.any.fetch({
+				type PagesResponse = { pages: { pageInfo: { hasNextPage: boolean; endCursor: string | null }; nodes: PageRawType[] } };
+				const data: PagesResponse = await utils.any.fetch({
 					query: wpPage.query('query-all'),
 					url: variables.urls.graphQL,
 					variables: { after },
@@ -74,7 +75,7 @@ export const wpPage = {
 			let pageData: PageType | null = null;
 
 			// Fetch page data
-			const data = await utils.any.fetch({
+			const data = await utils.any.fetch<{ nodeByUri: PageRawType | null }>({
 				query: wpPage.query('query'),
 				url: variables.urls.graphQL,
 				variables: { uri },
@@ -91,7 +92,7 @@ export const wpPage = {
 			let pagesData: PagesType = [];
 
 			// Get pages data
-			const data = await utils.any.fetch({
+			const data = await utils.any.fetch<{ pages: { nodes: PageRawType[] } }>({
 				query: wpPage.query('query-nodes', pageSize),
 				url: variables.urls.graphQL,
 			});

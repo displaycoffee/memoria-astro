@@ -39,7 +39,8 @@ export const wpCategory = {
 				page++;
 
 				// Fetch category data
-				const data = await utils.any.fetch({
+				type CategoriesResponse = { categories: { pageInfo: { hasNextPage: boolean; endCursor: string | null }; nodes: CategoriesRawType } };
+				const data: CategoriesResponse = await utils.any.fetch({
 					query: wpCategory.query('query-all'),
 					url: variables.urls.graphQL,
 					variables: { after },

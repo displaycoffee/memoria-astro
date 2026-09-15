@@ -15,13 +15,13 @@ const { item } = Astro.props;
 let linkProps: NavigationListItemAttributesType = {
 	class: 'navigation-link',
 	href: item.url,
-}
+};
 if (item.type == 'link') {
 	linkProps = {
 		...linkProps,
 		target: '_blank',
-		rel: 'noreferrer'
-	}
+		rel: 'noreferrer',
+	};
 }
 ---
 

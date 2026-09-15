@@ -29,9 +29,7 @@ const siblingCount = 2;
 const siblings = Array.from({ length: siblingCount * 2 + 1 }, (_, index) => page.currentPage - siblingCount + index);
 
 /* How many page numbers to show on either side of the current page */
-const visiblePages = [...new Set([1, page.lastPage, ...siblings])]
-	.filter((number) => number >= 1 && number <= page.lastPage)
-	.sort((a, b) => a - b);
+const visiblePages = [...new Set([1, page.lastPage, ...siblings])].filter((number) => number >= 1 && number <= page.lastPage).sort((a, b) => a - b);
 
 /* Create pages for pagination */
 const pages: PaginationItem[] = [];
@@ -47,7 +45,9 @@ visiblePages.forEach((number, index) => {
 	<ul class="pagination-list row row-nowrap row-spacing-10 row-align-items-center unstyled">
 		{page.url.prev && (
 			<li class="pagination-list-item">
-				<a class="pagination-previous button" href={page.url.prev} rel="prev">Previous</a>
+				<a class="pagination-previous button" href={page.url.prev} rel="prev">
+					Previous
+				</a>
 			</li>
 		)}
 
@@ -56,11 +56,7 @@ visiblePages.forEach((number, index) => {
 				{item.type === 'ellipsis' ? (
 					<span class="pagination-ellipsis">&hellip;</span>
 				) : (
-					<a
-						class="pagination-link"
-						href={pageUrl(item.number)}
-						aria-current={item.number === page.currentPage ? 'page' : undefined}
-					>
+					<a class="pagination-link" href={pageUrl(item.number)} aria-current={item.number === page.currentPage ? 'page' : undefined}>
 						{item.number}
 					</a>
 				)}
@@ -69,7 +65,9 @@ visiblePages.forEach((number, index) => {
 
 		{page.url.next && (
 			<li class="pagination-list-item">
-				<a class="pagination-next button" href={page.url.next} rel="next">Next</a>
+				<a class="pagination-next button" href={page.url.next} rel="next">
+					Next
+				</a>
 			</li>
 		)}
 	</ul>

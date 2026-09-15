@@ -1,3 +1,5 @@
+import type { ButtonHTMLAttributes, MouseEventHandler, ReactNode, RefObject } from 'react';
+
 /* Type definitions */
 type Dropdown = {
 	buttonLabel: string;
@@ -12,18 +14,18 @@ type DropdownButton = {
 	buttonLinkClass?: string;
 	buttonRef: RefObject<HTMLButtonElement | null>;
 	buttonUrl?: string;
-	closeContent: MouseEvent<HTMLAnchorElement>;
+	closeContent: MouseEventHandler<HTMLAnchorElement>;
 	contentId: string;
 	isExpanded: boolean;
 	showLabel?: boolean;
-	toggleDropdown: MouseEvent<HTMLButtonElement>;
+	toggleDropdown: MouseEventHandler<HTMLButtonElement>;
 };
 
-type DropdownButtonAttributes = HTMLAttributes<HTMLDivElement>;
+type DropdownButtonAttributes = ButtonHTMLAttributes<HTMLButtonElement>;
 
 type DropdownContent = {
 	children: ReactNode;
-	closeContent: MouseEvent<HTMLDivElement>;
+	closeContent: MouseEventHandler<HTMLDivElement>;
 	contentId: string;
 };
 

@@ -21,9 +21,7 @@ const { posts, tag } = Astro.props;
 			<a href={tag.url}>{tag.name}</a>
 		</h2>
 
-		{tag.content && (
-			<div class="tag-content margin-trim" set:html={tag.content}></div>
-		)}
+		{tag.content && <div class="tag-content margin-trim" set:html={tag.content} />}
 	</div>
 
 	<div class="tag-posts">

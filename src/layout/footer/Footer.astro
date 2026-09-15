@@ -26,7 +26,7 @@ const footerMenu = await context.wp.menu.menu('footer');
 <footer class="footer">
 	{options.footer.blocks.length !== 0 ? (
 		<div class="footer-blocks row row-wrap row-fit row-spacing-20">
-			{options.footer.blocks.map((block) => (
+			{options.footer.blocks.map((block) =>
 				block.content == 'nav menu' ? (
 					footerMenu.length !== 0 ? (
 						<div id={block.id} class="footer-block column">
@@ -34,11 +34,11 @@ const footerMenu = await context.wp.menu.menu('footer');
 						</div>
 					) : null
 				) : (
-					<div id={block.id} class="footer-block column" set:html={block.content}></div>
-				)
-			))}
+					<div id={block.id} class="footer-block column" set:html={block.content} />
+				),
+			)}
 		</div>
-	) : (null)}
+	) : null}
 
 	<div class="footer-blocks row row-wrap row-fit row-spacing-20">
 		{options.social.length !== 0 ? (
@@ -51,10 +51,15 @@ const footerMenu = await context.wp.menu.menu('footer');
 					))}
 				</nav>
 			</div>
-		) : (null)}
-		
+		) : null}
+
 		<div id="footer-copyright" class="footer-copyright footer-block column">
-			<p>&copy; {year} <a href="//display.coffee" target="_blank" rel="noreferrer">displaycoffee</a></p>
+			<p>
+				&copy; {year}{' '}
+				<a href="//display.coffee" target="_blank" rel="noreferrer">
+					displaycoffee
+				</a>
+			</p>
 		</div>
 	</div>
 </footer>

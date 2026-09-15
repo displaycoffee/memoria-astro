@@ -21,9 +21,7 @@ const { category, posts } = Astro.props;
 			<a href={category.url}>{category.name}</a>
 		</h2>
 
-		{category.content && (
-			<div class="category-content margin-trim" set:html={category.content}></div>
-		)}
+		{category.content && <div class="category-content margin-trim" set:html={category.content} />}
 	</div>
 
 	<div class="category-posts">

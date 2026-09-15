@@ -26,7 +26,7 @@ const site = await context.wp.site.site();
 			<div class="site-logo">
 				<Image alt={options.header.logo.alt} hasLazy={true} image={options.header.logo.url} wrapperClasses={['contain']} />
 			</div>
-		) : (null)}
+		) : null}
 
 		<div class="site-name">
 			<h1>
@@ -42,6 +42,6 @@ const site = await context.wp.site.site();
 			<div class="site-description">
 				<p>{site.description}</p>
 			</div>
-		) : (null)}
+		) : null}
 	</div>
 </header>

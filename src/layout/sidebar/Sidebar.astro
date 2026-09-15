@@ -17,15 +17,12 @@ let sidebar: PageType | null = null;
 if (slug) {
 	sidebar = await context.wp.page.page(slug);
 }
-
 ---
 
 {sidebar?.content ? (
 	<aside class="sidebar margin-trim">
-		{sidebar?.title ? (
-			<h3 class="sidebar-title">{sidebar.title}</h3>
-		) : null}		
-	
-		<div class="sidebar-content" set:html={sidebar.content}></div>
+		{sidebar?.title ? <h3 class="sidebar-title">{sidebar.title}</h3> : null}
+
+		<div class="sidebar-content" set:html={sidebar.content} />
 	</aside>
 ) : null}

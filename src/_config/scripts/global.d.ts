@@ -1,3 +1,5 @@
+import type { SyntheticEvent } from 'react';
+
 /* Type definitions */
 type Events = SyntheticEvent | Event;
 
@@ -36,7 +38,7 @@ type Theme = {
 
 type Utils = {
 	any: {
-		fetch: ({ url, query, variables = {} }: GraphQLParams) => Promise<T>;
+		fetch<T = unknown>({ url, query, variables }: GraphQLParams): Promise<T>;
 		getDate: (time: string) => string;
 		getLast: (value: string | string[], delimeter?: string) => string | number;
 		handleize: (value: string) => string;
@@ -67,6 +69,14 @@ type Variables = {
 };
 
 declare global {
+	/* Declare custom environment variables */
+	interface ImportMetaEnv {
+		readonly API_URL: string;
+		readonly GRAPHQL_URL: string;
+		readonly SITE_URL: string;
+		readonly WP_URL: string;
+	}
+
 	/* Declare global types */
 	type EventsType = Events;
 

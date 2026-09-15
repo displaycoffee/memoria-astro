@@ -39,7 +39,8 @@ export const wpTag = {
 				page++;
 
 				// Fetch tag data
-				const data = await utils.any.fetch({
+				type TagsResponse = { tags: { pageInfo: { hasNextPage: boolean; endCursor: string | null }; nodes: TagsRawType } };
+				const data: TagsResponse = await utils.any.fetch({
 					query: wpTag.query('query-all'),
 					url: variables.urls.graphQL,
 					variables: { after },

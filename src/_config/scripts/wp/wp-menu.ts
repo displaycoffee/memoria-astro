@@ -33,7 +33,7 @@ export const wpMenu = {
 			let menuData: MenuType[] = [];
 
 			// Fetch menu data
-			const data = await utils.any.fetch({
+			const data = await utils.any.fetch<{ menu: { menuItems: { nodes: MenuRawNodesType[] } } }>({
 				url: variables.urls.graphQL,
 				query: wpMenu.query(),
 				variables: { id },

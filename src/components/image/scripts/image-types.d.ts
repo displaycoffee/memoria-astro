@@ -1,3 +1,5 @@
+import type { HTMLAttributes, ImgHTMLAttributes } from 'react';
+
 /* Type definitions */
 type Image = {
 	alt?: string;

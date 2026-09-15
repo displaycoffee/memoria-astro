@@ -43,7 +43,8 @@ export const wpAuthor = {
 				page++;
 
 				// Fetch author data
-				const data = await utils.any.fetch({
+				type AuthorsResponse = { users: { pageInfo: { hasNextPage: boolean; endCursor: string | null }; nodes: AuthorsRawType } };
+				const data: AuthorsResponse = await utils.any.fetch({
 					query: wpAuthor.query('query-all'),
 					url: variables.urls.graphQL,
 					variables: { after },
