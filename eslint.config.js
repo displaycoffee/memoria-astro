@@ -11,7 +11,7 @@ import astro from 'eslint-plugin-astro';
 
 export default tseslint.config(
 	{
-		ignores: ['*.js', '*.mjs'],
+		ignores: ['**/*.js', '**/*.mjs'],
 	},
 	{
 		languageOptions: {
@@ -71,7 +71,10 @@ export default tseslint.config(
 			'@typescript-eslint/require-await': 'off',
 			'import/no-unresolved': 'off',
 			'react/no-unescaped-entities': 'off',
-			'react/no-unknown-property': ['error', { ignore: ['set:html', 'set:text', 'is:raw', 'is:global', 'is:inline', 'class:list', 'define:vars'] }],
+			'react/no-unknown-property': [
+				'error',
+				{ ignore: ['set:html', 'set:text', 'is:raw', 'is:global', 'is:inline', 'class:list', 'define:vars'] },
+			],
 			'react/prop-types': 'off',
 			'react-hooks/exhaustive-deps': 'error',
 		},
