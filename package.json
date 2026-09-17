@@ -1,7 +1,8 @@
 {
 	"name": "memoria-astro",
-	"version": "0.0.1",
+	"displayName": "Memoria",
 	"description": "Astro WordPress theme.",
+	"version": "0.0.1",
 	"type": "module",
 	"keywords": [],
 	"author": "displaycoffee",
