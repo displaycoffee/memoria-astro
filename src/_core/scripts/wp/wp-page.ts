@@ -9,7 +9,6 @@ const settings = {
 	pageSize: 12,
 };
 
-/* Main page functions */
 export const wpPage = {
 	format: (data: PageRawType | PagesRawType) => {
 		// Format page data
