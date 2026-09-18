@@ -2,7 +2,6 @@
 import { utils } from '../utils';
 import { variables } from '../variables';
 
-/* Main menu functions */
 export const wpMenu = {
 	format: (data: MenuRawNodesType, isChild: boolean) => {
 		const menuItemPrefix = isChild ? 'menu-item-child' : 'menu-item';
