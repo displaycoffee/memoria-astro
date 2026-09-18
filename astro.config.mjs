@@ -1,11 +1,18 @@
+/* Packages */
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
-import { viteUtils } from './vite.utils.js';
 import node from '@astrojs/node';
 
+/* Scripts */
+import { viteUtils } from './vite.utils.js';
+import packageJSON from './package.json' with { type: 'json' };
+
+/* Variables */ 
+const hostname = packageJSON.homepage || 'https://localhost:3000';
+
 export default defineConfig({
-	site: 'https://memoria.display.coffee',
+	site: hostname,
 	adapter: node({
 		mode: 'standalone',
 		experimentalDisableStreaming: true, // Disables streaming globally for the Node server
