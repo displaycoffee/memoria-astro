@@ -5,8 +5,6 @@ import { wpImage } from './wp-image';
 
 export const wpThemeOptions = {
 	format: (themeOptionsData: ThemeOptionsType, data: ThemeOptionsRawType) => {
-		// Format theme options data
-
 		// Build footer blocks
 		const buildBlock = (id: string, order: string, content: string) => {
 			themeOptionsData.footer.blocks.push({
