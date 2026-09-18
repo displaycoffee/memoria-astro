@@ -70,7 +70,7 @@ type Variables = {
 };
 
 declare global {
-	/* Declare custom environment variables */
+	// Declare custom environment variables
 	interface ImportMetaEnv {
 		readonly API_URL: string;
 		readonly GRAPHQL_URL: string;
@@ -78,7 +78,7 @@ declare global {
 		readonly WP_URL: string;
 	}
 
-	/* Declare global types */
+	// Declare global types
 	type EventsType = Events;
 
 	type ObjectStringType = ObjectString;
@@ -91,7 +91,7 @@ declare global {
 
 	type VariablesType = Variables;
 
-	/* Declare global prop types */
+	// Declare global prop types
 	type ObjectPrimitiveProps = ObjectPrimitive;
 }
 
