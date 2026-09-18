@@ -281,7 +281,7 @@ type WP = {
 };
 
 declare global {
-	/* Declare global types */
+	// Declare global types
 	type AuthorType = Author;
 
 	type AuthorsType = Authors;
