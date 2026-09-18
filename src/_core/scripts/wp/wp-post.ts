@@ -11,7 +11,6 @@ const settings = {
 	imageSize: 'LARGE',
 };
 
-/* Main post functions */
 export const wpPost = {
 	format: (data: PostRawType | PostsRawType) => {
 		// Format post data
