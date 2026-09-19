@@ -42,12 +42,8 @@ export const Image = (props: ImageProps) => {
 	const altText = alt || '';
 
 	// Adjust image attributes
-	if (hasLazy) {
-		imageAttributes.loading = 'lazy';
-	}
-	if (imageClass) {
-		imageAttributes.className = imageClass;
-	}
+	if (hasLazy) imageAttributes.loading = 'lazy';
+	if (imageClass) imageAttributes.className = imageClass;
 	if (hasWrapper && hasBg) {
 		if (!imageAttributes.className) {
 			imageAttributes.className = 'image-hidden';

@@ -11,12 +11,8 @@ export const image = {
 	onError: (e: SyntheticEvent<HTMLImageElement>) => {
 		// Handle error imaging if image has src or srcset
 		const target = e.currentTarget;
-		if (target.getAttribute('src')) {
-			target.src = image.getErrorImage(target.src);
-		}
-		if (target.getAttribute('srcset')) {
-			target.srcset = image.getErrorImage(target.src);
-		}
+		if (target.getAttribute('src')) target.src = image.getErrorImage(target.src);
+		if (target.getAttribute('srcset')) target.srcset = image.getErrorImage(target.src);
 	},
 	onLoad: (e: SyntheticEvent<HTMLImageElement>) => {
 		// Set natural image width and height on load

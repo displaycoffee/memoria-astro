@@ -8,7 +8,6 @@ import node from '@astrojs/node';
 import { viteUtils } from './vite.utils.js';
 import packageJSON from './package.json' with { type: 'json' };
 
-/* Variables */ 
 const hostname = packageJSON.homepage || 'https://localhost:3000';
 
 export default defineConfig({
