@@ -12,9 +12,7 @@ export const Icon = (props: IconsProps) => {
 
 	// Create icon classes
 	const iconClasses = [iconClass];
-	if (size) {
-		iconClasses.push(`${iconClass}-${size}`);
-	}
+	if (size) iconClasses.push(`${iconClass}-${size}`);
 
 	return (
 		<div className={iconClasses.join(' ')}>

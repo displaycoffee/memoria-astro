@@ -1,3 +1,4 @@
+/* Packages */
 import type { HTMLAttributes, ImgHTMLAttributes } from 'react';
 
 /* Type definitions */

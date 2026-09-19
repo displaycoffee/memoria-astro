@@ -70,6 +70,7 @@
 				.icon-wrapper {
 					@include mixins.transition(transform ease 0.5s);
 					margin-left: auto;
+					order: 9999;
 				}
 			}
 		}
