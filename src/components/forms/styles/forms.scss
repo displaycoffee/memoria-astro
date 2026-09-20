@@ -182,19 +182,10 @@
 	}
 	.choice-wrapper-radio {
 		.icon-wrapper {
-			&, .icon {
-				@include mixins.border-radius(50%);
-			}
+			@include mixins.border-radius(50%);
 		}
 	}
 	.choice-wrapper-active {
-		&.choice-wrapper-radio {
-			.icon-wrapper .icon {
-				@include mixins.if-exists((
-					background-color: $forms-choice-color-05,
-				));
-			}
-		}
 		.icon-wrapper {
 			@include mixins.if-exists((
 				background-color: $forms-choice-color-03,

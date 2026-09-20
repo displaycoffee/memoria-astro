@@ -2,7 +2,7 @@
 import './styles/forms.scss';
 
 /* Packages */
-import { Children, createContext, isValidElement, useContext } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 /* Scripts */
 import type {
@@ -25,9 +25,6 @@ import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
 import { Icon } from '../icons/Icons';
-
-/* Shares the enclosing FormField's id so grouped radios share a name without a Choice prop */
-const ChoiceGroupContext = createContext<string | undefined>(undefined);
 
 export const Button = (props: ButtonProps) => {
 	const { children, className: propClassName, hideLabel = false, label, type = 'button', variant = 'primary', ...rest } = props;
@@ -53,24 +50,20 @@ export const ButtonScroll = (props: ButtonScrollProps) => {
 export const Choice = (props: ChoiceProps) => {
 	const { active = false, className: propClassName, hideLabel = false, id, label, type = 'checkbox', ...rest } = props;
 	const className = forms.build.className(`choice choice-${type}`, propClassName, rest?.disabled, false, true);
+	const choiceRef = useRef<HTMLDivElement>(null);
+	const [name, setName] = useState(id);
 
-	// Radios must share a name to behave as a mutually exclusive group; checkboxes stay independent
-	const groupId = useContext(ChoiceGroupContext);
-	const name = type === 'radio' ? (groupId ?? id) : id;
+	// Get group id for radios
+	useLayoutEffect(() => {
+		if (choiceRef?.current && type == 'radio') {
+			const groupElement = choiceRef.current.closest<HTMLElement>('[data-group-id]');
+			if (groupElement?.dataset.groupId) setName(groupElement.dataset.groupId);
+		}
+	}, [type]);
 
 	return (
-		<div className={`choice-wrapper choice-wrapper-${type}${active ? ' choice-wrapper-active' : ''}`}>
-			{active ? (
-				type == 'radio' ? (
-					<div className="icon-wrapper">
-						<div className="icon icon-circle"></div>
-					</div>
-				) : (
-					<Icon id={'check-thin'} />
-				)
-			) : (
-				<div className="icon-wrapper"></div>
-			)}
+		<div className={`choice-wrapper choice-wrapper-${type}${active ? ' choice-wrapper-active' : ''}`} ref={choiceRef}>
+			{active ? <Icon id={type == 'radio' ? 'circle' : 'check-thin'} /> : <div className="icon-wrapper"></div>}
 
 			<input id={id} className={className} name={name} type={type} {...rest} />
 
@@ -80,9 +73,6 @@ export const Choice = (props: ChoiceProps) => {
 		</div>
 	);
 };
-
-/* Display name for identifying choice elements */
-Choice.displayName = 'Choice';
 
 export const Form = (props: FormProps) => {
 	const { children, className: propClassName, ...rest } = props;
@@ -103,13 +93,8 @@ export const FormActions = (props: FormActionsProps) => {
 };
 
 export const FormField = (props: FormFieldProps) => {
-	const { children, hideLabel, id, label, required } = props;
+	const { children, hideLabel, id, isChoice = false, label, required } = props;
 	const className = forms.build.className(`form-field`, props?.className);
-
-	// Determine if children contain choice fields (checkboxes or radios)
-	const isChoice = Children.toArray(children).some(
-		(child) => isValidElement(child) && (child.type as { displayName?: string })?.displayName === 'Choice',
-	);
 
 	// Create elements for form field
 	const Tag = isChoice ? 'fieldset' : 'div';
@@ -138,8 +123,8 @@ export const FormField = (props: FormFieldProps) => {
 				</div>
 			)}
 
-			<div className="form-field-control">
-				{isChoice ? <ChoiceGroupContext.Provider value={id}>{children}</ChoiceGroupContext.Provider> : children}
+			<div className="form-field-control" data-group-id={isChoice ? id : null}>
+				{children}
 			</div>
 		</Tag>
 	);

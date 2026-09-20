@@ -70,6 +70,7 @@ type FormField = {
 	className?: string;
 	hideLabel?: boolean;
 	id: string;
+	isChoice?: boolean;
 	label: string;
 	required?: boolean;
 };
