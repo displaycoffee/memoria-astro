@@ -41,7 +41,7 @@ export const List = (props: ListProps) => {
 };
 
 export const Section = (props: SectionProps) => {
-	const { children, className: propClassName, hasScroll = true, id, title } = props;
+	const { children, className: propClassName, hasScroll = true, id, target = '#index', title } = props;
 	const { utils } = useAppContext();
 	const fallbackId = useFormattedId();
 	const sectionId = `section-${id ? id : title ? utils.handleize(title) : fallbackId}`;
@@ -62,7 +62,7 @@ export const Section = (props: SectionProps) => {
 
 			{hasScroll ? (
 				<div className="section-button">
-					<ButtonScroll target={'#index'} label={'Back to top'} />
+					<ButtonScroll target={target} label={'Back to top'} />
 				</div>
 			) : null}
 		</section>

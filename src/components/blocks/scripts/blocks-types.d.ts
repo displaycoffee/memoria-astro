@@ -19,6 +19,7 @@ type Section = {
 	className?: string;
 	hasScroll?: boolean;
 	id?: string;
+	target?: string;
 	title?: string;
 };
 
