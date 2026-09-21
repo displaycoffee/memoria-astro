@@ -9,11 +9,9 @@
 
 	// Imports
 
-	@use './_normalize';
+	@use './_reset';
 	@use './_typography';
 	@use './_base';
-	@use './_forms';
-	@use './_images';
 	@use './_layout';
 	@use './_wp-blocks';
 
