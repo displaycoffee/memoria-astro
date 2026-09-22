@@ -138,7 +138,7 @@ export const SlideoutOverlay = () => {
 
 	// Create overlay element and append to body on mount, remove on unmount
 	useEffect(() => {
-		const slideoutTarget = document.querySelector('body');
+		const slideoutTarget = document.querySelector('#index');
 		if (!slideoutTarget) return;
 
 		// Create overlay
