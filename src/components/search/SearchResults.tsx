@@ -1,9 +1,10 @@
 /* Packages */
-import { useState, useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 
 /* Scripts */
 import type { SearchResultsProps } from './scripts/search-types';
 import { context } from '../../context/scripts/context';
+import { search } from './scripts/search';
 
 /* Components */
 import { PostList } from '../post/PostList';
@@ -13,12 +14,10 @@ const pageSize = 12;
 
 export const SearchResults = (props: SearchResultsProps) => {
 	const graphqlUrl = props.graphqlUrl;
-	const [query, setQuery] = useState('');
-	const [results, setResults] = useState<PostsType>([]);
-	const [hasNextPage, setHasNextPage] = useState(false);
-	const [loading, setLoading] = useState(false);
-	const [loadingMore, setLoadingMore] = useState(false);
-	const [error, setError] = useState('');
+	const [state, dispatch] = useReducer(search.reducer, search.initialState);
+	const { error, hasNextPage, query, results, status } = state;
+	const loading = status === 'loading';
+	const loadingMore = status === 'loadingMore';
 
 	useEffect(() => {
 		let cancelled = false;
@@ -27,7 +26,7 @@ export const SearchResults = (props: SearchResultsProps) => {
 			// Get search params and fetch query
 			const params = new URLSearchParams(window.location.search);
 			const q = context.utils.any.sanitize(params.get('q') || '');
-			setQuery(q);
+			dispatch({ type: 'query_set', query: q });
 
 			// If no query, don't search
 			if (!q) return;
@@ -39,22 +38,13 @@ export const SearchResults = (props: SearchResultsProps) => {
 			// If query is present, do search
 			try {
 				// Set loading
-				setLoading(true);
+				dispatch({ type: 'search_started' });
 
 				// Get data, set results, and next page (if not cancelled)
 				const data = await context.wp.post.search(q, count, graphqlUrl);
-				if (!cancelled) {
-					setResults(data.posts);
-					setHasNextPage(data.hasNextPage);
-				}
+				if (!cancelled) dispatch({ type: 'loaded', hasNextPage: data.hasNextPage, posts: data.posts });
 			} catch {
-				if (!cancelled) {
-					setError('Something went wrong. Please try again.');
-				}
-			} finally {
-				if (!cancelled) {
-					setLoading(false);
-				}
+				if (!cancelled) dispatch({ type: 'failed', message: 'Something went wrong. Please try again.' });
 			}
 		};
 
@@ -68,21 +58,18 @@ export const SearchResults = (props: SearchResultsProps) => {
 	const handleLoadMore = async () => {
 		try {
 			// Set loading
-			setLoadingMore(true);
+			dispatch({ type: 'load_more_started' });
 
 			// Get data, set results, and next page
 			const data = await context.wp.post.search(query, results.length + pageSize, graphqlUrl);
-			setResults(data.posts);
-			setHasNextPage(data.hasNextPage);
+			dispatch({ type: 'loaded', hasNextPage: data.hasNextPage, posts: data.posts });
 
 			// Remember how many results are loaded so navigating back restores them
 			const params = new URLSearchParams(window.location.search);
 			params.set('loaded', String(data.posts.length));
 			window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
 		} catch {
-			setError('Something went wrong. Please try again.');
-		} finally {
-			setLoadingMore(false);
+			dispatch({ type: 'failed', message: 'Something went wrong. Please try again.' });
 		}
 	};
 
