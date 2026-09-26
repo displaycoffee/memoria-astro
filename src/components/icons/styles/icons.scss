@@ -22,15 +22,15 @@
 			fill: currentColor;
 		}
 	}
-	.icon-wrapper-small {
+	.icon-wrapper-sm {
 		@include mixins.icon-sizing(theme.$icon-size - 2);
 	}
-	.icon-wrapper-large {
+	.icon-wrapper-lg {
 		@include mixins.icon-sizing(theme.$icon-size + 2);
 	}
-	.icon-wrapper-x-large {
+	.icon-wrapper-xl {
 		@include mixins.icon-sizing(theme.$icon-size + 4);
 	}
-	.icon-wrapper-xx-large {
+	.icon-wrapper-2xl {
 		@include mixins.icon-sizing(theme.$icon-size + 8);
 	}

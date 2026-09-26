@@ -392,8 +392,6 @@
 	}
 	.select {
 		@include mixins.sizing(100%, $forms-select-height);
-		-webkit-appearance: none;
-		-moz-appearance: none;
 		appearance: none;
 		@include mixins.if-exists((
 			padding: $forms-select-spacing,
