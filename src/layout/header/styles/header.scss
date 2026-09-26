@@ -41,7 +41,7 @@
 			}
 		}
 	}
-	@include mixins.respond-min(theme.$bp-02) {
+	@include mixins.respond(theme.$bp-02) {
 		.header {
 			.site-details {
 				.site-logo {

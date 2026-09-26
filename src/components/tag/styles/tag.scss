@@ -37,7 +37,7 @@
 			}
 		}
 	}
-	@include mixins.respond-min(theme.$bp-02) {
+	@include mixins.respond(theme.$bp-02) {
 		.tags {
 			.tag {
 				&, & .tag-details {
@@ -59,7 +59,7 @@
 			}
 		}
 	}
-	@include mixins.respond-min(theme.$bp-04) {
+	@include mixins.respond(theme.$bp-04) {
 		.tags {
 			.tag {
 				@include mixins.gap-width(theme.$spacing-x4, 3);
